@@ -14,11 +14,11 @@ services:
       context: .
       dockerfile: docker/backend.Dockerfile
     expose:
-      - 3000:3000
+      - 3000
 
   frontend:
     build:
       context: .
       dockerfile: docker/frontend.Dockerfile
     expose:
-      - 4200:4200
+      - 4200
