@@ -13,6 +13,9 @@ services:
     build:
       context: .
       dockerfile: docker/backend.Dockerfile
+    volumes:
+      - ./apps/backend:/app
+      - /app/node_modules
     expose:
       - 3000
 
@@ -20,5 +23,8 @@ services:
     build:
       context: .
       dockerfile: docker/frontend.Dockerfile
+    volumes:
+      - ./apps/frontend:/app
+      - /app/node_modules
     expose:
       - 4200
