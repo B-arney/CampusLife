@@ -1,0 +1,30 @@
+<div class="registration-container">
+    <h1>Campus Life</h1>
+    <h2>Registration</h2>
+  
+    <form (ngSubmit)="registerAction()">
+  
+      <div class="input-group">
+        <label>Username</label>
+        <input type="text" [(ngModel)]="username" name="username" required>
+      </div>
+  
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="email" name="email" required>
+      </div>
+  
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" [(ngModel)]="password" name="password" required>
+      </div>
+  
+      <div class="input-group">
+        <label>Confirm Password</label>
+        <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required>
+      </div>
+  
+      <button type="submit">Register</button>
+    </form>
+    <p>Mégis van fiókod? <a [routerLink]="['/login']">Back to Login</a></p>
+  </div>

@@ -1,0 +1,22 @@
+<div class="login-container">
+    <h1>Campus Life</h1>
+    <h2>Login</h2>
+    <form (ngSubmit)="loginAction()">
+  
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="email" name="email" required>
+      </div>
+  
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" [(ngModel)]="password" name="password" required>
+      </div>
+  
+      <button type="submit">Login</button>
+  
+    </form>
+    <p>Nincsen még fiókod? <a [routerLink]="['/registration']">Register here</a></p>
+    <p><a [routerLink]="['/forgot-password']">Forgot password?</a></p>
+  </div>
+ 
