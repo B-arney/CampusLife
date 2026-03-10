@@ -1,7 +1,7 @@
 import { prisma } from "../db.js"
 
 export default async function healthRoutes(fastify) {
-  fastify.get('/', async () => {
+  fastify.get('/health', async () => {
     const start = Date.now()
     await prisma.$queryRaw`SELECT 1`;
     const end = Date.now()
