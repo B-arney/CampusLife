@@ -12,7 +12,8 @@
     "@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.4.2",
     "dotenv": "^17.3.1",
-    "fastify": "^5.8.2"
+    "fastify": "^5.8.2",
+    "nodemailer": "^8.0.2"
   },
   "devDependencies": {
     "pg": "^8.20.0",
