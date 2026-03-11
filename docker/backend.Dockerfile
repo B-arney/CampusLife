@@ -9,4 +9,6 @@ COPY apps/backend .
 
 EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+COPY apps/backend/entrypoint.sh .
+RUN chmod +x entrypoint.sh
+ENTRYPOINT ["./entrypoint.sh"]
