@@ -1,5 +1,19 @@
 # Backend
 
+## Dockerben parancsok futtatása
+
+Ahhoz, hogy a dockerben lehessen futtatni a parancsokat a következő szükséges
+
+```bash
+docker compose exec backend npx prisma generate
+```
+
+vagy használható a következő script
+
+```bash
+docker.sh npx prisma generate
+```
+
 ## Dev környezet
 
 A fejlesztői környezet indításával csak a **backend** indul el. A szükséges környezeti változók azonban nem lesznek automatikusan elérhetők, ezért a **docker szinten található `.env` fájlt** ide is másolni kell.
