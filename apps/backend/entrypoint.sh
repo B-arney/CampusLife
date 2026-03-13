@@ -4,7 +4,7 @@ set -e
 
 npm install
 
-npx prisma migrate deploy
+npx prisma migrate reset --force
 npx prisma generate
 
 npm run dev
