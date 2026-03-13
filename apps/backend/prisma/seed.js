@@ -11,8 +11,8 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   await prisma.user.createMany({
     data: [
-      { email: 'alice@example.com', username: 'alice', password: "PassWord.123"},
-      { email: 'bob@example.com', username: 'bob', password: "PassWord.123" },
+      { email: 'alice@example.com', username: 'alice', password: "$2b$10$0fzWmrUMifEtusCjOsGI2./j2q6dagn5QbAqI20Fuer4VWmS0.xNW" },//PassWord.123
+      { email: 'bob@example.com', username: 'bob', password: "$2b$10$0fzWmrUMifEtusCjOsGI2./j2q6dagn5QbAqI20Fuer4VWmS0.xNW" }, 
     ],
   });
 }
