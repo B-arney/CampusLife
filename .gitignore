@@ -1,2 +1,4 @@
 .env
 package-lock.json
+docker/ssl/*
+!docker/ssl/.gitkeep

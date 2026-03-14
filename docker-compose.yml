@@ -2,9 +2,11 @@ services:
   nginx:
     image: nginx:alpine
     ports:
-      - ${WEBSERVER_PORT}:80
+      - 80:80
+      - 443:443
     volumes:
       - ./docker/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/ssl:/etc/nginx/ssl:ro
     depends_on:
       - frontend
       - backend
