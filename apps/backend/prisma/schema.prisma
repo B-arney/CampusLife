@@ -19,4 +19,6 @@ model user {
   username String @unique
   displayName String?
   password String
+  isVerified Boolean @default(false)
+  verificationToken String? @unique
 }

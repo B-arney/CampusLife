@@ -41,11 +41,21 @@ ctrl+c
 
 ## Környezeti változók
 
-Ha nem szeretnéd a backend-et dockerben használni, erre is van lehetőség.
-A generált .env másolni kell a backend-be
+Az első futtatáskor a `./run.sh` legenerálja a `.env` fájlt. Ebben az alábbiakat kell manuálisan beállítani az email küldéshez:
+- `SMTP_USER`: Brevo (vagy egyéb) SMTP felhasználónév
+- `SMTP_PASS`: SMTP jelszó/kulcs
+- `BASE_URL`: Az alkalmazás elérhetősége (pl. `https://campuslife.social`)
 
+## SSL Tanúsítványok
+
+A rendszer HTTPS-t használ a 443-as porton. A tanúsítványokat a `docker/ssl/` mappába kell helyezni az alábbi nevekkel:
+- `fullchain.pem`
+- `privkey.pem`
+
+Biztonsági okokból ezek a fájlok nem kerülnek be a git repóba.
+
+## Az app futtatása
 ```bash
-cp .env apps/backend/.env
+docker compose up -d
 ```
-
-Ahhoz, hogy tudjad is használni a parancsokat hozzá, ahhoz át kell írni a .env-ben a **POSTGRES_HOST** változó értékét **localhost**-ra, ezután az apps/backend/README.md-ben írtak alapján működni fog
+Az alkalmazás a standard HTTP (80) és HTTPS (443) portokon érhető el.

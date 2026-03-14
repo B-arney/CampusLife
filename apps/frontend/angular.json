@@ -54,7 +54,7 @@
         },
         "serve": {
           "options": {
-            "allowedHosts": ["all"]
+            "allowedHosts": ["campuslife.social", "www.campuslife.social", "localhost"]
           },
           "builder": "@angular/build:dev-server",
           "configurations": {
