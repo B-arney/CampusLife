@@ -31,4 +31,9 @@ else
     echo "$PG_USER felhasználó létrehozva: $USER"
 fi
 
-docker compose up --build
+docker build -t campuslife-backend -f docker/backend.Dockerfile .
+docker build -t campuslife-frontend -f docker/frontend.Dockerfile .
+
+echo "Images built successfully."
+
+docker compose up
