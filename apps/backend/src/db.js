@@ -3,9 +3,19 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import pkg from '../generated/prisma/default.js';
 const { PrismaClient } = pkg
 
-const connectionString = `postgresql://${process.env.POSTGRES_USER}:${process.env.POSTGRES_PASSWORD}@${process.env.POSTGRES_HOST}:5432/${process.env.POSTGRES_DATABASE}?schema=public`;
+export function getConStr() {
+  const {
+    POSTGRES_USER,
+    POSTGRES_PASSWORD,
+    POSTGRES_HOST,
+    POSTGRES_PORT,
+    POSTGRES_DATABASE
+  } = process.env;
 
-const adapter = new PrismaPg({ connectionString });
+  return `postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}?schema=public`;
+}
+
+const adapter = new PrismaPg({ connectionString: getConStr() });
 const prisma = new PrismaClient({ adapter });
 
 export { prisma };
