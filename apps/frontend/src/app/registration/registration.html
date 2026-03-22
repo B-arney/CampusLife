@@ -1,4 +1,68 @@
-<div class="registration-container">
+<p-toast></p-toast>
+
+<div class="wrapper">
+  <div class="login-hero">
+    <h2 class="title">CAMPUS LIFE</h2>
+    <p class="sub-title">Where all you events organised in one place</p>
+    <img ngSrc="assets/Logo.png" alt="logo" width="280" height="280" priority />
+  </div>
+
+  <div class="login-container">
+    <h2>Register</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <input pInputText type="text" id="username" placeholder="Username" formControlName="username"
+          [invalid]="isInvalid('username')" />
+        @if (isInvalid('username')) {
+          <p-message severity="error" size="small" variant="simple">Username is required.</p-message>
+        }
+      </div>
+
+      <div class="form-group">
+        <input pInputText type="email" id="email" placeholder="Email" formControlName="email"
+          [invalid]="isInvalid('email')" />
+        @if (isInvalid('email')) {
+          @if (form.get('email')?.errors?.['required']) {
+            <p-message severity="error" size="small" variant="simple">Email is required.</p-message>
+          }
+          @if (form.get('email')?.errors?.['email']) {
+            <p-message severity="error" size="small" variant="simple">Please enter a valid email.</p-message>
+          }
+        }
+      </div>
+
+      <div class="form-group">
+        <input pInputText type="password" id="password" placeholder="Password" formControlName="password"
+          [invalid]="isInvalid('password')" />
+        @if (isInvalid('password')) {
+          @if (form.get('password')?.errors?.['required']) {
+            <p-message severity="error" size="small" variant="simple">Password is required.</p-message>
+          }
+        }
+      </div>
+
+      <div class="form-group">
+        <input pInputText type="password" id="password2" placeholder="Password confirm" formControlName="password2"
+          [invalid]="isInvalid('password2')" />
+        @if (isInvalid('password2')) {
+          @if (form.get('password2')?.errors?.['required']) {
+            <p-message severity="error" size="small" variant="simple">Password confirmation is required.</p-message>
+          }
+        }
+      </div>
+
+      <div class="auth-link-container">
+        <p>Already have an account? <a [routerLink]="['/login']" link>Login here</a></p>
+      </div>
+
+      <button pButton severity="success" type="submit"><span pButtonLabel>Register</span></button>
+    </form>
+  </div>
+</div>
+
+
+<!-- <div class="registration-container">
     <h1>Campus Life</h1>
     <h2>Registration</h2>
   
@@ -27,4 +91,4 @@
       <button type="submit">Register</button>
     </form>
     <p>Mégis van fiókod? <a [routerLink]="['/login']">Back to Login</a></p>
-  </div>
+</div> -->

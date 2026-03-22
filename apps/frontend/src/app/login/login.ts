@@ -1,22 +1,44 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormGroup, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MessageModule } from 'primeng/message';
+import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessageService } from 'primeng/api';
 import { RouterLink } from '@angular/router';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [MessageModule, ToastModule, ButtonModule, InputTextModule, ReactiveFormsModule, RouterLink, NgOptimizedImage],
   templateUrl: './login.html',
-  styleUrls: ['./login.css']
+  styleUrls: ['./login.css'],
+  providers: [MessageService]
 })
 export class Login {
-  email: string = '';
-  password: string = '';
+  messageService = inject(MessageService);
+  private formBuilder = inject(FormBuilder);
+  form: FormGroup;
+  formSubmitted: boolean = false;
 
-  loginAction() {
-    console.log('Login clicked!');
-    console.log('Email:', this.email);
-    console.log('Password:', this.password);
-    alert(`Logged in as: ${this.email} (frontend only)`);
+  constructor() {
+    this.form = this.formBuilder.group({
+      email: ["", [Validators.required, Validators.email]],
+      password: ["", [Validators.required]],
+    });
+  }
+
+  onSubmit() {
+    this.formSubmitted = true;
+    if (this.form.valid) {
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form Submitted', life: 3000 });
+      this.form.reset();
+      this.formSubmitted = false;
+    }
+  }
+
+  isInvalid(controlName: string) {
+    const control = this.form.get(controlName);
+    return control?.invalid && (control.touched || this.formSubmitted);
   }
 }
