@@ -7,6 +7,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
 import { RouterLink } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-registration',
@@ -16,6 +17,7 @@ import { NgOptimizedImage } from '@angular/common';
   providers: [MessageService]
 })
 export class Registration {
+  private http = inject(HttpClient);
   messageService = inject(MessageService);
   private formBuilder = inject(FormBuilder);
   form: FormGroup;
@@ -30,14 +32,37 @@ export class Registration {
     });
   }
 
-  onSubmit() {
-    this.formSubmitted = true;
-    if (this.form.valid) {
-      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form Submitted', life: 3000 });
+ onSubmit() {
+  this.formSubmitted = true;
+
+  if (!this.form.valid) return;
+
+  const payload = {
+    username: this.form.value.username,
+    email: this.form.value.email,
+    password: this.form.value.password,
+    passwordConfirm: this.form.value.password2
+  };
+
+  this.http.post('/api/register', payload).subscribe({
+    next: (res: any) => {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Siker',
+        detail: res.message || 'Regisztráció elküldve'
+      });
       this.form.reset();
       this.formSubmitted = false;
+    },
+    error: (err) => {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Hiba',
+        detail: err.error?.error || err.error?.message || 'Regisztráció sikertelen'
+      });
     }
-  }
+  });
+}
 
   isInvalid(controlName: string) {
     const control = this.form.get(controlName);
