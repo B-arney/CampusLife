@@ -24,14 +24,21 @@ async function  renderTemplate (name, variables = {}) {
 }
 
 export async function sendActivationEmail(email, verificationLink) {
-  const html = await renderTemplate("activation", {
-    verificationLink
-  })
+  try {
+    const html = await renderTemplate("activation", {
+      verificationLink
+    })
 
-  transporter.sendMail({
-    from: `"CampusLife" <${process.env.SMTP_FROM}>`,
-    to: email,
-    subject: "Erősítsd meg a regisztrációdat - CampusLife",
-    html
-  })
+    const info = await transporter.sendMail({
+      from: `"CampusLife" <${process.env.SMTP_FROM}>`,
+      to: email,
+      subject: "Erősítsd meg a regisztrációdat - CampusLife",
+      html
+    })
+    console.log("Email sent successfully:", info.messageId);
+    return info;
+  } catch (error) {
+    console.error("Error sending email:", error);
+    throw error;
+  }
 }
