@@ -24,8 +24,11 @@
       </div>
 
       <div class="form-group">
-        <input pInputText type="password" id="password" placeholder="Password" formControlName="password"
-          [invalid]="isInvalid('password')" />
+        <p-password formControlName="password" 
+          placeholder="Password"
+          [toggleMask]="true"
+          [invalid]="isInvalid('password')" 
+          fluid />
         @if (isInvalid('password')) {
           @if (form.get('password')?.errors?.['required']) {
             <p-message severity="error" size="small" variant="simple">Password is required.</p-message>
@@ -33,12 +36,15 @@
         }
       </div>
 
+      <button pButton severity="success" type="submit" [disabled]="form.invalid" [loading]="isLoading">
+        <span pButtonLabel>Login</span>
+      </button>
+
       <div class="auth-link-container">
-        <p>Don't have acoount yet? <a [routerLink]="['/registration']" link>Login here</a></p>
+        <p>Don't have acoount yet? <a [routerLink]="['/registration']" link>Register here</a></p>
         <p><a [routerLink]="['/forgot-password']" link >Forgot password</a></p>
       </div>
       
-      <button pButton severity="success" type="submit"><span pButtonLabel>Login</span></button>
     </form>
   </div>
 </div>

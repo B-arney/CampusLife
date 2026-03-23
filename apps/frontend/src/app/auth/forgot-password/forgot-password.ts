@@ -10,16 +10,20 @@ import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-forgot-password',
+  selector: 'app-forgot-password',
   imports: [MessageModule, ToastModule, ButtonModule, InputTextModule, ReactiveFormsModule, RouterLink, NgOptimizedImage],
+  templateUrl: './forgot-password.html',
+  styleUrls: ['./forgot-password.css'],
   templateUrl: './forgot-password.html',
   styleUrls: ['./forgot-password.css'],
   providers: [MessageService]
 })
 export class ForgotPassword {
+export class ForgotPassword {
   messageService = inject(MessageService);
   private formBuilder = inject(FormBuilder);
   form: FormGroup;
-  formSubmitted: boolean = false;
+  isLoading: boolean = false;
 
   constructor() {
     this.form = this.formBuilder.group({
@@ -28,16 +32,17 @@ export class ForgotPassword {
   }
 
   onSubmit() {
-    this.formSubmitted = true;
+    this.isLoading = true;
     if (this.form.valid) {
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form Submitted', life: 3000 });
       this.form.reset();
-      this.formSubmitted = false;
+      this.isLoading = false;
     }
   }
 
   isInvalid(controlName: string) {
     const control = this.form.get(controlName);
-    return control?.invalid && (control.touched || this.formSubmitted);
+    return control?.invalid && (control.touched || this.isLoading);
   }
 }
+
