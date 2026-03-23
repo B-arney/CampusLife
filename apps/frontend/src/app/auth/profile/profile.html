@@ -1,0 +1,47 @@
+<p-menubar [model]="items">
+    <ng-template #start>
+        <img ngSrc="assets/Logo.png" alt="logo" width="64" height="64" priority />
+    </ng-template>
+    <!-- <ng-template #end>
+        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
+    </ng-template> -->
+</p-menubar>
+
+<p-toast></p-toast>
+
+<div class="auth-container">
+    <h2>Profile Edit</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <input pInputText type="text" id="username" placeholder="Username" formControlName="username"
+            [invalid]="isInvalid('username')" />
+            @if (isInvalid('username')) {
+                @if (form.get('username')?.errors?.['required']) {
+                    <p-message severity="error" size="small" variant="simple">username is required.</p-message>
+                }
+            }
+        </div>
+
+        <div class="form-group">
+            <label for="profilePicture" class="font-semibold text-sm">Profile picture</label>
+            <input type="file" id="profilePicture" accept="image/jpeg, image/png, image/webp" (change)="onFileSelect($event)" />
+            <small class="text-gray-500">Max 5MB (JPEG, PNG, WebP)</small>
+        </div>
+
+        <div class="form-group">
+            <label for="major" class="font-semibold text-sm">Szak / Tanulmányok</label>
+            <input pInputText id="major" formControlName="major" placeholder="Software Developer" 
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="interests" class="font-semibold text-sm">Areas of interest</label>
+            <p-multiSelect id="interests" [options]="interestOptions" formControlName="interests" optionLabel="label" optionValue="value" placeholder="Choose" display="chip"
+            ></p-multiSelect>
+        </div>
+
+        <button pButton severity="success" type="submit" [disabled]="form.invalid" [loading]="isLoading">
+            <span pButtonLabel>Update</span>
+        </button>
+    </form>
+</div>
