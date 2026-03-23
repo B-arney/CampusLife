@@ -10,15 +10,11 @@ import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-forgot-password',
-  selector: 'app-forgot-password',
   imports: [MessageModule, ToastModule, ButtonModule, InputTextModule, ReactiveFormsModule, RouterLink, NgOptimizedImage],
-  templateUrl: './forgot-password.html',
-  styleUrls: ['./forgot-password.css'],
   templateUrl: './forgot-password.html',
   styleUrls: ['./forgot-password.css'],
   providers: [MessageService]
 })
-export class ForgotPassword {
 export class ForgotPassword {
   messageService = inject(MessageService);
   private formBuilder = inject(FormBuilder);
