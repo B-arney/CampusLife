@@ -33,8 +33,16 @@
       </div>
 
       <div class="form-group">
-        <input pInputText type="password" id="password" placeholder="Password" formControlName="password"
-          [invalid]="isInvalid('password')" />
+        <p-password formControlName="password" 
+          placeholder="Password"
+          [toggleMask]="true"
+          [invalid]="isInvalid('password')" 
+          promptLabel="Choose a password" 
+          weakLabel="Too simple" 
+          mediumLabel="Average complexity" 
+          strongLabel="Complex password" 
+          autocomplete="off" 
+          fluid />
         @if (isInvalid('password')) {
           @if (form.get('password')?.errors?.['required']) {
             <p-message severity="error" size="small" variant="simple">Password is required.</p-message>
@@ -43,20 +51,25 @@
       </div>
 
       <div class="form-group">
-        <input pInputText type="password" id="password2" placeholder="Password confirm" formControlName="password2"
-          [invalid]="isInvalid('password2')" />
-        @if (isInvalid('password2')) {
-          @if (form.get('password2')?.errors?.['required']) {
+        <input pInputText type="password" id="passwordConfirm" placeholder="Password confirm" formControlName="passwordConfirm"
+          [invalid]="isInvalid('passwordConfirm')" />
+        @if (isInvalid('passwordConfirm')) {
+          @if (form.get('passwordConfirm')?.errors?.['required']) {
             <p-message severity="error" size="small" variant="simple">Password confirmation is required.</p-message>
           }
         }
+        @if (hasPasswordMismatch()) {
+          <p-message severity="error" size="small" variant="simple">Passwords don't match.</p-message>
+        }
       </div>
+
+      <button pButton severity="success" type="submit" [disabled]="form.invalid" [loading]="isLoading">
+        <span pButtonLabel>Register</span>
+      </button>
 
       <div class="auth-link-container">
         <p>Already have an account? <a [routerLink]="['/login']" link>Login here</a></p>
       </div>
-
-      <button pButton severity="success" type="submit"><span pButtonLabel>Register</span></button>
     </form>
   </div>
 </div>
