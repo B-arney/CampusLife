@@ -2,6 +2,8 @@ import Fastify from 'fastify'
 import AutoLoad from '@fastify/autoload'
 import swagger from '@fastify/swagger'
 import swaggerUI from '@fastify/swagger-ui'
+import cookie from '@fastify/cookie'
+import jwt from '@fastify/jwt'
 import { join } from 'path'
 
 const fastify = Fastify({
@@ -44,6 +46,16 @@ await fastify.register(swagger, {
 
 await fastify.register(swaggerUI, {
   routePrefix: '/api/docs'
+})
+
+await fastify.register(cookie)
+
+await fastify.register(jwt, {
+  secret: process.env.JWT_SECRET || 'dev-insecure-secret-change-me',
+  cookie: {
+    cookieName: 'authToken',
+    signed: false
+  }
 })
 
 fastify.register(AutoLoad, {
