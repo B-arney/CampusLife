@@ -7,4 +7,7 @@ RUN npm install -g @angular/cli
 RUN npm install
 
 EXPOSE 4200
-CMD ["ng","serve","--poll=2000","--host=0.0.0.0"]
+
+COPY apps/frontend/entrypoint.sh .
+RUN chmod +x entrypoint.sh
+ENTRYPOINT ["./entrypoint.sh"]
