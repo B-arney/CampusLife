@@ -4,6 +4,7 @@ import swagger from '@fastify/swagger'
 import swaggerUI from '@fastify/swagger-ui'
 import cookie from '@fastify/cookie'
 import jwt from '@fastify/jwt'
+import cors from '@fastify/cors'
 import { join } from 'path'
 
 const fastify = Fastify({
@@ -12,6 +13,11 @@ const fastify = Fastify({
   ajv: {
     customOptions: { allErrors: true }
   }
+})
+
+await fastify.register(cors, {
+  origin: true,
+  credentials: true
 })
 
 fastify.addHook('preValidation', async (request, reply) => {

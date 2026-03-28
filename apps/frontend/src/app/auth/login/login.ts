@@ -51,27 +51,23 @@ export class Login implements OnInit {
   }
 
   onSubmit() {
-    this.isLoading = true;
-
-    setTimeout(() => {
-      
-    if (this.form.valid) {
-      this.authService.login(this.form.value).subscribe({
-        next: () => {
-          this.isLoading = false;
-          this.messageService.add({ severity: 'success', summary: 'Login successful', detail: 'Welcome back!', life: 3000 });          
-          this.router.navigate(['/']);
-        },
-        error: (err) => {
-          this.isLoading = false;
-          const errorMessage = err.error?.error || 'Error during login.';
-          this.messageService.add({ severity: 'error', summary: 'Login failed', detail: errorMessage, life: 5000 });
-        }
-      });
+    if (this.form.invalid) {
+      return;
     }
 
-    }, 2000);
-
+    this.isLoading = true;
+    this.authService.login(this.form.value).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.messageService.add({ severity: 'success', summary: 'Login successful', detail: 'Welcome back!', life: 3000 });          
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        this.isLoading = false;
+        const errorMessage = err.error?.error || 'Error during login.';
+        this.messageService.add({ severity: 'error', summary: 'Login failed', detail: errorMessage, life: 5000 });
+      }
+    });
   }
 
   isInvalid(controlName: string) {

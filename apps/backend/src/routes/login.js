@@ -16,27 +16,27 @@ export default async function loginRoutes(fastify) {
     schema: {
       body: {
         type: 'object',
-        required: ['username', 'password'],
+        required: ['email', 'password'],
         properties: {
-          username: { type: 'string', minLength: 3 },
+          email: { type: 'string', format: 'email' },
           password: { type: 'string', minLength: 8 }
         }
       }
     }
   }, async (request, reply) => {
-    const { username, password } = request.body
+    const { email, password } = request.body
 
     const user = await prisma.user.findUnique({
-      where: { username }
+      where: { email }
     })
 
     if (!user) {
-      return reply.code(401).send({ error: 'Hibás felhasználónév vagy jelszó.' })
+      return reply.code(401).send({ error: 'Hibás email vagy jelszó.' })
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password)
     if (!isPasswordValid) {
-      return reply.code(401).send({ error: 'Hibás felhasználónév vagy jelszó.' })
+      return reply.code(401).send({ error: 'Hibás email vagy jelszó.' })
     }
 
     if (!user.isVerified) {
@@ -55,6 +55,7 @@ export default async function loginRoutes(fastify) {
 
     return reply.send({
       message: 'Sikeres bejelentkezés.',
+      token,
       user: {
         id: user.id,
         username: user.username,
