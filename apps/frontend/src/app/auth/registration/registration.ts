@@ -8,7 +8,7 @@ import { MessageService } from 'primeng/api';
 import { RouterLink } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
 import { Auth } from '../services/auth';
-import { passwordMatchValidator } from '../../shared/validators/password-match.validator';
+import { passwordMatchValidator, passwordStrengthValidator } from '../../shared/validators/password.validator';
 import { PasswordModule } from 'primeng/password';
 
 @Component({
@@ -30,7 +30,7 @@ export class Registration {
     this.form = this.formBuilder.group({
       username: ["", [Validators.required, Validators.minLength(3)]],
       email: ["", [Validators.required, Validators.email]],
-      password: ["", [Validators.required, Validators.minLength(8)]],
+      password: ["", [Validators.required, passwordStrengthValidator()]],
       passwordConfirm: ["", [Validators.required]]
     },
     {
@@ -67,5 +67,9 @@ export class Registration {
     const isTouchedOrSubmitted = this.form.get('passwordConfirm')?.touched || this.isLoading;
 
     return hasError && isTouchedOrSubmitted;
+  }
+
+  get passwordStrengthErrors() {
+    return this.form.get('password')?.errors?.['passwordStrength'];
   }
 }

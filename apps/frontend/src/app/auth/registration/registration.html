@@ -47,6 +47,26 @@
           @if (form.get('password')?.errors?.['required']) {
             <p-message severity="error" size="small" variant="simple">Password is required.</p-message>
           }
+          @if (passwordStrengthErrors) {
+            @if (!passwordStrengthErrors.hasMinLength) {
+              <p-message severity="error" size="small" variant="simple">Must be at least 8 characters.</p-message>
+            }
+            @if (!passwordStrengthErrors.hasUpperCase) {
+              <p-message severity="error" size="small" variant="simple">Must contain an uppercase letter.</p-message>
+            }
+            @if (!passwordStrengthErrors.hasLowerCase) {
+              <p-message severity="error" size="small" variant="simple">Must contain a lowercase letter.</p-message>
+            }
+            @if (!passwordStrengthErrors.hasNumeric) {
+              <p-message severity="error" size="small" variant="simple">Must contain a number.</p-message>
+            }
+            @if (!passwordStrengthErrors.hasSpecialChar) {
+              <p-message severity="error" size="small" variant="simple">Must contain a special character (e.g., !@#?).</p-message>
+            }
+            @if (passwordStrengthErrors.hasForbiddenChars) {
+              <p-message severity="error" size="small" variant="simple">Cannot contain '<' or '>'.</p-message>
+            }
+          }
         }
       </div>
 
@@ -57,9 +77,9 @@
           @if (form.get('passwordConfirm')?.errors?.['required']) {
             <p-message severity="error" size="small" variant="simple">Password confirmation is required.</p-message>
           }
-        }
-        @if (hasPasswordMismatch()) {
-          <p-message severity="error" size="small" variant="simple">Passwords don't match.</p-message>
+          @if (hasPasswordMismatch()) {
+            <p-message severity="error" size="small" variant="simple">Passwords don't match.</p-message>
+          }
         }
       </div>
 
