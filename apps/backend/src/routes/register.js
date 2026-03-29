@@ -11,8 +11,16 @@ export default async function registerRoutes(fastify) {
       properties: {
         username: { type: 'string', minLength: 3 },
         email: { type: 'string', format: 'email' },
-        password: { type: 'string', minLength: 8 },
-        passwordConfirm: { type: 'string', minLength: 8 }
+        password: { 
+          type: 'string', 
+          minLength: 8,
+          pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&\\.\\^])[A-Za-z\\d@$!%*?&\\.\\^]{8,}$'
+        },
+        passwordConfirm: { 
+          type: 'string', 
+          minLength: 8,
+          pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&\\.\\^])[A-Za-z\\d@$!%*?&\\.\\^]{8,}$'
+        }
       }
     }
   }
