@@ -48,7 +48,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
+/* Scrollbar */
+*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
 
-html {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+*::-webkit-scrollbar-track {
+    background: #eaeaea;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: hsl(0, 0%, 77%);
+    border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: #000000;
 }

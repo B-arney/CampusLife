@@ -3,22 +3,22 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { NgOptimizedImage } from '@angular/common';
 import { MessageService } from 'primeng/api';
 import { MessageModule } from 'primeng/message';
+import { ToastModule } from 'primeng/toast';
 import { UserService } from '../services/user-service';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { ToastModule } from 'primeng/toast';
 import { AvatarModule } from 'primeng/avatar';
 import { BadgeModule } from 'primeng/badge';
 import { MenubarModule } from 'primeng/menubar';
 import { RippleModule } from 'primeng/ripple';
 import { MenuItem } from 'primeng/api';
 import { Auth } from '../services/auth';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
-  imports: [RouterLink, ReactiveFormsModule, NgOptimizedImage, MultiSelectModule, InputTextModule, ButtonModule, MessageModule, ToastModule, AvatarModule, BadgeModule, MenubarModule, RippleModule],
+  imports: [ReactiveFormsModule, NgOptimizedImage, MultiSelectModule, InputTextModule, ButtonModule, MessageModule, ToastModule, AvatarModule, BadgeModule, MenubarModule, RippleModule],
   providers: [MessageService],
   templateUrl: './profile.html',
   styleUrl: './profile.css',

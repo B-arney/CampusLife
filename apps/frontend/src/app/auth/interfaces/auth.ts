@@ -15,3 +15,13 @@ export interface AuthResponse {
   user?: any;
   message?: string;
 }
+
+export interface User {
+  id: string;
+  email: string;
+  username: string;
+  displayName: string;
+  major?: string;
+  interests?: string[];
+  profilePicture?: string;
+}

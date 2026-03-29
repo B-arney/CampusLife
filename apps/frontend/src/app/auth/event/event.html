@@ -1,88 +1,56 @@
-<div class="layout">
+<div class="event-panel">
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <h2>Campus life</h2>
-
-    <ul>
-      <li>Home</li>
-      <li class="active">Events</li>
-      <li>Profile</li>
-      <li>Calendar</li>
-      <li>News</li>
-      <li>Settings</li>
-    </ul>
-
-    <div class="logout">
-      <button>Log out</button>
-    </div>
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <button class="back-btn">⟵</button>
+    <h2>New Event</h2>
+    <button class="save-btn">Save</button>
   </div>
 
-  <!-- CONTENT -->
-  <div class="content">
+  <!-- FORM -->
+  <form [formGroup]="eventForm" (ngSubmit)="createEvent()" class="form">
 
-    <div class="event-panel">
+    <div class="form-row">
+      <label>Event neve</label>
+      <input pInputText formControlName="title" placeholder="Placeholder" />
+    </div>
 
-      <!-- TOP BAR -->
-      <div class="top-bar">
-        <button class="back-btn">⟵</button>
-        <h2>New Event</h2>
-        <button class="save-btn">Save</button>
+    <div class="form-row">
+      <label>Rövid leírás</label>
+      <textarea pInputTextarea formControlName="description"></textarea>
+    </div>
+
+    <div class="form-row">
+      <label>Dátum időpont</label>
+      <input type="datetime-local" formControlName="date" />
+    </div>
+
+    <div class="form-row">
+      <label>Helyszín</label>
+      <input pInputText formControlName="location" />
+    </div>
+
+    <div class="form-row">
+      <label>Érdeklődés</label>
+
+      <div class="interest-box">
+
+        <!-- meglévő tagek -->
+        <span class="tag" *ngFor="let interest of interests; let i = index">
+          {{ interest }}
+          <span class="remove" (click)="removeInterest(i)">×</span>
+        </span>
+
+        <!-- input -->
+        <input type="text" [(ngModel)]="newInterest" (keydown.enter)="addInterest(); $event.preventDefault()"
+          placeholder="Add interest" class="interest-input" />
+
+        <!-- plus gomb -->
+        <button type="button" class="add-btn" (click)="addInterest()">+</button>
+
       </div>
-
-      <!-- FORM -->
-      <form [formGroup]="eventForm" (ngSubmit)="createEvent()" class="form">
-
-        <div class="form-row">
-          <label>Event neve</label>
-          <input pInputText formControlName="title" placeholder="Placeholder" />
-        </div>
-
-        <div class="form-row">
-          <label>Rövid leírás</label>
-          <textarea pInputTextarea formControlName="description"></textarea>
-        </div>
-
-        <div class="form-row">
-          <label>Dátum időpont</label>
-          <input type="datetime-local" formControlName="date" />
-        </div>
-
-        <div class="form-row">
-          <label>Helyszín</label>
-          <input pInputText formControlName="location" />
-        </div>
-
-        <div class="form-row">
-  <label>Érdeklődés</label>
-
-  <div class="interest-box">
-
-    <!-- meglévő tagek -->
-    <span class="tag" *ngFor="let interest of interests; let i = index">
-      {{ interest }}
-      <span class="remove" (click)="removeInterest(i)">×</span>
-    </span>
-
-    <!-- input -->
-    <input 
-      type="text"
-      [(ngModel)]="newInterest"
-      (keydown.enter)="addInterest(); $event.preventDefault()"
-      placeholder="Add interest"
-      class="interest-input"
-    />
-
-    <!-- plus gomb -->
-    <button type="button" class="add-btn" (click)="addInterest()">+</button>
-
-  </div>
-</div>
-
-      </form>
-
     </div>
 
-  </div>
+  </form>
 
 </div>

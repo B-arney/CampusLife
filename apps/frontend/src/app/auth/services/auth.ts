@@ -1,14 +1,16 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { RegisterRequest, LoginRequest, AuthResponse } from '../interfaces/auth';
+import { RegisterRequest, LoginRequest, AuthResponse, User } from '../interfaces/auth';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Auth {private http = inject(HttpClient);
-  private apiUrl = environment.apiUrl; 
+  private apiUrl = environment.apiUrl;
+  isLoggedIn = signal<boolean>(!!localStorage.getItem('jwt_token'));
+  currentUser = signal<User | null>(null);
 
   register(data: RegisterRequest): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, data);
@@ -19,6 +21,8 @@ export class Auth {private http = inject(HttpClient);
       tap((response) => {
         if (response.token) {
           this.setToken(response.token);
+          this.isLoggedIn.set(true);
+          this.currentUser.set(response.user);
         }
       })
     );
@@ -38,12 +42,14 @@ export class Auth {private http = inject(HttpClient);
 
   logout(): void {
     this.http.post(`${this.apiUrl}/logout`, {}).subscribe({
-      next: () => {
-        localStorage.removeItem('jwt_token');
-      },
-      error: () => {
-        localStorage.removeItem('jwt_token');
-      }
+      next: () => this.clearSession(),
+      error: () => this.clearSession()
     });
+  }
+
+  private clearSession(): void {
+    localStorage.removeItem('jwt_token');
+    this.isLoggedIn.set(false); 
+    this.currentUser.set(null);
   }
 }
