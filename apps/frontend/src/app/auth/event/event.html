@@ -1,4 +1,5 @@
 <div class="layout">
+  <p-toast></p-toast>
 
   <!-- SIDEBAR -->
   <div class="sidebar">
@@ -27,7 +28,7 @@
       <div class="top-bar">
         <button class="back-btn">⟵</button>
         <h2>New Event</h2>
-        <button class="save-btn">Save</button>
+        <button class="save-btn" type="submit" [disabled]="isSaving || eventForm.invalid" (click)="createEvent()">Save</button>
       </div>
 
       <!-- FORM -->
@@ -54,6 +55,11 @@
         </div>
 
         <div class="form-row">
+          <label>Kategória</label>
+          <input pInputText formControlName="category" placeholder="academic / social / sports" />
+        </div>
+
+        <div class="form-row">
   <label>Érdeklődés</label>
 
   <div class="interest-box">
@@ -68,6 +74,7 @@
     <input 
       type="text"
       [(ngModel)]="newInterest"
+      [ngModelOptions]="{standalone: true}"
       (keydown.enter)="addInterest(); $event.preventDefault()"
       placeholder="Add interest"
       class="interest-input"

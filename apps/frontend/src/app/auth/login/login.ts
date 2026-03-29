@@ -51,28 +51,8 @@ export class Login implements OnInit {
   }
 
   onSubmit() {
-<<<<<<< Updated upstream
     if (this.form.invalid) {
       return;
-=======
-    this.isLoading = true;
-
-    setTimeout(() => {
-      
-    if (this.form.valid) {
-      this.authService.login(this.form.value).subscribe({
-        next: () => {
-          this.isLoading = false;
-          this.messageService.add({ severity: 'success', summary: 'Login successful', detail: 'Welcome back!', life: 3000 });          
-          this.router.navigate(['/landing']);
-        },
-        error: (err) => {
-          this.isLoading = false;
-          const errorMessage = err.error?.error || 'Error during login.';
-          this.messageService.add({ severity: 'error', summary: 'Login failed', detail: errorMessage, life: 5000 });
-        }
-      });
->>>>>>> Stashed changes
     }
 
     this.isLoading = true;

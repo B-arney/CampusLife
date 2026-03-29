@@ -21,4 +21,26 @@ model user {
   password String
   isVerified Boolean @default(false)
   verificationToken String? @unique
+
+  hostedEvents event[] @relation("EventHost")
+}
+
+model event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  startAt     DateTime
+  location    String
+  category    String
+  imageUrl    String?
+  interests   Json?
+
+  hostId Int
+  host   user @relation("EventHost", fields: [hostId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([hostId])
+  @@index([startAt])
 }
