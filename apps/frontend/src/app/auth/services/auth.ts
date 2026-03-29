@@ -37,6 +37,13 @@ export class Auth {private http = inject(HttpClient);
   }
 
   logout(): void {
-    localStorage.removeItem('jwt_token');
+    this.http.post(`${this.apiUrl}/logout`, {}).subscribe({
+      next: () => {
+        localStorage.removeItem('jwt_token');
+      },
+      error: () => {
+        localStorage.removeItem('jwt_token');
+      }
+    });
   }
 }
