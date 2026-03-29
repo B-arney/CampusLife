@@ -59,8 +59,8 @@ export class Login implements OnInit {
     this.authService.login(this.form.value).subscribe({
       next: () => {
         this.isLoading = false;
-        this.messageService.add({ severity: 'success', summary: 'Login successful', detail: 'Welcome back!', life: 3000 });          
-        this.router.navigate(['/profile']);
+        this.messageService.add({ severity: 'success', summary: 'Login successful', detail: 'Welcome back!', life: 3000 });
+        this.router.navigate(['/landing']);
       },
       error: (err) => {
         this.isLoading = false;
