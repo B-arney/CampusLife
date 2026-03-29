@@ -5,6 +5,7 @@ import swaggerUI from '@fastify/swagger-ui'
 import cookie from '@fastify/cookie'
 import jwt from '@fastify/jwt'
 import cors from '@fastify/cors'
+import multipart from '@fastify/multipart'
 import { join } from 'path'
 
 const fastify = Fastify({
@@ -20,7 +21,16 @@ await fastify.register(cors, {
   credentials: true
 })
 
+await fastify.register(multipart, {
+  limits: {
+    fileSize: 5 * 1024 * 1024 // 5MB
+  }
+})
+
 fastify.addHook('preValidation', async (request, reply) => {
+  if (request.isMultipart()) {
+    return
+  }
   if ((request.method === 'POST' || request.method === 'PUT') && !request.body) {
     return reply.code(400).send({ error: 'A request body nem lehet üres.' })
   }

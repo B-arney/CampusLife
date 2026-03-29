@@ -21,4 +21,7 @@ model user {
   password String
   isVerified Boolean @default(false)
   verificationToken String? @unique
+  major String?
+  interests String?
+  profilePicture String?
 }

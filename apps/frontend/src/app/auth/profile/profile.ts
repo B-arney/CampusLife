@@ -13,7 +13,8 @@ import { BadgeModule } from 'primeng/badge';
 import { MenubarModule } from 'primeng/menubar';
 import { RippleModule } from 'primeng/ripple';
 import { MenuItem } from 'primeng/api';
-import { RouterLink } from '@angular/router';
+import { Auth } from '../services/auth';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -26,10 +27,13 @@ export class Profile implements OnInit {
   private messageService = inject(MessageService);
   private formBuilder = inject(FormBuilder);
   private userService = inject(UserService);
+  private authService = inject(Auth);
+  private router = inject(Router);
 
   form: FormGroup;
   isLoading: boolean = false;
   selectedFile: File | null = null;
+  currentProfilePicture: string | null = null;
 
   items: MenuItem[] | undefined;
 
@@ -50,7 +54,30 @@ export class Profile implements OnInit {
   }
 
   ngOnInit() {
-    // this.userService.getProfile()
+    this.userService.getProfile().subscribe({
+      next: (user) => {
+        let interests = [];
+        if (user.interests) {
+          try {
+            interests = JSON.parse(user.interests);
+          } catch (e) {
+            interests = [];
+          }
+        }
+        
+        this.currentProfilePicture = user.profilePicture;
+
+        this.form.patchValue({
+          username: user.username,
+          major: user.major,
+          interests: interests
+        });
+      },
+      error: (err) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Could not load profile data' });
+      }
+    });
+
     this.items = [
       {
         label: 'Home',
@@ -68,7 +95,10 @@ export class Profile implements OnInit {
           },
           {
             label: 'Logout',
-            routerLink: '/logout'
+            command: () => {
+              this.authService.logout();
+              this.router.navigate(['/login']);
+            }
           },
         ]
       }
@@ -76,9 +106,9 @@ export class Profile implements OnInit {
   }
 
   onFileSelect(event: any) {
-    const file = event.target.files;
+    const file = event.target.files[0];
     if (file) {
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
       if (!allowedTypes.includes(file.type)) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Only JPEG, PNG and WebP image is allowed.' });
         return;
@@ -105,8 +135,10 @@ export class Profile implements OnInit {
       }
 
       this.userService.updateProfile(formData).subscribe({
-        next: () => {
+        next: (user) => {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Profile updated!' });
+          this.currentProfilePicture = user.profilePicture;
+          this.selectedFile = null;
           this.isLoading = false;
         },
         error: (err) => {

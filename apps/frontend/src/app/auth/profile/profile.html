@@ -11,6 +11,15 @@
 
 <div class="auth-container">
     <h2>Profile Edit</h2>
+    
+    <div class="profile-picture-display" style="display: flex; justify-content: center; margin-bottom: 20px;">
+        @if (currentProfilePicture) {
+            <p-avatar [image]="currentProfilePicture" size="xlarge" shape="circle"></p-avatar>
+        } @else {
+            <p-avatar icon="pi pi-user" size="xlarge" shape="circle"></p-avatar>
+        }
+    </div>
+
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="form-group">
             <input pInputText type="text" id="username" placeholder="Username" formControlName="username"
