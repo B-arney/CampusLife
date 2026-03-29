@@ -60,7 +60,7 @@ export class Login implements OnInit {
       next: () => {
         this.isLoading = false;
         this.messageService.add({ severity: 'success', summary: 'Login successful', detail: 'Welcome back!', life: 3000 });          
-        this.router.navigate(['/']);
+        this.router.navigate(['/profile']);
       },
       error: (err) => {
         this.isLoading = false;
