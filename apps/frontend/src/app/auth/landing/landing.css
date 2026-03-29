@@ -1,0 +1,100 @@
+/* Layout */
+.layout {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: #eaeaea;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  margin-bottom: 30px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  flex-grow: 1;
+}
+
+.sidebar li {
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.sidebar li:hover {
+  font-weight: bold;
+}
+
+.logout {
+  margin-top: auto;
+}
+
+.logout button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+}
+
+/* Content */
+.content {
+  flex: 1;
+  padding: 40px;
+}
+
+/* Sections */
+.section {
+  margin-bottom: 40px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* News card */
+.news-card {
+  width: 200px;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 100px;
+  background: #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+/* Events */
+.event {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 10px 15px;
+  border-radius: 20px;
+  margin-top: 10px;
+}
+
+.toggle {
+  width: 40px;
+  height: 20px;
+  background: #ccc;
+  border-radius: 20px;
+}
