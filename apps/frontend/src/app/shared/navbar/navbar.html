@@ -1,14 +1,11 @@
 <nav class="sidebar">
 	<h2 routerLink="/">Campus life</h2>
 	<ul>
-		<li routerLinkActive="active"><a routerLink="/landing">Home</a></li>
-		<li routerLinkActive="active"><a routerLink="/events">Events</a></li>
-		<li routerLinkActive="active"><a routerLink="/profile">Profile</a></li>
-		<li routerLinkActive="active"><a routerLink="/calendar">Calendar</a></li>
-		<li routerLinkActive="active"><a routerLink="/news">News</a></li>
-		<li routerLinkActive="active"><a routerLink="/settings">Settings</a></li>
+		<li><a routerLink="/landing" routerLinkActive="active">Home</a></li>
+		<li><a routerLink="/events" routerLinkActive="active">Events</a></li>
+		<li><a routerLink="/profile" routerLinkActive="active">Profile</a></li>
 	</ul>
 	<div class="logout">
-		<button>Log out</button>
+		<p-button (onClick)="authService.logout()" variant="outlined" severity="danger" fluid>Log out</p-button>
 	</div>
 </nav>

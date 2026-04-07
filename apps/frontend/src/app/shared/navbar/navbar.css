@@ -18,22 +18,23 @@
   flex-grow: 1;
 }
 
-.sidebar li {
-  margin: 10px 0;
-  cursor: pointer;
-}
-
 a {
   color: black;
   text-decoration: none;
-}
 
-.sidebar li:hover {
-  font-weight: bold;
-}
+  display: grid;
+  place-content: center;
+  padding: 10px;
+  border-radius: 8px;
 
-.sidebar li.active {
-  font-weight: bold;
+  &:hover {
+    background-color: lightgray;
+  }
+
+  &.active {
+    font-weight: bold;
+    background-color: lightgray;
+  }
 }
 
 .logout {

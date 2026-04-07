@@ -3,11 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { RegisterRequest, LoginRequest, AuthResponse, User } from '../interfaces/auth';
 import { environment } from '../../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Auth {private http = inject(HttpClient);
+  private router = inject(Router);
   private apiUrl = environment.apiUrl;
   isLoggedIn = signal<boolean>(!!localStorage.getItem('jwt_token'));
   currentUser = signal<User | null>(null);
@@ -51,5 +53,6 @@ export class Auth {private http = inject(HttpClient);
     localStorage.removeItem('jwt_token');
     this.isLoggedIn.set(false); 
     this.currentUser.set(null);
+    this.router.navigate(['/login']);
   }
 }
