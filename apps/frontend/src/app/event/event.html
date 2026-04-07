@@ -1,54 +1,38 @@
 <div class="event-panel">
 
-  <!-- TOP BAR -->
-  <div class="top-bar">
-    <button class="back-btn">⟵</button>
-    <h2>New Event</h2>
-    <button class="save-btn">Save</button>
-  </div>
-
   <!-- FORM -->
   <form [formGroup]="eventForm" (ngSubmit)="createEvent()" class="form">
 
-    <div class="form-row">
-      <label>Event neve</label>
-      <input pInputText formControlName="title" placeholder="Placeholder" />
+    <!-- TOP BAR -->
+    <div class="top-bar">
+      <button pButton severity="secondary" type="button">⟵</button>
+      <h2>New Event</h2>
+      <button pButton type="button">Save</button>
     </div>
 
     <div class="form-row">
-      <label>Rövid leírás</label>
-      <textarea pInputTextarea formControlName="description"></textarea>
+      <label>Event name</label>
+      <input pInputText formControlName="title" placeholder="Study group" fluid />
     </div>
 
     <div class="form-row">
-      <label>Dátum időpont</label>
-      <input type="datetime-local" formControlName="date" />
+      <label>Description</label>
+      <textarea pInputTextarea formControlName="description" placeholder="Prepare for the calculus exam on May 20 with us" fluid></textarea>
     </div>
 
     <div class="form-row">
-      <label>Helyszín</label>
-      <input pInputText formControlName="location" />
+      <label>Date</label>
+      <p-datepicker formControlName="date" dateFormat="yy/mm/dd" placeholder="yyyy/mm/dd" fluid />
     </div>
 
     <div class="form-row">
-      <label>Érdeklődés</label>
+      <label>Location</label>
+      <input pInputText formControlName="location" placeholder="BO-226" fluid />
+    </div>
 
-      <div class="interest-box">
-
-        <!-- meglévő tagek -->
-        <span class="tag" *ngFor="let interest of interests; let i = index">
-          {{ interest }}
-          <span class="remove" (click)="removeInterest(i)">×</span>
-        </span>
-
-        <!-- input -->
-        <input type="text" [(ngModel)]="newInterest" (keydown.enter)="addInterest(); $event.preventDefault()"
-          placeholder="Add interest" class="interest-input" />
-
-        <!-- plus gomb -->
-        <button type="button" class="add-btn" (click)="addInterest()">+</button>
-
-      </div>
+    <div class="form-row">
+      <label>Interests</label>
+      <p-multiselect [options]="interests" formControlName="selectedInterests" placeholder="Select Interests" optionLabel="name" display="chip" fluid />
     </div>
 
   </form>

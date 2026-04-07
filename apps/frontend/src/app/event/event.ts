@@ -1,22 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { DatePickerModule } from 'primeng/datepicker';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { CreateEventRequest, Interest } from './interfaces/event';
 
 @Component({
   selector: 'app-event',
   standalone: true,
-  imports: [ReactiveFormsModule, InputTextModule, ButtonModule, TextareaModule, CommonModule, FormsModule],
+  imports: [ReactiveFormsModule, InputTextModule, ButtonModule, TextareaModule, CommonModule, FormsModule, DatePickerModule, MultiSelectModule],
   templateUrl: './event.html',
   styleUrls: ['./event.css']
 })
-export class EventComponent {
+export class EventComponent implements OnInit {
 
   eventForm: FormGroup;
   events: any[] = [];
+
+
+  interests: Interest[] = [];
+  selectedInterests: Interest[] = [];
+  ngOnInit() {
+      this.interests = [
+          { name: 'Programming', code: 'programming' },
+          { name: 'Culture', code: 'culture' },
+          { name: 'Shopping', code: 'shopping' },
+          { name: 'Budapest', code: 'budapest' },
+          { name: 'Night Life', code: 'nightLife' }
+      ];
+  }
 
   constructor(private fb: FormBuilder) {
     this.eventForm = this.fb.group({
@@ -24,6 +40,7 @@ export class EventComponent {
       description: ['', Validators.required],
       date: ['', Validators.required],
       location: ['', Validators.required],
+      selectedInterests: [[]]
     });
   }
 
@@ -33,20 +50,4 @@ export class EventComponent {
       this.eventForm.reset();
     }
   }
-
-  interests: string[] = ['Interest', 'Interest'];
-newInterest: string = '';
-
-addInterest() {
-  const value = this.newInterest.trim();
-
-  if (value && !this.interests.includes(value)) {
-    this.interests.push(value);
-    this.newInterest = '';
-  }
-}
-
-removeInterest(index: number) {
-  this.interests.splice(index, 1);
-}
 }

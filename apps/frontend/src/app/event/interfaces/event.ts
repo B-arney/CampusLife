@@ -21,3 +21,8 @@ export interface CampusEvent {
   interests: string[]; 
   hostId: number;
 }
+
+export interface Interest {
+  name: string;
+  code: string;
+}

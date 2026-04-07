@@ -30,24 +30,16 @@
 }
 
 .form-row {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 200px 1fr;
   gap: 20px;
-}
 
-.form-row label {
-  width: 150px;
+  label {
+    padding-top: 0.5rem;
+  }
 }
 
 /* INPUT */
-input,
-textarea {
-  flex: 1;
-  padding: 10px;
-  border-radius: 6px;
-  border: none;
-  background: #f5f5f5;
-}
 
 textarea {
   height: 120px;
