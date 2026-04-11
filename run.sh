@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if [ ! -f ".env" ]; then
     cp sample.env .env
     echo ".env létrehozva a sample.env alapján."

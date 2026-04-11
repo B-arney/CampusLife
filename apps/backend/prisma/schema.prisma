@@ -43,4 +43,7 @@ model event {
 
   @@index([hostId])
   @@index([startAt])
+  major String?
+  interests String?
+  profilePicture String?
 }
