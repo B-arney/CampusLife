@@ -3,15 +3,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EventComponent } from './event';
 
 describe('Event', () => {
-  let component: Event;
-  let fixture: ComponentFixture<Event>;
+  let component: EventComponent;
+  let fixture: ComponentFixture<EventComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Event],
+      imports: [EventComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Event);
+    fixture = TestBed.createComponent(EventComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

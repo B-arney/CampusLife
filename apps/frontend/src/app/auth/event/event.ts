@@ -1,52 +1,22 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
-import { TextareaModule } from 'primeng/textarea';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { CommonModule, DatePipe } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { CampusEvent } from '../interfaces/event';
+import { EventService } from '../services/event-service';
 
 @Component({
   selector: 'app-event',
   standalone: true,
-  imports: [ReactiveFormsModule, InputTextModule, ButtonModule, TextareaModule, CommonModule, FormsModule],
+  imports: [CommonModule, RouterLink, DatePipe],
   templateUrl: './event.html',
   styleUrls: ['./event.css']
 })
-export class EventComponent {
+export class EventComponent implements OnInit {
+  private readonly eventService = inject(EventService);
 
-  eventForm: FormGroup;
-  events: any[] = [];
+  events: CampusEvent[] = [];
 
-  constructor(private fb: FormBuilder) {
-    this.eventForm = this.fb.group({
-      title: ['', Validators.required],
-      description: ['', Validators.required],
-      date: ['', Validators.required],
-      location: ['', Validators.required],
-    });
+  ngOnInit(): void {
+    this.events = this.eventService.getEvents();
   }
-
-  createEvent() {
-    if (this.eventForm.valid) {
-      this.events.push(this.eventForm.value);
-      this.eventForm.reset();
-    }
-  }
-
-  interests: string[] = ['Interest', 'Interest'];
-newInterest: string = '';
-
-addInterest() {
-  const value = this.newInterest.trim();
-
-  if (value && !this.interests.includes(value)) {
-    this.interests.push(value);
-    this.newInterest = '';
-  }
-}
-
-removeInterest(index: number) {
-  this.interests.splice(index, 1);
-}
 }
