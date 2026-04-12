@@ -1,65 +1,75 @@
-<section class="event-detail-page" *ngIf="event; else notFoundState">
-  <a class="back-link" routerLink="/events">Back to events</a>
+<section class="event-detail-page" *ngIf="!(isLoading$ | async); else loadingState">
+  <ng-container *ngIf="selectedEvent$ | async as selectedEvent; else notFoundState">
+    <a class="back-link" routerLink="/events">Back to events</a>
 
-  <article class="event-detail-card">
-    <img
-      *ngIf="event.imageUrl"
-      [src]="event.imageUrl"
-      [alt]="event.title + ' image'"
-      class="event-image"
-    />
+    <article class="event-detail-card">
+      <img
+        *ngIf="selectedEvent.imageUrl"
+        [src]="selectedEvent.imageUrl"
+        [alt]="selectedEvent.title + ' image'"
+        class="event-image"
+      />
 
-    <div class="event-content">
-      <header class="event-header">
-        <span class="event-category">{{ event.category }}</span>
-        <h1>{{ event.title }}</h1>
-      </header>
+      <div class="event-content">
+        <header class="event-header">
+          <span class="event-category">{{ selectedEvent.category }}</span>
+          <h1>{{ selectedEvent.title }}</h1>
+        </header>
 
-      <p class="event-description">{{ event.description }}</p>
+        <p class="event-description">{{ selectedEvent.description }}</p>
 
-      <dl class="event-meta">
-        <div>
-          <dt>Date and time</dt>
-          <dd>{{ event.startsAt | date: 'fullDate' }} at {{ event.startsAt | date: 'shortTime' }}</dd>
+        <dl class="event-meta">
+          <div>
+            <dt>Date and time</dt>
+            <dd>{{ selectedEvent.startsAt | date: 'fullDate' }} at {{ selectedEvent.startsAt | date: 'shortTime' }}</dd>
+          </div>
+          <div>
+            <dt>Location</dt>
+            <dd>
+              {{ selectedEvent.location || 'Online / TBD' }}
+              <a *ngIf="selectedEvent.mapUrl" [href]="selectedEvent.mapUrl" target="_blank" rel="noreferrer">Open map</a>
+            </dd>
+          </div>
+          <div>
+            <dt>Host / organizer</dt>
+            <dd>{{ selectedEvent.hostName }}</dd>
+          </div>
+          <div>
+            <dt>RSVP count</dt>
+            <dd>{{ selectedEvent.rsvpCount }}</dd>
+          </div>
+        </dl>
+
+        <div class="event-actions">
+          <button
+            *ngIf="!(isPastEvent$ | async) && !(hasUserRsvped$ | async)"
+            type="button"
+            class="rsvp-button"
+            (click)="onRsvp()"
+          >
+            RSVP
+          </button>
+
+          <p *ngIf="!(isPastEvent$ | async) && (hasUserRsvped$ | async)" class="rsvp-status">
+            You have RSVP'd for this event.
+          </p>
+
+          <p *ngIf="isPastEvent$ | async" class="past-status">
+            This event has already ended.
+          </p>
         </div>
-        <div>
-          <dt>Location</dt>
-          <dd>
-            {{ event.location || 'Online / TBD' }}
-            <a *ngIf="event.mapUrl" [href]="event.mapUrl" target="_blank" rel="noreferrer">Open map</a>
-          </dd>
-        </div>
-        <div>
-          <dt>Host / organizer</dt>
-          <dd>{{ event.hostName }}</dd>
-        </div>
-        <div>
-          <dt>RSVP count</dt>
-          <dd>{{ event.rsvpCount }}</dd>
-        </div>
-      </dl>
-
-      <div class="event-actions">
-        <button
-          *ngIf="!isPastEvent && !hasUserRsvped"
-          type="button"
-          class="rsvp-button"
-          (click)="onRsvp()"
-        >
-          RSVP
-        </button>
-
-        <p *ngIf="!isPastEvent && hasUserRsvped" class="rsvp-status">
-          You have RSVP'd for this event.
-        </p>
-
-        <p *ngIf="isPastEvent" class="past-status">
-          This event has already ended.
-        </p>
       </div>
-    </div>
-  </article>
+    </article>
+  </ng-container>
 </section>
+
+<ng-template #loadingState>
+  <section class="event-detail-page">
+    <div class="events-header">
+      <h1>Loading event details...</h1>
+    </div>
+  </section>
+</ng-template>
 
 <ng-template #notFoundState>
   <section class="event-detail-page">
