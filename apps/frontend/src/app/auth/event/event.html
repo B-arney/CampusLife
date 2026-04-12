@@ -6,8 +6,8 @@
     <h2>Campus life</h2>
 
     <ul>
-      <li>Home</li>
-      <li class="active">Events</li>
+      <li><a routerLink="/landing">Home</a></li>
+      <li><a routerLink="/events">Events</a></li>
       <li>Profile</li>
       <li>Calendar</li>
       <li>News</li>
@@ -26,41 +26,44 @@
 
       <!-- TOP BAR -->
       <div class="top-bar">
-        <button class="back-btn">⟵</button>
-        <h2>New Event</h2>
-        <button class="save-btn" type="submit" [disabled]="isSaving || eventForm.invalid" (click)="createEvent()">Save</button>
+        <a routerLink="/events" class="back-btn">⟵</a>
+        <h2>{{ isEditMode ? 'Edit Event' : 'New Event' }}</h2>
+        
       </div>
 
+       <p *ngIf="isLoading" class="loading-hint">Loading event…</p>
+
       <!-- FORM -->
-      <form [formGroup]="eventForm" (ngSubmit)="createEvent()" class="form">
+
+      <form [formGroup]="eventForm" (ngSubmit)="saveEvent()" class="form" *ngIf="!isLoading">
 
         <div class="form-row">
-          <label>Event neve</label>
+          <label>Name of the event</label>
           <input pInputText formControlName="title" placeholder="Placeholder" />
         </div>
 
         <div class="form-row">
-          <label>Rövid leírás</label>
+          <label>Short description</label>
           <textarea pInputTextarea formControlName="description"></textarea>
         </div>
 
         <div class="form-row">
-          <label>Dátum időpont</label>
+          <label>Date and Time</label>
           <input type="datetime-local" formControlName="date" />
         </div>
 
         <div class="form-row">
-          <label>Helyszín</label>
+          <label>Place</label>
           <input pInputText formControlName="location" />
         </div>
 
         <div class="form-row">
-          <label>Kategória</label>
+          <label>Category</label>
           <input pInputText formControlName="category" placeholder="academic / social / sports" />
         </div>
 
         <div class="form-row">
-  <label>Érdeklődés</label>
+  <label>Interests</label>
 
   <div class="interest-box">
 
@@ -86,6 +89,28 @@
   </div>
 </div>
 
+      <div class="top-actions">
+          <button
+            *ngIf="isEditMode"
+            type="button"
+            class="delete-btn"
+            [disabled]="isSaving || isLoading"
+            (click)="deleteEvent()"
+          >
+            Delete Event
+          </button>
+
+
+          <button
+            class="save-btn"
+            type="button"
+            (click)="saveEvent()"
+            [disabled]="isSaving || isLoading || eventForm.invalid"
+          >
+          <span *ngIf="!isSaving">Save Event</span>
+          <span *ngIf="isSaving">Saving...</span>
+          </button>
+        </div>
       </form>
 
     </div>

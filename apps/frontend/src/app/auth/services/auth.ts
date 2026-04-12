@@ -46,4 +46,12 @@ export class Auth {private http = inject(HttpClient);
       }
     });
   }
+
+
+   me(): Observable<{ user: { id: number; username: string; email: string; displayName: string | null; isVerified: boolean } }> {
+    return this.http.get<{ user: { id: number; username: string; email: string; displayName: string | null; isVerified: boolean } }>(
+      `${this.apiUrl}/me`
+    );
+  }
+  
 }

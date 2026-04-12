@@ -23,6 +23,10 @@ model user {
   verificationToken String? @unique
 
   hostedEvents event[] @relation("EventHost")
+  major String?
+  interests String?
+  profilePicture String?
+
 }
 
 model event {
@@ -43,7 +47,5 @@ model event {
 
   @@index([hostId])
   @@index([startAt])
-  major String?
-  interests String?
-  profilePicture String?
+  
 }
