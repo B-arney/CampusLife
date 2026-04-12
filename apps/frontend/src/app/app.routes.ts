@@ -16,6 +16,6 @@ export const routes: Routes = [
   { path: 'landing', component: Landing },
   { path: 'events', component: EventComponent },
   { path: 'events/:id', component: EventDetailComponent },
-  { path: 'profile', component: Profile},
+  { path: 'profile', component: Profile, canActivate: [authGuard] },
 ];
-//canActivate: [authGuard]//
+////
