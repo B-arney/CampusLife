@@ -1,100 +1,449 @@
-/* Layout */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;0,700;0,800;0,900;1,700&display=swap');
+
+/* --- FŐ ELRENDEZÉS --- */
 .layout {
   display: flex;
   height: 100vh;
-  font-family: Arial, sans-serif;
-  background: #f5f5f5;
+  width: 100vw;
+  background-color: #000000; 
+  overflow: hidden; 
+  font-family: 'Poppins', sans-serif; 
 }
 
-/* Sidebar */
+/* --- SIDEBAR --- */
 .sidebar {
-  width: 220px;
-  background: #eaeaea;
-  padding: 20px;
+  width: 320px;
+  background: linear-gradient(180deg, #A79100 0%, #D4C9A0 40%, #FFFFFF 100%); 
+  padding: 2.5rem 2rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  box-shadow: 2px 0 15px rgba(0,0,0,0.3);
+  z-index: 10;
+  flex-shrink: 0;
+  overflow-y: auto; /* JAVÍTÁS: Ha nem fér ki a menü, lehessen görgetni, ne nyomja össze a logót! */
 }
 
-.sidebar h2 {
-  margin-bottom: 30px;
+.sidebar .sidebar-title {
+  font-size: 22px; 
+  letter-spacing: 5px; 
+  white-space: nowrap; 
+  color: white;
+  -webkit-text-stroke: 1.5px black; 
+  margin: 0;
+  text-align: center;
+  font-weight: 900;
+  text-transform: uppercase;
+  flex-shrink: 0; /* JAVÍTÁS: Nem engedjük összenyomni */
 }
 
-.sidebar ul {
+.sidebar .profile-pic {
+  width: 140px;
+  height: 140px;
+  min-height: 140px; /* JAVÍTÁS: Szigorúan 140px marad! */
+  background-color: white; 
+  border-radius: 50%;
+  margin: 30px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; 
+  border: 4px solid white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  flex-shrink: 0; /* JAVÍTÁS: SOHA ne nyomja össze a böngésző! */
+}
+
+.sidebar .profile-pic .logo-img {
+  width: 100%; 
+  height: 100%;
+  object-fit: cover; 
+  border-radius: 50%;
+}
+
+.sidebar .nav-menu {
   list-style: none;
   padding: 0;
-  flex-grow: 1;
-}
-
-.sidebar li {
-  margin: 10px 0;
-  cursor: pointer;
-}
-
-.sidebar li:hover {
-  font-weight: bold;
-}
-
-.logout {
-  margin-top: auto;
-}
-
-.logout button {
   width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  background: white;
-  cursor: pointer;
+  text-align: center;
+  flex-grow: 1; 
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-/* Content */
+.sidebar .nav-menu li {
+  font-size: 24px; 
+  font-weight: 700;
+  font-style: italic;
+  color: #063274;
+  height: 60px;
+  min-height: 60px; /* JAVÍTÁS: Fix magasság tartása */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  border: 1px solid transparent; 
+  flex-shrink: 0;
+}
+
+.sidebar .nav-menu li:hover {
+  background: rgba(255, 255, 255, 0.3); 
+  backdrop-filter: blur(5px); 
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.5); 
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px); 
+}
+
+.sidebar .sidebar-bottom {
+  width: 100%;
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  flex-shrink: 0;
+}
+
+.sidebar .sidebar-bottom .icon-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  background: #e6e6e6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background 0.2s;
+}
+
+.sidebar .sidebar-bottom .icon-btn:hover {
+  background: #d4d4d4;
+}
+
+.sidebar .sidebar-bottom .logout-btn {
+  flex-grow: 1;
+  background-color: #b73239; 
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  transition: background 0.2s;
+}
+
+.sidebar .sidebar-bottom .logout-btn:hover {
+  background-color: #92272d;
+}
+
+/* --- MAIN CONTENT (Jobb oldal) --- */
 .content {
   flex: 1;
-  padding: 40px;
+  background: linear-gradient(180deg, #063274 0%, #032c5b 47%, #095190 100%); 
+  padding: 4rem 10%; 
+  color: white;
+  overflow-y: auto; 
 }
 
-/* Sections */
 .section {
-  margin-bottom: 40px;
+  margin-bottom: 50px;
+  max-width: 900px; /* JAVÍTÁS: Megnöveltük a szélességet, hogy elférjenek a hatalmas betűk */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .section-header {
   display: flex;
   justify-content: space-between;
+  align-items: center; /* Visszaraktuk centerre a jobb kinézetért */
+  margin-bottom: 20px;
+}
+
+.section-header h2 {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 15px;
+  margin: 0;
+  color: white;
+  line-height: 1;
+  text-shadow: 2px 2px 0px rgba(0,0,0,0.8);
+  white-space: nowrap; /* JAVÍTÁS: Tilos a sortörés! (E V E N T S egyben marad) */
+  flex-shrink: 0;
+  -webkit-text-stroke: 0.8px black;
+}
+
+.section-header .view-all {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-align: right;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  height: 51px;
+  white-space: nowrap; /* JAVÍTÁS: Tilos a sortörés! */
+  flex-shrink: 0;
+  -webkit-text-stroke: 0.8px black;
+}
+
+.section-header .view-all:hover {
+  text-decoration: underline;
+}
+
+/* --- NEWS CAROUSEL --- */
+.news-carousel-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px; 
+}
+
+.nav-arrow {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.nav-arrow:hover {
+  transform: scale(1.2); 
+  color: #DFD06C; 
+}
+
+.nav-arrow svg {
+  stroke-width: 3px;
+}
+
+.news-container {
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
-/* News card */
 .news-card {
-  width: 200px;
+  width: 320px;
   background: white;
-  padding: 15px;
-  border-radius: 10px;
-  margin-top: 20px;
+  padding: 0;
+  border-radius: 4px;
+  color: #333;
+  overflow: hidden;
 }
 
 .image-placeholder {
   width: 100%;
-  height: 100px;
-  background: #ddd;
-  border-radius: 5px;
+  height: 180px;
+  background: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.news-card h4 {
+  margin: 15px 15px 5px 15px;
+  font-size: 16px;
+}
+
+.news-card p {
+  margin: 0 15px 20px 15px;
+  font-size: 13px;
+  color: #777;
+}
+
+.pagination-dots {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.pagination-dots .dot {
+  width: 12px;
+  height: 12px;
+  background-color: rgba(255,255,255,0.5);
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.pagination-dots .dot.active {
+  background-color: white;
+}
+
+/* --- HÁTTÉR ÉS ELRENDEZÉS --- */
+.content {
+  flex: 1;
+  /* A képeden látható sötétebb kék háttér */
+  background-color: #004b87; 
+  padding: 4rem 5%;
+  overflow-y: auto;
+}
+
+/* --- KÉTOSZLOPOS SZEKCIÓ (Split View) --- */
+.events-split-view {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.title-side {
+  flex: 1;
+}
+
+.list-side {
+  flex: 1.5; /* A lista kicsit szélesebb, mint a cím */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* --- CÍMSOR STÍLUS --- */
+.main-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 64px; /* A terveden látható nagy méret */
+  font-weight: 900;
+  letter-spacing: 20px;
+  color: white;
+  -webkit-text-stroke: 2px black; /* Erőteljesebb körvonal a kiemeléshez */
+  margin: 0;
+  line-height: 1;
+}
+
+/* --- VIEW ALL LINK --- */
+.list-header {
+  text-align: right;
   margin-bottom: 10px;
 }
 
-/* Events */
-.event {
+.view-all {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: white;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+/* --- ESEMÉNY KÁRTYA --- */
+.events-section {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* Fejléc: Cím és Link egy vonalban */
+.events-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 25px;
+}
+
+.events-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 36px;
+  font-weight: 900;
+  letter-spacing: 15px;
+  color: white;
+  -webkit-text-stroke: 1.5px black;
+  margin: 0;
+  line-height: 1;
+}
+
+.events-link {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: white;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+/* Esemény kártyák listája */
+.events-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* A kártya maga */
+.event-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: white;
-  padding: 10px 15px;
-  border-radius: 20px;
-  margin-top: 10px;
+  background-color: #002d52; /* Sötétebb kék a háttérnél */
+  border: 2.5px solid white;
+  padding: 12px 25px;
+  border-radius: 50px; /* Teljes lekerekítés a végeken */
+  color: white;
 }
 
-.toggle {
-  width: 40px;
-  height: 20px;
-  background: #ccc;
-  border-radius: 20px;
+/* Szöveges rész a kártyán belül */
+.event-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.event-name {
+  font-size: 20px;
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+.event-loc {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.9;
+}
+
+/* Dátum doboz (fehér lekerekített négyzet) */
+.event-date-box {
+  background-color: white;
+  color: black;
+  width: 65px;
+  height: 65px;
+  border-radius: 18px; /* Kicsit szögletesebb, mint a kör */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0; /* Nem engedjük, hogy összemenjen */
+}
+
+.date-num {
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.date-month {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .layout { flex-direction: column; overflow-y: auto; }
+  .sidebar { width: 100%; padding: 1rem; }
+  .sidebar .profile-pic { width: 80px; height: 80px; min-height: 80px; margin: 10px 0; }
+  .sidebar .nav-menu { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .sidebar .nav-menu li { font-size: 16px; height: auto; min-height: auto; }
+  .content { padding: 2rem 1rem; }
 }
