@@ -1,6 +1,7 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Observable } from 'rxjs';
 import { CampusEvent } from '../interfaces/event';
 import { EventService } from '../services/event-service';
 
@@ -14,9 +15,10 @@ import { EventService } from '../services/event-service';
 export class EventComponent implements OnInit {
   private readonly eventService = inject(EventService);
 
-  events: CampusEvent[] = [];
+  events$: Observable<CampusEvent[]> | undefined;
 
   ngOnInit(): void {
-    this.events = this.eventService.getEvents();
+    console.log('EventComponent: ngOnInit');
+    this.events$ = this.eventService.getEvents();
   }
 }

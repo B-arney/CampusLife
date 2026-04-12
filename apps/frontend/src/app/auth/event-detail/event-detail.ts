@@ -1,6 +1,7 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { BehaviorSubject, Observable, map, finalize } from 'rxjs';
 import { CampusEvent } from '../interfaces/event';
 import { EventService } from '../services/event-service';
 
@@ -15,41 +16,59 @@ export class EventDetailComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly eventService = inject(EventService);
 
-  event: CampusEvent | undefined;
-  hasUserRsvped = false;
-  isPastEvent = false;
+  private readonly eventSubject = new BehaviorSubject<CampusEvent | undefined>(undefined);
+  selectedEvent$: Observable<CampusEvent | undefined> = this.eventSubject.asObservable();
+
+  private readonly loadingSubject = new BehaviorSubject<boolean>(true);
+  isLoading$: Observable<boolean> = this.loadingSubject.asObservable();
+
+  hasUserRsvped$: Observable<boolean> = this.selectedEvent$.pipe(map(e => !!e?.hasUserRsvped));
+  isPastEvent$: Observable<boolean> = this.selectedEvent$.pipe(map(e => e ? new Date(e.startsAt).getTime() < Date.now() : false));
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      const eventId = params.get('id');
+      const idStr = params.get('id');
+      const eventId = idStr ? parseInt(idStr, 10) : null;
 
-      if (!eventId) {
-        this.event = undefined;
+      if (eventId === null || isNaN(eventId)) {
+        this.eventSubject.next(undefined);
+        this.loadingSubject.next(false);
         return;
       }
 
-      this.event = this.eventService.getEventById(eventId);
-      this.refreshEventState();
+      this.loadEvent(eventId);
+    });
+  }
+
+  loadEvent(id: number): void {
+    this.loadingSubject.next(true);
+    this.eventService.getEventById(id).pipe(
+      finalize(() => this.loadingSubject.next(false))
+    ).subscribe({
+      next: (event) => {
+        this.eventSubject.next(event);
+      },
+      error: (err) => {
+        console.error('Error loading event:', err);
+        this.eventSubject.next(undefined);
+      }
     });
   }
 
   onRsvp(): void {
-    if (!this.event || this.isPastEvent || this.hasUserRsvped) {
-      return;
-    }
+    const event = this.eventSubject.value;
+    if (!event) return;
 
-    this.eventService.rsvp(this.event.id);
-    this.refreshEventState();
-  }
-
-  private refreshEventState(): void {
-    if (!this.event) {
-      this.hasUserRsvped = false;
-      this.isPastEvent = false;
-      return;
-    }
-
-    this.hasUserRsvped = this.eventService.hasUserRsvped(this.event.id);
-    this.isPastEvent = new Date(this.event.startsAt).getTime() < Date.now();
+    this.eventService.rsvp(event.id).subscribe({
+      next: () => {
+        this.loadEvent(event.id);
+      },
+      error: (err) => {
+        console.error('RSVP failed', err);
+        if (err.status === 401) {
+          alert('Be kell jelentkezned a jelentkezéshez!');
+        }
+      }
+    });
   }
 }

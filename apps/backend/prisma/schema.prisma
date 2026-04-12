@@ -24,4 +24,28 @@ model user {
   major String?
   interests String?
   profilePicture String?
+  rsvps rsvp[]
+}
+
+model event {
+  id Int @id @default(autoincrement())
+  title String
+  shortDescription String
+  description String
+  startsAt DateTime
+  location String?
+  category String
+  hostName String
+  imageUrl String?
+  mapUrl String?
+  rsvps rsvp[]
+}
+
+model rsvp {
+  id Int @id @default(autoincrement())
+  eventId Int
+  userId Int
+  event event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user user @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([eventId, userId])
 }
