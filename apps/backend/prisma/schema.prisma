@@ -21,6 +21,8 @@ model user {
   password String
   isVerified Boolean @default(false)
   verificationToken String? @unique
+
+  hostedEvents event[] @relation("EventHost")
   major String?
   interests String?
   profilePicture String?

@@ -1,4 +1,127 @@
-<section class="events-page" *ngIf="events$ | async as events; else loadingState">
+<div class="layout">
+  <p-toast></p-toast>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h2>Campus life</h2>
+
+    <ul>
+      <li><a routerLink="/landing">Home</a></li>
+      <li><a routerLink="/events">Events</a></li>
+      <li>Profile</li>
+      <li>Calendar</li>
+      <li>News</li>
+      <li>Settings</li>
+    </ul>
+
+    <div class="logout">
+      <button>Log out</button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <div class="event-panel">
+
+      <!-- TOP BAR -->
+      <div class="top-bar">
+        <a routerLink="/events" class="back-btn">⟵</a>
+        <h2>{{ isEditMode ? 'Edit Event' : 'New Event' }}</h2>
+        
+      </div>
+
+       <p *ngIf="isLoading" class="loading-hint">Loading event…</p>
+
+      <!-- FORM -->
+
+      <form [formGroup]="eventForm" (ngSubmit)="saveEvent()" class="form" *ngIf="!isLoading">
+
+        <div class="form-row">
+          <label>Name of the event</label>
+          <input pInputText formControlName="title" placeholder="Placeholder" />
+        </div>
+
+        <div class="form-row">
+          <label>Short description</label>
+          <textarea pInputTextarea formControlName="description"></textarea>
+        </div>
+
+        <div class="form-row">
+          <label>Date and Time</label>
+          <input type="datetime-local" formControlName="date" />
+        </div>
+
+        <div class="form-row">
+          <label>Place</label>
+          <input pInputText formControlName="location" />
+        </div>
+
+        <div class="form-row">
+          <label>Category</label>
+          <input pInputText formControlName="category" placeholder="academic / social / sports" />
+        </div>
+
+        <div class="form-row">
+  <label>Interests</label>
+
+  <div class="interest-box">
+
+    <!-- meglévő tagek -->
+    <span class="tag" *ngFor="let interest of interests; let i = index">
+      {{ interest }}
+      <span class="remove" (click)="removeInterest(i)">×</span>
+    </span>
+
+    <!-- input -->
+    <input 
+      type="text"
+      [(ngModel)]="newInterest"
+      [ngModelOptions]="{standalone: true}"
+      (keydown.enter)="addInterest(); $event.preventDefault()"
+      placeholder="Add interest"
+      class="interest-input"
+    />
+
+    <!-- plus gomb -->
+    <button type="button" class="add-btn" (click)="addInterest()">+</button>
+
+  </div>
+</div>
+
+      <div class="top-actions">
+          <button
+            *ngIf="isEditMode"
+            type="button"
+            class="delete-btn"
+            [disabled]="isSaving || isLoading"
+            (click)="deleteEvent()"
+          >
+            Delete Event
+          </button>
+
+
+          <button
+            class="save-btn"
+            type="button"
+            (click)="saveEvent()"
+            [disabled]="isSaving || isLoading || eventForm.invalid"
+          >
+          <span *ngIf="!isSaving">Save Event</span>
+          <span *ngIf="isSaving">Saving...</span>
+          </button>
+        </div>
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- <section class="events-page" *ngIf="events$ | async as events; else loadingState">
   <div class="events-header">
     <h1>Browse Events</h1>
     <p>Event Count: {{ events.length }}</p>
@@ -6,16 +129,15 @@
   </div>
 
   <div class="events-grid">
-    <a
-      *ngFor="let event of events"
-      class="event-card"
-      [routerLink]="['/events', event.id]"
-    >
+    @for (event of events; track event.name) {
+      <a class="event-card"
+      [routerLink]="['/events', event.id]">
+
       <img
         *ngIf="event.imageUrl"
         [src]="event.imageUrl"
         [alt]="event.title + ' image'"
-        class="event-card-image"
+        class="event-card-image"events
       />
 
       <div class="event-card-content">
@@ -28,7 +150,9 @@
           <span>{{ event.location || 'Location TBD' }}</span>
         </div>
       </div>
+    
     </a>
+    }
   </div>
 </section>
 
@@ -38,4 +162,4 @@
       <h1>Loading events...</h1>
     </div>
   </section>
-</ng-template>
+</ng-template> -->

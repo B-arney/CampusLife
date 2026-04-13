@@ -7,6 +7,7 @@ import { EventComponent } from './event/event';
 import { EventDetailComponent } from './auth/event-detail/event-detail';
 import { Profile } from './auth/profile/profile';
 import { authGuard } from './auth/guards/auth-guard';
+import { EventListComponent } from './auth/event/event-list/event-list';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -14,7 +15,8 @@ export const routes: Routes = [
   { path: 'registration', component: Registration },
   { path: 'forgot-password', component: ForgotPassword },
   { path: 'landing', component: Landing },
-  { path: 'events', component: EventComponent },
-  { path: 'events/:id', component: EventDetailComponent },
+  { path: 'events', component: EventListComponent },
+  { path: 'events/new', component: EventComponent },
+  { path: 'events/:id/edit', component: EventComponent },
   { path: 'profile', component: Profile, canActivate: [authGuard] },
 ];
