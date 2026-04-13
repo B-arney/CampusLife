@@ -1,6 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { NgOptimizedImage } from '@angular/common';
 import { MessageService } from 'primeng/api';
 import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
@@ -18,7 +17,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
-  imports: [ReactiveFormsModule, NgOptimizedImage, MultiSelectModule, InputTextModule, ButtonModule, MessageModule, ToastModule, AvatarModule, BadgeModule, MenubarModule, RippleModule],
+  imports: [ReactiveFormsModule, MultiSelectModule, InputTextModule, ButtonModule, MessageModule, ToastModule, AvatarModule, BadgeModule, MenubarModule, RippleModule],
   providers: [MessageService],
   templateUrl: './profile.html',
   styleUrl: './profile.css',

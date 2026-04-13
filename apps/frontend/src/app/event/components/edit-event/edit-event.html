@@ -1,1 +1,63 @@
-<p>edit-event works!</p>
+<div class="event-panel">
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <button class="back-btn">⟵</button>
+        <h2>New Event</h2>
+        <button class="save-btn" type="submit" [disabled]="isSaving || eventForm.invalid"
+            (click)="createEvent()">Save</button>
+    </div>
+
+    <!-- FORM -->
+    <form [formGroup]="eventForm" (ngSubmit)="createEvent()" class="form">
+
+        <div class="form-row">
+            <label>Event neve</label>
+            <input pInputText formControlName="title" placeholder="Placeholder" />
+        </div>
+
+        <div class="form-row">
+            <label>Rövid leírás</label>
+            <textarea pInputTextarea formControlName="description"></textarea>
+        </div>
+
+        <div class="form-row">
+            <label>Dátum időpont</label>
+            <input type="datetime-local" formControlName="date" />
+        </div>
+
+        <div class="form-row">
+            <label>Helyszín</label>
+            <input pInputText formControlName="location" />
+        </div>
+
+        <div class="form-row">
+            <label>Kategória</label>
+            <input pInputText formControlName="category" placeholder="academic / social / sports" />
+        </div>
+
+        <div class="form-row">
+            <label>Érdeklődés</label>
+
+            <div class="interest-box">
+
+                <!-- meglévő tagek -->
+                <span class="tag" *ngFor="let interest of interests; let i = index">
+                    {{ interest }}
+                    <span class="remove" (click)="removeInterest(i)">×</span>
+                </span>
+
+                <!-- input -->
+                <input type="text" [(ngModel)]="newInterest" [ngModelOptions]="{standalone: true}"
+                    (keydown.enter)="addInterest(); $event.preventDefault()" placeholder="Add interest"
+                    class="interest-input" />
+
+                <!-- plus gomb -->
+                <button type="button" class="add-btn" (click)="addInterest()">+</button>
+
+            </div>
+        </div>
+
+    </form>
+
+</div>
