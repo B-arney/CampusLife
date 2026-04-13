@@ -18,7 +18,7 @@ export const routes: Routes = [
   { path: 'landing', component: Landing },
   { path: 'profile', component: Profile, canActivate: [authGuard] },
   { path: 'events', component: EventList },
-  { path: 'events2', component: EventPage },
+  { path: 'events2', component: EventPage }, //TODO: see if this better, delete if not needed
   { path: 'events/:id', component: EventDetail },
   { path: 'events/new', component: EditEvent },
   { path: 'events/:id/edit', component: EditEvent },
