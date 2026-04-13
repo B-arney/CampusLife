@@ -37,6 +37,8 @@ model event {
   startsAt DateTime
   location String?
   category String
+  hostId Int?
+  host user? @relation("EventHost", fields: [hostId], references: [id], onDelete: SetNull)
   hostName String
   imageUrl String?
   mapUrl String?
