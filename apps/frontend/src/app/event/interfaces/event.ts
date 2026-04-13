@@ -1,5 +1,5 @@
 export interface CampusEvent {
-  id: string;
+  id: number;
   title: string;
   shortDescription: string;
   description: string;
@@ -10,6 +10,7 @@ export interface CampusEvent {
   rsvpCount: number;
   imageUrl?: string;
   mapUrl?: string;
+  hasUserRsvped?: boolean;
 }
 
 export interface CreateEventRequest {

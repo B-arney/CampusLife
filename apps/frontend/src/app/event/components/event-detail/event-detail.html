@@ -1,76 +1,97 @@
-@if (event) {
-  <section class="event-detail-page">
-    <a class="back-link" routerLink="/events">Back to events</a>
+<section class="event-details-shell" *ngIf="!(isLoading$ | async); else loadingState">
+  <ng-container *ngIf="selectedEvent$ | async as selectedEvent; else notFoundState">
+    <aside class="left-rail">
+      <h1 class="brand-title">CAMPUS LIFE</h1>
+      <img src="assets/Logo.png" alt="Campus Life logo" class="brand-logo" />
 
-    <article class="event-detail-card">
-      @if (event.imageUrl) {
-        <img
-          [src]="event.imageUrl"
-          [alt]="event.title + ' image'"
-          class="event-image"
-        />
-      }
+      <nav class="side-nav">
+        <a class="side-link" routerLink="/landing">HOME</a>
+        <a class="side-link" routerLink="/profile">PROFILE</a>
+        <a class="side-link active" routerLink="/events">EVENTS</a>
+        <a class="side-link" routerLink="/landing">NEWS</a>
+        <a class="side-link" routerLink="/landing">CALENDAR</a>
+        <a class="side-link" routerLink="/landing">SETTINGS</a>
+      </nav>
 
-      <div class="event-content">
-        <header class="event-header">
-          <span class="event-category">{{ event.category }}</span>
-          <h1>{{ event.title }}</h1>
-        </header>
+      <button type="button" class="logout-button">LOG OUT</button>
+    </aside>
 
-        <p class="event-description">{{ event.description }}</p>
-
-        <dl class="event-meta">
-          <div>
-            <dt>Date and time</dt>
-            <dd>{{ event.startsAt | date: 'fullDate' }} at {{ event.startsAt | date: 'shortTime' }}</dd>
-          </div>
-          <div>
-            <dt>Location</dt>
-            <dd>
-              {{ event.location || 'Online / TBD' }}
-              @if (event.mapUrl) {
-                <a [href]="event.mapUrl" target="_blank" rel="noreferrer">Open map</a>
-              }
-            </dd>
-          </div>
-          <div>
-            <dt>Host / organizer</dt>
-            <dd>{{ event.hostName }}</dd>
-          </div>
-          <div>
-            <dt>RSVP count</dt>
-            <dd>{{ event.rsvpCount }}</dd>
-          </div>
-        </dl>
-
-        <div class="event-actions">
-          @if (isPastEvent) {
-            <p class="past-status">
-              This event has already ended.
-            </p>
-          } @else if (hasUserRsvped) {
-            <p class="rsvp-status">
-              You have RSVP'd for this event.
-            </p>
-          } @else {
-            <button
-              type="button"
-              class="rsvp-button"
-              (click)="onRsvp()"
-            >
-              RSVP
-            </button>
-          }
-        </div>
+    <main class="details-canvas">
+      <div class="details-head">
+        <a class="back-button" routerLink="/events" aria-label="Back to events">&#x21A9;</a>
+        <h2>DETAILS</h2>
       </div>
+
+      <div class="details-grid">
+        <label>Event neve</label>
+        <div class="field-pill">{{ selectedEvent.title }}</div>
+
+        <label>Rovid leiras</label>
+        <div class="field-box description">{{ selectedEvent.description }}</div>
+
+        <label>Datum</label>
+        <div class="date-row">
+          <span class="date-pill month">{{ selectedEvent.startsAt | date: 'MMM' }}</span>
+          <span class="date-pill day">{{ selectedEvent.startsAt | date: 'd' }}</span>
+          <span class="date-time">{{ selectedEvent.startsAt | date: 'HH:mm' }}</span>
+        </div>
+
+        <label>Helyszin</label>
+        <div class="location-row">
+          <span class="pin">&#x1F4CD;</span>
+          <span>{{ selectedEvent.location || 'Online / TBD' }}</span>
+          <a *ngIf="selectedEvent.mapUrl" [href]="selectedEvent.mapUrl" target="_blank" rel="noreferrer">Map</a>
+        </div>
+
+        <label>Erdeklodesi kor</label>
+        <div class="field-box tags">
+          <span class="tag-chip">{{ selectedEvent.category }}</span>
+          <span class="tag-chip">{{ selectedEvent.hostName }}</span>
+        </div>
+
+        <label>Host</label>
+        <div class="field-pill">{{ selectedEvent.hostName }}</div>
+
+        <label>RSVP count</label>
+        <div class="field-pill">{{ selectedEvent.rsvpCount }}</div>
+      </div>
+
+      <div class="action-row">
+        <button
+          *ngIf="!(isPastEvent$ | async) && !(hasUserRsvped$ | async)"
+          type="button"
+          class="rsvp-button"
+          (click)="onRsvp()"
+        >
+          RSVP
+        </button>
+
+        <p *ngIf="!(isPastEvent$ | async) && (hasUserRsvped$ | async)" class="rsvp-status">
+          RSVP status: attending
+        </p>
+
+        <p *ngIf="isPastEvent$ | async" class="past-status">
+          This event has already ended.
+        </p>
+      </div>
+    </main>
+  </ng-container>
+</section>
+
+<ng-template #loadingState>
+  <section class="event-details-shell not-found">
+    <article class="not-found-card">
+      <h1>Loading event details...</h1>
     </article>
   </section>
-} @else {
-  <section class="event-detail-page">
-    <article class="event-detail-card">
+</ng-template>
+
+<ng-template #notFoundState>
+  <section class="event-details-shell not-found">
+    <article class="not-found-card">
       <h1>Event not found</h1>
       <p>The event you are looking for does not exist.</p>
-      <a class="back-link" routerLink="/events">Back to events</a>
+      <a routerLink="/events">Back to events</a>
     </article>
   </section>
-}
+</ng-template>

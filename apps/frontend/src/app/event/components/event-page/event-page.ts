@@ -3,6 +3,7 @@ import { CampusEvent } from '../../interfaces/event';
 import { EventService } from '../../services/event-service';
 import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-event-page',
@@ -13,9 +14,10 @@ import { DatePipe } from '@angular/common';
 export class EventPage implements OnInit {
   private readonly eventService = inject(EventService);
 
-  events: CampusEvent[] = [];
+  events$: Observable<CampusEvent[]> | undefined;
 
   ngOnInit(): void {
-    this.events = this.eventService.getEvents();
+    console.log('EventComponent: ngOnInit');
+    this.events$ = this.eventService.getEvents();
   }
 }
