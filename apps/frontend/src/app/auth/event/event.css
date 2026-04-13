@@ -1,0 +1,82 @@
+.events-page {
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  background: linear-gradient(155deg, #f2f7ff 0%, #ecf6ef 100%);
+}
+
+.events-header {
+  max-width: 1100px;
+  margin: 0 auto 1.5rem;
+}
+
+.events-header h1 {
+  font-size: clamp(1.8rem, 2.4vw, 2.4rem);
+  color: #152447;
+}
+
+.events-header p {
+  color: #475569;
+}
+
+.events-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.event-card {
+  text-decoration: none;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #dfe7f0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 10px 26px rgba(30, 41, 59, 0.08);
+}
+
+.event-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(30, 41, 59, 0.16);
+}
+
+.event-card-image {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+}
+
+.event-card-content {
+  padding: 1rem;
+}
+
+.event-category {
+  display: inline-block;
+  background: #e2f2ff;
+  color: #0c4a6e;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.event-card h2 {
+  margin-top: 0.5rem;
+  font-size: 1.15rem;
+  color: #0f172a;
+}
+
+.event-card p {
+  margin-top: 0.4rem;
+  color: #334155;
+  min-height: 2.8rem;
+}
+
+.event-info-row {
+  margin-top: 0.7rem;
+  display: grid;
+  gap: 0.2rem;
+  color: #475569;
+  font-size: 0.88rem;
+}

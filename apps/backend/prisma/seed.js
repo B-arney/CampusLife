@@ -31,6 +31,57 @@ async function main() {
       console.log(`Test user already exists: ${userData.username} (Skipping)`);
     }
   }
+
+  const testEvents = [
+    {
+      title: 'Spring Hackathon 2026',
+      shortDescription: '48-hour team hackathon with mentors and prizes.',
+      description: 'Join students from all majors for a 48-hour build sprint. We provide mentors, API credits, snacks, and a final demo day with jury feedback.',
+      startsAt: new Date('2026-05-03T10:00:00.000Z'),
+      location: 'Innovation Lab, Building B, Room 204',
+      category: 'Technology',
+      hostName: 'Student Tech Guild',
+      imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1400&q=80',
+      mapUrl: 'https://maps.google.com/?q=Innovation+Lab+Building+B'
+    },
+    {
+      title: 'Campus Career Fair',
+      shortDescription: 'Meet employers, internship programs, and alumni recruiters.',
+      description: 'Connect with over 40 companies and organizations hiring interns and juniors. Bring your CV and prepare for mini interviews at dedicated booths.',
+      startsAt: new Date('2026-06-11T08:30:00.000Z'),
+      location: 'Main Hall',
+      category: 'Career',
+      hostName: 'Career Center',
+      imageUrl: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1400&q=80',
+      mapUrl: 'https://maps.google.com/?q=Campus+Main+Hall'
+    },
+    {
+      title: 'Winter Ball 2025',
+      shortDescription: 'Annual formal night with live music and dance.',
+      description: 'An evening gala celebrating campus life with live music, performances, and awards for student communities.',
+      startsAt: new Date('2025-12-12T19:00:00.000Z'),
+      location: 'Grand Auditorium',
+      category: 'Social',
+      hostName: 'Student Union',
+      imageUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1400&q=80',
+      mapUrl: 'https://maps.google.com/?q=Grand+Auditorium+Campus'
+    }
+  ];
+
+  for (const eventData of testEvents) {
+    const existing = await prisma.event.findFirst({
+      where: { title: eventData.title }
+    });
+
+    if (!existing) {
+      await prisma.event.create({
+        data: eventData
+      });
+      console.log(`Created test event: ${eventData.title}`);
+    } else {
+      console.log(`Test event already exists: ${eventData.title} (Skipping)`);
+    }
+  }
 }
 
 main()

@@ -1,0 +1,41 @@
+<section class="events-page" *ngIf="events$ | async as events; else loadingState">
+  <div class="events-header">
+    <h1>Browse Events</h1>
+    <p>Event Count: {{ events.length }}</p>
+    <p>Click any event to view full details and RSVP information.</p>
+  </div>
+
+  <div class="events-grid">
+    <a
+      *ngFor="let event of events"
+      class="event-card"
+      [routerLink]="['/events', event.id]"
+    >
+      <img
+        *ngIf="event.imageUrl"
+        [src]="event.imageUrl"
+        [alt]="event.title + ' image'"
+        class="event-card-image"
+      />
+
+      <div class="event-card-content">
+        <span class="event-category">{{ event.category }}</span>
+        <h2>{{ event.title }}</h2>
+        <p>{{ event.shortDescription }}</p>
+
+        <div class="event-info-row">
+          <span>{{ event.startsAt | date: 'medium' }}</span>
+          <span>{{ event.location || 'Location TBD' }}</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<ng-template #loadingState>
+  <section class="events-page">
+    <div class="events-header">
+      <h1>Loading events...</h1>
+    </div>
+  </section>
+</ng-template>

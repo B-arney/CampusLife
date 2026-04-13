@@ -7,7 +7,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DatePickerModule } from 'primeng/datepicker';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { CreateEventRequest, Interest } from './interfaces/event';
+import { CampusEvent, CreateEventRequest, Interest } from './interfaces/event';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-event',
@@ -18,9 +19,8 @@ import { CreateEventRequest, Interest } from './interfaces/event';
 })
 export class EventComponent implements OnInit {
 
-  eventForm: FormGroup;
-  events: any[] = [];
-
+  events$: Observable<CampusEvent[]> | undefined;
+  eventForm;
 
   interests: Interest[] = [];
   selectedInterests: Interest[] = [];
@@ -46,7 +46,7 @@ export class EventComponent implements OnInit {
 
   createEvent() {
     if (this.eventForm.valid) {
-      this.events.push(this.eventForm.value);
+      // this.events.push(this.eventForm.value);
       this.eventForm.reset();
     }
   }
