@@ -1,1 +1,31 @@
-<p>event-list works!</p>
+<p-toast></p-toast>
+
+<div class="event-panel list-panel">
+    <div class="top-bar">
+        <h2>Events</h2>
+        <a routerLink="/events/new" class="save-btn create-link">Create event</a>
+    </div>
+
+    @if (loading) {
+        <p class="muted">Loading events…</p>
+    } @else if (!loading && events.length) {
+        <ul class="event-list">
+            @for (e of events; track $index) {
+                <li class="event-row">
+                    <div class="event-main">
+                        <strong>{{ e.title }}</strong>
+                        <span class="meta">{{ formatDate(e.startAt) }} · {{ e.location }} · {{ e.category }}</span>
+                    </div>
+
+                    @if (isHost(e)) {
+                        <div class="event-actions">
+                            <a [routerLink]="['/events', e.id, 'edit']" class="edit-link">Edit</a>
+                        </div>
+                    }
+                </li>
+            }
+        </ul>
+    } @else if (!events.length) {
+        <p class="muted">No events yet. Create the first one.</p>
+    }
+</div>

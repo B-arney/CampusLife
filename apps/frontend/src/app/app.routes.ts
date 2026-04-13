@@ -6,6 +6,8 @@ import { ForgotPassword } from './auth/components/forgot-password/forgot-passwor
 import { Profile } from './auth/components/profile/profile';
 import { authGuard } from './auth/guards/auth-guard';
 import { EventPage } from './event/components/event-page/event-page';
+import { EditEvent } from './event/components/edit-event/edit-event';
+import { EventList } from './event/components/event-list/event-list';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -14,5 +16,7 @@ export const routes: Routes = [
   { path: 'forgot-password', component: ForgotPassword },
   { path: 'landing', component: Landing },
   { path: 'profile', component: Profile, canActivate: [authGuard] },
-  { path: 'events', component: EventPage },
+  { path: 'events', component: EventList },
+  { path: 'events/new', component: EditEvent },
+  { path: 'events/:id/edit', component: EditEvent },
 ];

@@ -1,0 +1,203 @@
+/* LAYOUT */
+.layout {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 220px;
+  background: #eaeaea;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  margin-bottom: 30px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  flex-grow: 1;
+}
+
+.sidebar li {
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.sidebar li.active {
+  font-weight: bold;
+}
+
+.logout button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+}
+
+/* CONTENT */
+.content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding-top: 40px;
+}
+
+/* EVENT PANEL */
+.event-panel {
+  width: 800px;
+  background: #dcdcdc;
+  padding: 30px;
+  border-radius: 12px;
+}
+
+/* TOP BAR */
+.top-bar {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+  min-height: 50px;
+  width: 100%;
+}
+
+.top-bar h2 {
+  margin: 0px;
+  padding: 0px;
+  margin: 0 auto;
+  text-align: center;
+  flex: 0 1 auto;
+}
+
+.back-btn {
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+}
+
+
+.save-btn {
+  background: #eee;
+  border: none;
+  border-radius: 12px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+/* event details*/
+a.back-btn {
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.top-actions {
+   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+
+
+.delete-btn {
+  background-color: transparent;
+  color: #dc3545;
+  border: 1px solid #dc3545;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-btn:hover:not(:disabled) {
+  background-color: #fff5f5;
+}
+
+.delete-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.loading-hint {
+  margin-bottom: 16px;
+  color: #555;
+}
+
+.sidebar a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.sidebar a.active-link {
+  font-weight: bold;
+}
+
+
+
+/* FORM */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.form-row label {
+  width: 150px;
+}
+
+/* INPUT */
+input,
+textarea {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  background: #f5f5f5;
+}
+
+textarea {
+  height: 120px;
+}
+
+/* INTEREST */
+.interest-box {
+  flex: 1;
+  background: #eee;
+  padding: 15px;
+  border-radius: 20px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background: #ddd;
+  padding: 6px 12px;
+  border-radius: 12px;
+}
+
+.add-btn {
+  background: #ddd;
+  border: none;
+  border-radius: 12px;
+  padding: 6px 12px;
+}

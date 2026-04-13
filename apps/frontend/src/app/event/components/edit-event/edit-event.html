@@ -1,63 +1,82 @@
+<p-toast></p-toast>
 <div class="event-panel">
 
     <!-- TOP BAR -->
     <div class="top-bar">
-        <button class="back-btn">⟵</button>
-        <h2>New Event</h2>
-        <button class="save-btn" type="submit" [disabled]="isSaving || eventForm.invalid"
-            (click)="createEvent()">Save</button>
+        <a routerLink="/events" class="back-btn">⟵</a>
+        <h2>{{ isEditMode ? 'Edit Event' : 'New Event' }}</h2>
     </div>
 
-    <!-- FORM -->
-    <form [formGroup]="eventForm" (ngSubmit)="createEvent()" class="form">
+    @if (isLoading) {
+        <p class="loading-hint">Loading event…</p>
+    } @else {
+        <!-- FORM -->
+        <form [formGroup]="eventForm" (ngSubmit)="saveEvent()" class="form">
 
-        <div class="form-row">
-            <label>Event neve</label>
-            <input pInputText formControlName="title" placeholder="Placeholder" />
-        </div>
-
-        <div class="form-row">
-            <label>Rövid leírás</label>
-            <textarea pInputTextarea formControlName="description"></textarea>
-        </div>
-
-        <div class="form-row">
-            <label>Dátum időpont</label>
-            <input type="datetime-local" formControlName="date" />
-        </div>
-
-        <div class="form-row">
-            <label>Helyszín</label>
-            <input pInputText formControlName="location" />
-        </div>
-
-        <div class="form-row">
-            <label>Kategória</label>
-            <input pInputText formControlName="category" placeholder="academic / social / sports" />
-        </div>
-
-        <div class="form-row">
-            <label>Érdeklődés</label>
-
-            <div class="interest-box">
-
-                <!-- meglévő tagek -->
-                <span class="tag" *ngFor="let interest of interests; let i = index">
-                    {{ interest }}
-                    <span class="remove" (click)="removeInterest(i)">×</span>
-                </span>
-
-                <!-- input -->
-                <input type="text" [(ngModel)]="newInterest" [ngModelOptions]="{standalone: true}"
-                    (keydown.enter)="addInterest(); $event.preventDefault()" placeholder="Add interest"
-                    class="interest-input" />
-
-                <!-- plus gomb -->
-                <button type="button" class="add-btn" (click)="addInterest()">+</button>
-
+            <div class="form-row">
+                <label>Name of the event</label>
+                <input pInputText formControlName="title" placeholder="Placeholder" />
             </div>
-        </div>
 
-    </form>
+            <div class="form-row">
+                <label>Short description</label>
+                <textarea pInputTextarea formControlName="description"></textarea>
+            </div>
 
+            <div class="form-row">
+                <label>Date and Time</label>
+                <input type="datetime-local" formControlName="date" />
+            </div>
+
+            <div class="form-row">
+                <label>Place</label>
+                <input pInputText formControlName="location" />
+            </div>
+
+            <div class="form-row">
+                <label>Category</label>
+                <input pInputText formControlName="category" placeholder="academic / social / sports" />
+            </div>
+
+            <div class="form-row">
+                <label>Interests</label>
+
+                <div class="interest-box">
+
+                    @for (interest of interests; track $index) {
+                    <span class="tag">
+                        {{ interest }}
+                        <span class="remove" (click)="removeInterest($index)">×</span>
+                    </span>
+                    }
+
+                    <!-- input -->
+                    <input type="text" [(ngModel)]="newInterest" [ngModelOptions]="{standalone: true}"
+                        (keydown.enter)="addInterest(); $event.preventDefault()" placeholder="Add interest"
+                        class="interest-input" />
+
+                    <!-- plus gomb -->
+                    <button type="button" class="add-btn" (click)="addInterest()">+</button>
+
+                </div>
+            </div>
+
+            <div class="top-actions">
+                @if (isEditMode) {
+                <button type="button" class="delete-btn" [disabled]="isSaving || isLoading" (click)="deleteEvent()">
+                    Delete Event
+                </button>
+                }
+
+                <button class="save-btn" type="button" (click)="saveEvent()"
+                    [disabled]="isSaving || isLoading || eventForm.invalid">
+                    @if (isSaving) {
+                    <span>Saving...</span>
+                    } @else {
+                    <span>Save Event</span>
+                    }
+                </button>
+            </div>
+        </form>
+    }
 </div>

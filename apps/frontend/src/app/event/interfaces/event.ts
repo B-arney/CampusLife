@@ -8,6 +8,8 @@ export interface CreateEventRequest {
   imageUrl?: string;
 }
 
+export type UpdateEventRequest = CreateEventRequest;
+
 export interface CreateEventResponse {
   event: {
     id: number;
@@ -21,4 +23,25 @@ export interface CreateEventResponse {
     hostId: number;
     createdAt: string;
   };
+}
+
+export interface EventSummary {
+  id: number;
+  title: string;
+  description: string;
+  startAt: string;
+  location: string;
+  category: string;
+  imageUrl: string | null;
+  interests: unknown;
+  hostId: number;
+  createdAt: string;
+}
+
+export interface SingleEventResponse {
+  event: EventSummary;
+}
+
+export interface ListEventsResponse {
+  events: EventSummary[];
 }
