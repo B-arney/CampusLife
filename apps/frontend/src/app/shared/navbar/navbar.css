@@ -1,18 +1,21 @@
-.drawer {
-  padding: 2rem 0 2rem 1rem;
-  
-    ul {
-      list-style: none;
-      padding: 0;
-      flex-grow: 1;
-    }
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  height: 100vh;
+  background: #eaeaea;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
-.start {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.sidebar h2 {
   margin-bottom: 30px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  flex-grow: 1;
 }
 
 a {
@@ -34,13 +37,15 @@ a {
   }
 }
 
-.icon-btn {
-  svg {
-    width: 1.8rem;
-    height: 1.8rem;
-  }
+.logout {
+  margin-top: auto;
 }
-.icon-btn.small svg {
-  width: 1.4rem;
-  height: 1.4rem;
+
+.logout button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
 }

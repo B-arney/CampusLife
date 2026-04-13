@@ -7,8 +7,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
 import { RouterLink } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
-import { Auth } from '../services/auth';
-import { passwordMatchValidator, passwordStrengthValidator } from '../../shared/validators/password.validator';
+import { Auth } from '../../services/auth';
+import { passwordMatchValidator, passwordStrengthValidator } from '../../../shared/validators/password.validator';
 import { PasswordModule } from 'primeng/password';
 
 @Component({

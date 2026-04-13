@@ -4,7 +4,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { MessageService } from 'primeng/api';
 import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
-import { UserService } from '../services/user-service';
+import { UserService } from '../../services/user-service';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -13,7 +13,7 @@ import { BadgeModule } from 'primeng/badge';
 import { MenubarModule } from 'primeng/menubar';
 import { RippleModule } from 'primeng/ripple';
 import { MenuItem } from 'primeng/api';
-import { Auth } from '../services/auth';
+import { Auth } from '../../services/auth';
 import { Router } from '@angular/router';
 
 @Component({

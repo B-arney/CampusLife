@@ -7,7 +7,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
-import { Auth } from '../services/auth';
+import { Auth } from '../../services/auth';
 import { PasswordModule } from 'primeng/password';
 
 @Component({
