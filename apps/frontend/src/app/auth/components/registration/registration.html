@@ -3,25 +3,18 @@
 <div class="wrapper">
   <div class="login-hero">
     <h2 class="title">CAMPUS LIFE</h2>
-    <p class="sub-title">Where all you events organised in one place</p>
-    <img ngSrc="assets/Logo.png" alt="logo" width="280" height="280" priority />
+    <p class="sub-title"><i>Where all your events<br>organized in one place</i></p>
+    <img ngSrc="assets/Logo.png" alt="logo" width="280" height="280" priority class="hero-logo" />
   </div>
 
   <div class="login-container">
-    <h2>Register</h2>
+    <h2 class="form-title">REGISTER</h2>
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      
       <div class="form-group">
-        <input pInputText type="text" id="username" placeholder="Username" formControlName="username"
-          [invalid]="isInvalid('username')" />
-        @if (isInvalid('username')) {
-          <p-message severity="error" size="small" variant="simple">Username is required.</p-message>
-        }
-      </div>
-
-      <div class="form-group">
-        <input pInputText type="email" id="email" placeholder="Email" formControlName="email"
-          [invalid]="isInvalid('email')" />
+        <input pInputText type="email" id="email" placeholder="Enter email" formControlName="email"
+          [invalid]="isInvalid('email')" class="custom-input" />
         @if (isInvalid('email')) {
           @if (form.get('email')?.errors?.['required']) {
             <p-message severity="error" size="small" variant="simple">Email is required.</p-message>
@@ -29,6 +22,14 @@
           @if (form.get('email')?.errors?.['email']) {
             <p-message severity="error" size="small" variant="simple">Please enter a valid email.</p-message>
           }
+        }
+      </div>
+
+      <div class="form-group">
+        <input pInputText type="text" id="username" placeholder="Enter Username" formControlName="username"
+          [invalid]="isInvalid('username')" class="custom-input" />
+        @if (isInvalid('username')) {
+          <p-message severity="error" size="small" variant="simple">Username is required.</p-message>
         }
       </div>
 
@@ -42,7 +43,9 @@
           mediumLabel="Average complexity" 
           strongLabel="Complex password" 
           autocomplete="off" 
-          fluid />
+          fluid
+          styleClass="custom-password">
+        </p-password>
         @if (isInvalid('password')) {
           @if (form.get('password')?.errors?.['required']) {
             <p-message severity="error" size="small" variant="simple">Password is required.</p-message>
@@ -71,8 +74,14 @@
       </div>
 
       <div class="form-group">
-        <input pInputText type="password" id="passwordConfirm" placeholder="Password confirm" formControlName="passwordConfirm"
-          [invalid]="isInvalid('passwordConfirm')" />
+        <p-password formControlName="passwordConfirm" 
+          placeholder="Password again"
+          [toggleMask]="true"
+          [feedback]="false"
+          [invalid]="isInvalid('passwordConfirm')" 
+          fluid
+          styleClass="custom-password">
+        </p-password>
         @if (isInvalid('passwordConfirm')) {
           @if (form.get('passwordConfirm')?.errors?.['required']) {
             <p-message severity="error" size="small" variant="simple">Password confirmation is required.</p-message>
@@ -83,45 +92,14 @@
         }
       </div>
 
-      <button pButton severity="success" type="submit" [disabled]="form.invalid" [loading]="isLoading">
-        <span pButtonLabel>Register</span>
+      <div class="auth-link-container center-link">
+        <a [routerLink]="['/login']" class="outlined-link">Or Login</a>
+      </div>
+
+      <button pButton type="submit" [disabled]="form.invalid" [loading]="isLoading" class="login-btn" style="background: #063274 !important; border-color: #063274 !important; width: 100%; border-radius: 8px;">
+        <span pButtonLabel>Sign Up</span>
       </button>
 
-      <div class="auth-link-container">
-        <p>Already have an account? <a [routerLink]="['/login']" link>Login here</a></p>
-      </div>
     </form>
   </div>
 </div>
-
-
-<!-- <div class="registration-container">
-    <h1>Campus Life</h1>
-    <h2>Registration</h2>
-  
-    <form (ngSubmit)="registerAction()">
-  
-      <div class="input-group">
-        <label>Username</label>
-        <input type="text" [(ngModel)]="username" name="username" required>
-      </div>
-  
-      <div class="input-group">
-        <label>Email</label>
-        <input type="email" [(ngModel)]="email" name="email" required>
-      </div>
-  
-      <div class="input-group">
-        <label>Password</label>
-        <input type="password" [(ngModel)]="password" name="password" required>
-      </div>
-  
-      <div class="input-group">
-        <label>Confirm Password</label>
-        <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required>
-      </div>
-  
-      <button type="submit">Register</button>
-    </form>
-    <p>Mégis van fiókod? <a [routerLink]="['/login']">Back to Login</a></p>
-</div> -->

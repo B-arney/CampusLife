@@ -3,16 +3,17 @@
 <div class="wrapper">
   <div class="login-hero">
     <h2 class="title">CAMPUS LIFE</h2>
-    <p class="sub-title">Where all you events organised in one place</p>
-    <img ngSrc="assets/Logo.png" alt="logo" width="280" height="280" priority />
+    <p class="sub-title"><i>Where all your events<br>organized in one place</i></p>
+    <img ngSrc="assets/Logo.png" alt="logo" width="280" height="280" priority class="hero-logo" />
   </div>
 
   <div class="login-container">
-    <h2>Login</h2>
+    <h2 class="form-title">LOGIN</h2>
+    
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <input pInputText type="email" id="email" placeholder="Email" formControlName="email"
-          [invalid]="isInvalid('email')" />
+        <input pInputText type="email" id="email" placeholder="Enter email or username" formControlName="email"
+          [invalid]="isInvalid('email')" class="custom-input" />
         @if (isInvalid('email')) {
           @if (form.get('email')?.errors?.['required']) {
             <p-message severity="error" size="small" variant="simple">Email is required.</p-message>
@@ -27,8 +28,11 @@
         <p-password formControlName="password" 
           placeholder="Password"
           [toggleMask]="true"
+          [feedback]="false"
           [invalid]="isInvalid('password')" 
-          fluid />
+          fluid 
+          styleClass="custom-password">
+        </p-password>
         @if (isInvalid('password')) {
           @if (form.get('password')?.errors?.['required']) {
             <p-message severity="error" size="small" variant="simple">Password is required.</p-message>
@@ -36,14 +40,18 @@
         }
       </div>
 
-      <button pButton severity="success" type="submit" [disabled]="form.invalid" [loading]="isLoading">
-        <span pButtonLabel>Login</span>
-      </button>
-
       <div class="auth-link-container">
-        <p>Don't have acoount yet? <a [routerLink]="['/registration']" link>Register here</a></p>
-        <p><a [routerLink]="['/forgot-password']" link >Forgot password</a></p>
+        <div class="link-left">
+        <a [routerLink]="['/registration']" class="outlined-link">Don't have<br>an account?</a>
+        </div>
+        <div class = "link-right">
+        <a [routerLink]="['/forgot-password']" class="outlined-link">Forgot<br>Password</a>
+        </div>
       </div>
+
+      <button pButton type="submit" [disabled]="form.invalid" [loading]="isLoading" class="login-btn" style="background: #063274 !important; border-color: #063274 !important; width: 100%; border-radius: 8px;">
+          <span pButtonLabel>Login</span>
+      </button>
       
     </form>
   </div>
