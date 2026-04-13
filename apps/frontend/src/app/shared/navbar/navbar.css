@@ -1,21 +1,18 @@
-/* Sidebar */
-.sidebar {
-  width: 220px;
-  height: 100vh;
-  background: #eaeaea;
-  padding: 20px;
+.drawer {
+  padding: 2rem 0 2rem 1rem;
+  
+    ul {
+      list-style: none;
+      padding: 0;
+      flex-grow: 1;
+    }
+}
+
+.start {
   display: flex;
-  flex-direction: column;
-}
-
-.sidebar h2 {
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 30px;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-  flex-grow: 1;
 }
 
 a {
@@ -37,15 +34,13 @@ a {
   }
 }
 
-.logout {
-  margin-top: auto;
+.icon-btn {
+  svg {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
 }
-
-.logout button {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  background: white;
-  cursor: pointer;
+.icon-btn.small svg {
+  width: 1.4rem;
+  height: 1.4rem;
 }
