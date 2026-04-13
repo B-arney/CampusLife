@@ -1,1 +1,30 @@
-<p>event-page works!</p>
+<section class="events-page">
+  <div class="events-header">
+    <h1>Browse Events</h1>
+    <p>Click any event to view full details and RSVP information.</p>
+  </div>
+
+  <div class="events-grid">
+    @for (event of events; track $index) {
+
+        <a class="event-card" [routerLink]="['/events', event.id]">
+            @if (event.imageUrl) {
+                <img [src]="event.imageUrl"
+                    [alt]="event.title + ' image'"
+                    class="event-card-image"/>
+            }
+
+            <div class="event-card-content">
+                <span class="event-category">{{ event.category }}</span>
+                <h2>{{ event.title }}</h2>
+                <p>{{ event.shortDescription }}</p>
+
+                <div class="event-info-row">
+                    <span>{{ event.startsAt | date: 'medium' }}</span>
+                    <span>{{ event.location || 'Location TBD' }}</span>
+                </div>
+            </div>
+        </a>
+    }
+  </div>
+</section>
