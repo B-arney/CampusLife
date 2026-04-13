@@ -1,11 +1,12 @@
-<section class="events-page" *ngIf="events$ | async as events; else loadingState">
+<section class="events-page" *ngIf="!loading; else loadingState">
   <div class="events-header">
     <h1>Browse Events</h1>
-    <p>Event Count: {{ events.length }}</p>
-    <p>Click any event to view full details and RSVP information.</p>
+    <p *ngIf="!error">Event Count: {{ events.length }}</p>
+    <p *ngIf="!error">Click any event to view full details and RSVP information.</p>
+    <p class="error-text" *ngIf="error">{{ error }}</p>
   </div>
 
-  <div class="events-grid">
+  <div class="events-grid" *ngIf="!error && events.length; else emptyState">
     <a
       *ngFor="let event of events"
       class="event-card"
@@ -21,16 +22,25 @@
       <div class="event-card-content">
         <span class="event-category">{{ event.category }}</span>
         <h2>{{ event.title }}</h2>
-        <p>{{ event.shortDescription }}</p>
+        <p>{{ event.description }}</p>
 
         <div class="event-info-row">
-          <span>{{ event.startsAt | date: 'medium' }}</span>
+          <span>{{ event.startAt | date: 'medium' }}</span>
           <span>{{ event.location || 'Location TBD' }}</span>
         </div>
       </div>
     </a>
   </div>
 </section>
+
+<ng-template #emptyState>
+  <section class="events-page">
+    <div class="events-header">
+      <h1>No events yet</h1>
+      <p>When new events are created, they will appear here.</p>
+    </div>
+  </section>
+</ng-template>
 
 <ng-template #loadingState>
   <section class="events-page">

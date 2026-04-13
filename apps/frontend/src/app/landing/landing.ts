@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Auth } from '../auth/services/auth';
 
 @Component({
   selector: 'app-landing',
@@ -9,6 +10,7 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./landing.css']
 })
 export class Landing {
+  private readonly authService = inject(Auth);
   currentNewsIndex: number = 0;
   totalNews: number = 3;
 
@@ -25,5 +27,9 @@ export class Landing {
   // Pöttyre kattintás
   setNews(index: number) {
     this.currentNewsIndex = index;
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }
