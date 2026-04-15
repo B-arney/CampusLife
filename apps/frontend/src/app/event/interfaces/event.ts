@@ -7,6 +7,8 @@ export interface CampusEvent {
   location?: string;
   category: string;
   hostName: string;
+  hostId: number;
+  interests?: string[];
   rsvpCount: number;
   imageUrl?: string;
   mapUrl?: string;
@@ -30,7 +32,7 @@ export interface CreateEventResponse {
     id: number;
     title: string;
     description: string;
-    startAt: string;
+    startsAt: string;
     location: string;
     category: string;
     imageUrl: string | null;
@@ -44,7 +46,7 @@ export interface EventSummary {
   id: number;
   title: string;
   description: string;
-  startAt: string;
+  startsAt: string;
   location: string;
   category: string;
   imageUrl: string | null;

@@ -5,7 +5,7 @@ export default async function profileRoutes(fastify) {
     try {
       await request.jwtVerify()
     } catch (err) {
-      return reply.code(401).send({ error: 'Nincs bejelentkezve.' })
+      return reply.code(401).send({ error: 'Not logged in.' })
     }
 
     const user = await prisma.user.findUnique({
@@ -22,9 +22,8 @@ export default async function profileRoutes(fastify) {
     })
 
     if (!user) {
-      return reply.code(404).send({ error: 'A felhasználó nem található.' })
+      return reply.code(404).send({ error: 'User not found.' })
     }
-
     return reply.send(user)
   })
 
@@ -32,7 +31,7 @@ export default async function profileRoutes(fastify) {
     try {
       await request.jwtVerify()
     } catch (err) {
-      return reply.code(401).send({ error: 'Nincs bejelentkezve.' })
+      return reply.code(401).send({ error: 'Not logged in.' })
     }
 
     const userId = Number(request.user.sub)
@@ -76,7 +75,7 @@ export default async function profileRoutes(fastify) {
       return reply.send(updatedUser)
     } catch (error) {
       fastify.log.error(error)
-      return reply.code(500).send({ error: 'Hiba a profil mentése közben.' })
+      return reply.code(500).send({ error: 'Error saving profile.' })
     }
   })
 }

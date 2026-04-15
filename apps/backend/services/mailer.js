@@ -32,7 +32,7 @@ export async function sendActivationEmail(email, verificationLink) {
     const info = await transporter.sendMail({
       from: `"CampusLife" <${process.env.SMTP_FROM}>`,
       to: email,
-      subject: "Erősítsd meg a regisztrációdat - CampusLife",
+      subject: "Confirm your registration - CampusLife",
       html
     })
     console.log("Email sent successfully:", info.messageId);

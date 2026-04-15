@@ -70,7 +70,7 @@ export default async function eventRoutes(fastify) {
     try {
       await request.jwtVerify()
     } catch (err) {
-      return reply.code(401).send({ error: 'Nincs bejelentkezve.' })
+      return reply.code(401).send({ error: 'Not logged in.' })
     }
 
     const { id } = request.params

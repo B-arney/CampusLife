@@ -145,14 +145,14 @@
 .content {
   flex: 1;
   background: linear-gradient(180deg, #063274 0%, #032c5b 47%, #095190 100%); 
-  padding: 4rem 10%; 
+  padding: 4rem 2rem; 
   color: white;
   overflow-y: auto; 
 }
 
 .section {
   margin-bottom: 50px;
-  max-width: 900px; /* JAVÍTÁS: Megnöveltük a szélességet, hogy elférjenek a hatalmas betűk */
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
