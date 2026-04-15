@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { EventService } from '../../services/event-service';
-import { EventSummary } from '../../interfaces/event';
+import { CampusEvent } from '../../interfaces/event';
 import { Auth } from '../../../auth/services/auth';
 
 @Component({
@@ -22,7 +22,7 @@ export class EventList implements OnInit {
   private messageService = inject(MessageService);
   private cdr = inject(ChangeDetectorRef);
 
-  events: EventSummary[] = [];
+  events: CampusEvent[] = [];
   loading = true;
   currentUserId: number | null = null;
 
@@ -43,7 +43,7 @@ export class EventList implements OnInit {
     this.eventService.listEvents().subscribe({
       next: (res) => {
         console.log("Data received:", res);
-        this.events = res.events;
+        this.events = res;
         this.loading = false;
 
         this.cdr.detectChanges();
@@ -61,7 +61,7 @@ export class EventList implements OnInit {
     });
   }
 
-  isHost(event: EventSummary): boolean {
+  isHost(event: CampusEvent): boolean {
     return this.currentUserId != null && event.hostId === this.currentUserId;
   }
 

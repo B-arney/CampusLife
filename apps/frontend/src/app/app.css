@@ -16,9 +16,6 @@ body {
 /* CONTENT */
 .content {
   background: #eaeaea;
-  margin: 2rem 2rem 0;
   flex: 1;
-  padding: 40px;
-  border-radius: 12px;
   overflow-y: auto;
 }

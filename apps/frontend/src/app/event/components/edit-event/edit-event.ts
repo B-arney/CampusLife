@@ -107,7 +107,7 @@ export class EditEvent implements OnInit {
       meRes: this.auth.me()
     }).subscribe({
       next: ({ eventRes, meRes }) => {
-        const ev = eventRes.event;
+        const ev = eventRes;
 
 
         if (meRes.user.id !== ev.hostId) {
@@ -126,7 +126,7 @@ export class EditEvent implements OnInit {
         this.eventForm.patchValue({
           title: ev.title,
           description: ev.description,
-          date: toDatetimeLocalValue(ev.startAt),
+          date: toDatetimeLocalValue(ev.startsAt),
           location: ev.location,
           category: ev.category
         });

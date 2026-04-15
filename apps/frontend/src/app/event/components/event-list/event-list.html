@@ -14,7 +14,7 @@
                 <li class="event-row">
                     <div class="event-main">
                         <strong>{{ e.title }}</strong>
-                        <span class="meta">{{ formatDate(e.startAt) }} · {{ e.location }} · {{ e.category }}</span>
+                        <span class="meta">{{ formatDate(e.startsAt) }} · {{ e.location }} · {{ e.category }}</span>
                     </div>
 
                     @if (isHost(e)) {

@@ -5,7 +5,6 @@
 }
 
 .events-header {
-  max-width: 1100px;
   margin: 0 auto 1.5rem;
 }
 
@@ -19,7 +18,6 @@
 }
 
 .events-grid {
-  max-width: 1100px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

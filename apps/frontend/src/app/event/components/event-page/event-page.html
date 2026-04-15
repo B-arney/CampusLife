@@ -1,4 +1,4 @@
-<section class="events-page" *ngIf="!loading; else loadingState">
+<section class="events-page" *ngIf="(events$ | async) as events; else (error ? errorState : loadingState)">
   <div class="events-header">
     <h1>Browse Events</h1>
     <p *ngIf="!error">Event Count: {{ events.length }}</p>
@@ -25,7 +25,7 @@
         <p>{{ event.description }}</p>
 
         <div class="event-info-row">
-          <span>{{ event.startAt | date: 'medium' }}</span>
+          <span>{{ event.startsAt | date: 'medium' }}</span>
           <span>{{ event.location || 'Location TBD' }}</span>
         </div>
       </div>
@@ -46,6 +46,15 @@
   <section class="events-page">
     <div class="events-header">
       <h1>Loading events...</h1>
+    </div>
+  </section>
+</ng-template>
+
+<ng-template #errorState>
+  <section class="events-page">
+    <div class="events-header">
+      <h1 class="error-text">Failed to load events</h1>
+      <p>{{ error }}</p>
     </div>
   </section>
 </ng-template>
