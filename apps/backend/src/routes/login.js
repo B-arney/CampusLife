@@ -31,16 +31,16 @@ export default async function loginRoutes(fastify) {
     })
 
     if (!user) {
-      return reply.code(401).send({ error: 'Hibás email vagy jelszó.' })
+      return reply.code(401).send({ error: 'Invalid email or password.' })
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password)
     if (!isPasswordValid) {
-      return reply.code(401).send({ error: 'Hibás email vagy jelszó.' })
+      return reply.code(401).send({ error: 'Invalid email or password.' })
     }
 
     if (!user.isVerified) {
-      return reply.code(403).send({ error: 'A fiók még nincs aktiválva.' })
+      return reply.code(403).send({ error: 'Account is not activated yet.' })
     }
 
     const token = await reply.jwtSign(
@@ -54,7 +54,7 @@ export default async function loginRoutes(fastify) {
     reply.setCookie('authToken', token, getCookieOptions())
 
     return reply.send({
-      message: 'Sikeres bejelentkezés.',
+      message: 'Successful login.',
       token,
       user: {
         id: user.id,
@@ -70,19 +70,19 @@ export default async function loginRoutes(fastify) {
       path: '/'
     })
 
-    return reply.send({ message: 'Sikeres kijelentkezés.' })
+    return reply.send({ message: 'Successful logout.' })
   })
 
   fastify.get('/me', async (request, reply) => {
     try {
       await request.jwtVerify()
     } catch {
-      return reply.code(401).send({ error: 'Nincs bejelentkezve.' })
+      return reply.code(401).send({ error: 'Not logged in.' })
     }
 
     const userId = Number(request.user.sub)
     if (!Number.isInteger(userId)) {
-      return reply.code(401).send({ error: 'Érvénytelen bejelentkezési token.' })
+      return reply.code(401).send({ error: 'Invalid login token.' })
     }
 
     const user = await prisma.user.findUnique({
@@ -97,7 +97,7 @@ export default async function loginRoutes(fastify) {
     })
 
     if (!user) {
-      return reply.code(401).send({ error: 'A felhasználó nem található.' })
+      return reply.code(401).send({ error: 'User not found.' })
     }
 
     return reply.send({ user })

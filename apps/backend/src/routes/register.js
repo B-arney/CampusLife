@@ -31,7 +31,7 @@ export default async function registerRoutes(fastify) {
     const { username, email, password, passwordConfirm } = request.body
     
     if (password !== passwordConfirm) {
-      return reply.code(400).send({ error: "A jelszavak nem egyeznek." })
+      return reply.code(400).send({ error: "Passwords do not match." })
     }
     
     const existingUser = await prisma.user.findFirst({
@@ -45,10 +45,11 @@ export default async function registerRoutes(fastify) {
 
     if (existingUser) {
       let message = '';
-      if (existingUser.email === email) message = 'Ez az email már foglalt.';
-      if (existingUser.username === username) message = 'Ez a felhasználónév már foglalt.';
-      return reply.code(400).send({ error: message });
+      if (existingUser.email === email) message = 'This email is already taken.';
+      if (existingUser.username === username) message = 'This username is already taken.';
+      return reply.code(400).send({ error: message })
     }
+
     
     const hashedPassword = await bcrypt.hash(password, 10)
     const verificationToken = crypto.randomBytes(32).toString('hex')
