@@ -3,18 +3,62 @@ import { prisma } from '../db.js'
 export default async function eventRoutes(fastify) {
   // Get all events
   fastify.get('/events', async (request, reply) => {
+    let userId = null
+    try {
+      await request.jwtVerify()
+      userId = Number(request.user.sub)
+    } catch (err) {
+      // User not logged in, that's fine
+    }
+
     const events = await prisma.event.findMany({
       include: {
         _count: {
           select: { rsvps: true }
-        }
+        },
+        rsvps: userId ? {
+          where: { userId }
+        } : false
       }
     })
 
     return events.map(event => ({
       ...event,
       rsvpCount: event._count.rsvps,
+      hasUserRsvped: userId ? event.rsvps.length > 0 : false,
+      rsvps: undefined,
       _count: undefined
+    }))
+  })
+
+  // Get My RSVPs (MUST be above /events/:id)
+  fastify.get('/events/me/rsvps', async (request, reply) => {
+    try {
+      await request.jwtVerify()
+    } catch (err) {
+      return reply.code(401).send({ error: 'Not logged in.' })
+    }
+
+    const userId = Number(request.user.sub)
+
+    const rsvps = await prisma.rsvp.findMany({
+      where: { userId },
+      include: {
+        event: {
+          include: {
+            _count: {
+              select: { rsvps: true }
+            }
+          }
+        }
+      }
+    })
+
+    return rsvps.map(r => ({
+      ...r.event,
+      rsvpCount: r.event._count.rsvps,
+      _count: undefined,
+      hasUserRsvped: true
     }))
   })
 
@@ -105,6 +149,53 @@ export default async function eventRoutes(fastify) {
     } catch (err) {
       if (err.code === 'P2002') {
         return reply.code(400).send({ error: 'Already RSVPed' })
+      }
+      throw err
+    }
+  })
+
+  // Cancel RSVP
+  fastify.delete('/events/:id/rsvp', async (request, reply) => {
+    try {
+      await request.jwtVerify()
+    } catch (err) {
+      return reply.code(401).send({ error: 'Not logged in.' })
+    }
+
+    const { id } = request.params
+    const eventId = parseInt(id)
+    const userId = Number(request.user.sub)
+
+    if (isNaN(eventId)) {
+      return reply.code(400).send({ error: 'Invalid event ID' })
+    }
+
+    const event = await prisma.event.findUnique({
+      where: { id: eventId }
+    })
+
+    if (!event) {
+      return reply.code(404).send({ error: 'Event not found' })
+    }
+
+    // Check if event is in the past
+    if (new Date(event.startsAt).getTime() < Date.now()) {
+      return reply.code(400).send({ error: 'Cannot cancel RSVP for a past event' })
+    }
+
+    try {
+      await prisma.rsvp.delete({
+        where: {
+          eventId_userId: {
+            eventId,
+            userId
+          }
+        }
+      })
+      return reply.code(200).send({ message: 'RSVP cancelled successfully' })
+    } catch (err) {
+      if (err.code === 'P2025') {
+        return reply.code(400).send({ error: 'No RSVP found for this event' })
       }
       throw err
     }
