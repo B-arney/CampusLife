@@ -18,8 +18,8 @@ export const routes: Routes = [
   { path: 'profile', component: Profile, canActivate: [authGuard] },
   { path: 'events', component: EventPage },
   { path: 'events2', redirectTo: 'events', pathMatch: 'full' },
-  { path: 'events/:id', component: EventDetail },
   { path: 'events/new', component: EditEvent },
   { path: 'events/:id/edit', component: EditEvent },
+  { path: 'events/:id', component: EventDetail },
 ];
 ////

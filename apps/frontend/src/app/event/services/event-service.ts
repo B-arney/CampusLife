@@ -41,7 +41,15 @@ export class EventService {
     return this.getEvent(id);
   }
 
+  getMyRSVPs(): Observable<CampusEvent[]> {
+    return this.http.get<CampusEvent[]>(`${this.apiUrl}/me/rsvps`);
+  }
+
   rsvp(eventId: number): Observable<any> {
     return this.http.post(`${this.apiUrl}/${eventId}/rsvp`, {});
+  }
+
+  cancelRsvp(eventId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${eventId}/rsvp`);
   }
 }

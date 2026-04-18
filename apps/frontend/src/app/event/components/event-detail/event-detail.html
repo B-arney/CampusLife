@@ -66,9 +66,14 @@
           RSVP
         </button>
 
-        <p *ngIf="!(isPastEvent$ | async) && (hasUserRsvped$ | async)" class="rsvp-status">
-          RSVP status: attending
-        </p>
+        <button
+          *ngIf="!(isPastEvent$ | async) && (hasUserRsvped$ | async)"
+          type="button"
+          class="rsvp-button cancel"
+          (click)="onCancelRsvp()"
+        >
+          Cancel RSVP
+        </button>
 
         <p *ngIf="isPastEvent$ | async" class="past-status">
           This event has already ended.

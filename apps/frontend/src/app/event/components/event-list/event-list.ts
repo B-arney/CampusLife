@@ -45,9 +45,7 @@ export class EventList implements OnInit {
         console.log("Data received:", res);
         this.events = res;
         this.loading = false;
-
         this.cdr.detectChanges();
-
       },
       error: (err) => {
         this.loading = false;
@@ -69,10 +67,10 @@ export class EventList implements OnInit {
     if (!dateStr) return 'No date';
     try {
       const d = new Date(dateStr);
-      //readable format like "2026. 04. 12. 14:30"
       return d.toLocaleString();
     } catch (e) {
       return 'Invalid date';
     }
   }
 }
+

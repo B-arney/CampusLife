@@ -223,6 +223,21 @@
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rsvp-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.rsvp-button.cancel {
+  background: #aa2e2e;
+  border-color: #ffd1d1;
+}
+
+.rsvp-button.cancel:hover {
+  background: #8a2424;
 }
 
 .rsvp-status,
