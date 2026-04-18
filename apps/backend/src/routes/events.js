@@ -1,5 +1,32 @@
 import { prisma } from '../db.js'
 
+function validateEventPayload(body) {
+  const errors = []
+
+  if (!body?.title || !String(body.title).trim()) {
+    errors.push({ field: 'title', message: 'Title is required' })
+  }
+  if (!body?.date || Number.isNaN(new Date(body.date).getTime())) {
+    errors.push({ field: 'date', message: 'Valid date is required' })
+  }
+  if (!body?.location || !String(body.location).trim()) {
+    errors.push({ field: 'location', message: 'Location is required' })
+  }
+  if (!body?.category || !String(body.category).trim()) {
+    errors.push({ field: 'category', message: 'Category is required' })
+  }
+  if (!body?.description || !String(body.description).trim()) {
+    errors.push({ field: 'description', message: 'Description is required' })
+  }
+
+  const date = new Date(body?.date)
+  if (!Number.isNaN(date.getTime()) && date.getTime() < Date.now()) {
+    errors.push({ field: 'date', message: 'Event date must be in the future' })
+  }
+
+  return errors
+}
+
 export default async function eventRoutes(fastify) {
   // Get all events
   fastify.get('/events', async (request, reply) => {
@@ -62,6 +89,48 @@ export default async function eventRoutes(fastify) {
     }))
   })
 
+  // Create event
+  fastify.post('/events', async (request, reply) => {
+    try {
+      await request.jwtVerify()
+    } catch (err) {
+      return reply.code(401).send({ error: 'Not logged in.' })
+    }
+
+    const userId = Number(request.user.sub)
+    const body = request.body || {}
+    const errors = validateEventPayload(body)
+
+    if (errors.length > 0) {
+      return reply.code(400).send({ errors })
+    }
+
+    const user = await prisma.user.findUnique({ where: { id: userId } })
+    if (!user) {
+      return reply.code(404).send({ error: 'User not found' })
+    }
+
+    const event = await prisma.event.create({
+      data: {
+        title: String(body.title).trim(),
+        shortDescription: String(body.description).trim().slice(0, 250),
+        description: String(body.description).trim(),
+        startsAt: new Date(body.date),
+        location: String(body.location).trim(),
+        category: String(body.category).trim(),
+        hostId: userId,
+        hostName: user.displayName || user.username,
+        imageUrl: body.imageUrl ? String(body.imageUrl) : null
+      }
+    })
+
+    return reply.code(201).send({
+      ...event,
+      rsvpCount: 0,
+      hasUserRsvped: false
+    })
+  })
+
   // Get single event
   fastify.get('/events/:id', async (request, reply) => {
     const { id } = request.params
@@ -107,6 +176,88 @@ export default async function eventRoutes(fastify) {
       hasUserRsvped,
       _count: undefined
     }
+  })
+
+  // Update event
+  fastify.put('/events/:id', async (request, reply) => {
+    try {
+      await request.jwtVerify()
+    } catch (err) {
+      return reply.code(401).send({ error: 'Not logged in.' })
+    }
+
+    const { id } = request.params
+    const eventId = parseInt(id)
+    const userId = Number(request.user.sub)
+
+    if (isNaN(eventId)) {
+      return reply.code(400).send({ error: 'Invalid event ID' })
+    }
+
+    const existing = await prisma.event.findUnique({ where: { id: eventId } })
+    if (!existing) {
+      return reply.code(404).send({ error: 'Event not found' })
+    }
+
+    if (existing.hostId !== userId) {
+      return reply.code(403).send({ error: 'You can only edit your own events' })
+    }
+
+    const body = request.body || {}
+    const errors = validateEventPayload(body)
+    if (errors.length > 0) {
+      return reply.code(400).send({ errors })
+    }
+
+    const updated = await prisma.event.update({
+      where: { id: eventId },
+      data: {
+        title: String(body.title).trim(),
+        shortDescription: String(body.description).trim().slice(0, 250),
+        description: String(body.description).trim(),
+        startsAt: new Date(body.date),
+        location: String(body.location).trim(),
+        category: String(body.category).trim(),
+        imageUrl: body.imageUrl ? String(body.imageUrl) : null
+      }
+    })
+
+    const count = await prisma.rsvp.count({ where: { eventId } })
+
+    return {
+      ...updated,
+      rsvpCount: count,
+      hasUserRsvped: false
+    }
+  })
+
+  // Delete event
+  fastify.delete('/events/:id', async (request, reply) => {
+    try {
+      await request.jwtVerify()
+    } catch (err) {
+      return reply.code(401).send({ error: 'Not logged in.' })
+    }
+
+    const { id } = request.params
+    const eventId = parseInt(id)
+    const userId = Number(request.user.sub)
+
+    if (isNaN(eventId)) {
+      return reply.code(400).send({ error: 'Invalid event ID' })
+    }
+
+    const existing = await prisma.event.findUnique({ where: { id: eventId } })
+    if (!existing) {
+      return reply.code(404).send({ error: 'Event not found' })
+    }
+
+    if (existing.hostId !== userId) {
+      return reply.code(403).send({ error: 'You can only delete your own events' })
+    }
+
+    await prisma.event.delete({ where: { id: eventId } })
+    return { message: 'Event deleted successfully' }
   })
 
   // RSVP to an event

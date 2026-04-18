@@ -70,4 +70,19 @@ export class EventDetail implements OnInit {
       }
     });
   }
+
+  onCancelRsvp(): void {
+    const event = this.eventSubject.value;
+    if (!event) return;
+
+    this.eventService.cancelRsvp(event.id).subscribe({
+      next: () => {
+        this.loadEvent(event.id);
+      },
+      error: (err) => {
+        console.error('Cancel RSVP failed', err);
+        alert('Hiba történt a jelentkezés lemondásakor');
+      }
+    });
+  }
 }
