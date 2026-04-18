@@ -1,21 +1,6 @@
 <section class="event-details-shell" *ngIf="!(isLoading$ | async); else loadingState">
   <ng-container *ngIf="selectedEvent$ | async as selectedEvent; else notFoundState">
-    <aside class="left-rail">
-      <h1 class="brand-title">CAMPUS LIFE</h1>
-      <img src="assets/Logo.png" alt="Campus Life logo" class="brand-logo" />
-
-      <nav class="side-nav">
-        <a class="side-link" routerLink="/landing">HOME</a>
-        <a class="side-link" routerLink="/profile">PROFILE</a>
-        <a class="side-link active" routerLink="/events">EVENTS</a>
-        <a class="side-link" routerLink="/landing">NEWS</a>
-        <a class="side-link" routerLink="/landing">CALENDAR</a>
-        <a class="side-link" routerLink="/landing">SETTINGS</a>
-      </nav>
-
-      <button type="button" class="logout-button">LOG OUT</button>
-    </aside>
-
+	
     <main class="details-canvas">
       <div class="details-head">
         <a class="back-button" routerLink="/events" aria-label="Back to events">&#x21A9;</a>

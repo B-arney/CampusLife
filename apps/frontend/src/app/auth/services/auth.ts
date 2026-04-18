@@ -8,7 +8,8 @@ import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root',
 })
-export class Auth {private http = inject(HttpClient);
+export class Auth {
+  private http = inject(HttpClient);
   private router = inject(Router);
   private apiUrl = environment.apiUrl;
   isLoggedIn = signal<boolean>(!!localStorage.getItem('jwt_token'));

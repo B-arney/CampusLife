@@ -1,72 +1,4 @@
-.event-details-shell {
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: 310px 1fr;
-  background: linear-gradient(180deg, #063274 0%, #032c5b 47%, #095190 100%);
-  color: #f0efff;
-  font-family: 'Poppins', 'Segoe UI', sans-serif;
-}
-
-.left-rail {
-  background: linear-gradient(180deg, #a79100 19.23%, #dfd06c 59.62%, #ffffff 90.87%);
-  padding: 2rem 1.2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.4rem;
-}
-
-.brand-title {
-  font-size: 2rem;
-  letter-spacing: 0.28em;
-  color: #f0efff;
-  text-shadow: 0 2px 0 #000000;
-}
-
-.brand-logo {
-  width: 108px;
-  height: 108px;
-  border-radius: 999px;
-  object-fit: cover;
-  background: #eef0f6;
-}
-
-.side-nav {
-  margin-top: 0.8rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.side-link {
-  color: #032c5b;
-  text-decoration: none;
-  font-size: 1.8rem;
-  font-style: italic;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-}
-
-.side-link.active {
-  text-decoration: underline;
-  text-underline-offset: 0.25rem;
-}
-
-.logout-button {
-  margin-top: auto;
-  border: 0;
-  border-radius: 22px;
-  padding: 0.75rem 2.2rem;
-  background: #aa2e2e;
-  color: #f0efff;
-  font-size: 1rem;
-  font-weight: 800;
-  letter-spacing: 0.4em;
-}
-
 .details-canvas {
-  padding: 2rem 5vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -269,32 +201,6 @@
 }
 
 @media (max-width: 1000px) {
-  .event-details-shell {
-    grid-template-columns: 1fr;
-  }
-
-  .left-rail {
-    padding: 1.2rem 1rem;
-  }
-
-  .brand-title {
-    font-size: 1.6rem;
-  }
-
-  .side-nav {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .side-link {
-    font-size: 1.15rem;
-  }
-
-  .logout-button {
-    margin-top: 0.4rem;
-  }
-
   .details-canvas {
     padding: 1.2rem;
   }
