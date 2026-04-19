@@ -73,3 +73,39 @@
 		}
 	</div>
 </div>
+
+<button
+  type="button"
+  class="qr-fab"
+  (click)="openQrModal()"
+  [attr.aria-expanded]="qrModalOpen"
+  aria-label="Toggle login QR code"
+>
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="3" width="7" height="7"></rect>
+    <rect x="14" y="3" width="7" height="7"></rect>
+    <rect x="3" y="14" width="7" height="7"></rect>
+    <path d="M14 14h7v7h-7z"></path>
+  </svg>
+</button>
+
+@if (qrModalOpen) {
+	<div class="qr-modal-backdrop" (click)="closeQrModal()" tabindex="-1"></div>
+	<div
+		class="qr-modal"
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="qr-modal-title"
+	>
+		<button type="button" class="qr-modal-close" (click)="closeQrModal()" aria-label="Close dialog">×</button>
+		<h2 id="qr-modal-title">Log in</h2>
+		<p class="qr-modal-hint">Scan this to open login page.</p>
+		@if (loginQrUrl) {
+			<div class="qr-modal-code">
+				<qrcode [qrdata]="loginQrUrl" [width]="220" [errorCorrectionLevel]="'M'"></qrcode>
+			</div>
+		} @else {
+			<p class="qr-modal-fallback">Open <a routerLink="/login">/login</a> in your browser.</p>
+		}
+	</div>
+}
