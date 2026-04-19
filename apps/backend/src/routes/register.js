@@ -4,29 +4,47 @@ import bcrypt from 'bcrypt'
 import crypto from 'crypto'
 
 export default async function registerRoutes(fastify) {
-  const registerSchema = {
-    body: {
-      type: 'object',
-      required: ['username', 'email', 'password', 'passwordConfirm'],
-      properties: {
-        username: { type: 'string', minLength: 3 },
-        email: { type: 'string', format: 'email' },
-        password: { 
-          type: 'string', 
-          minLength: 8,
-          pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&\\.\\^])[A-Za-z\\d@$!%*?&\\.\\^]{8,}$'
+  fastify.post('/register', {
+    schema: {
+      tags: ['Authentication'],
+      summary: 'User registration',
+      params: {
+        type: 'object',
+        properties: {
+          username: { type: 'string', minLength: 3 },
+          email: { type: 'string', format: 'email' },
+          password: { type: 'string', minLength: 8 },
+          passwordConfirm: { type: 'string', minLength: 8 }
         },
-        passwordConfirm: { 
-          type: 'string', 
-          minLength: 8,
-          pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&\\.\\^])[A-Za-z\\d@$!%*?&\\.\\^]{8,}$'
+        required: ['username', 'password']
+      },
+      response: {
+        201: {
+        type: 'object',
+          properties: {
+            message: { type: 'string' }
+          }
+        }
+      },
+      body: {
+        type: 'object',
+        required: ['username', 'email', 'password', 'passwordConfirm'],
+        properties: {
+          username: { type: 'string', minLength: 3 },
+          email: { type: 'string', format: 'email' },
+          password: { 
+            type: 'string', 
+            minLength: 8,
+            pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&\\.\\^])[A-Za-z\\d@$!%*?&\\.\\^]{8,}$'
+          },
+          passwordConfirm: { 
+            type: 'string', 
+            minLength: 8,
+            pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&\\.\\^])[A-Za-z\\d@$!%*?&\\.\\^]{8,}$'
+          }
         }
       }
     }
-  }
-  
-  fastify.post('/register', {
-    schema: registerSchema
   }, async (request, reply) => {
     const { username, email, password, passwordConfirm } = request.body
     
