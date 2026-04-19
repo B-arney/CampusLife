@@ -11,6 +11,7 @@ import { EventService } from '../../services/event-service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Auth } from '../../../auth/services/auth';
 import { forkJoin } from 'rxjs';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 function toDatetimeLocalValue(iso: string): string {
   const d = new Date(iso);
@@ -34,7 +35,8 @@ function interestsFromApi(raw: unknown): string[] {
     CommonModule,
     FormsModule,
     ToastModule,
-    RouterLink
+    RouterLink,
+	MultiSelectModule
   ],
   providers: [MessageService],
   templateUrl: './edit-event.html',
@@ -53,12 +55,23 @@ export class EditEvent implements OnInit {
   private fb = inject(FormBuilder);
   private cdr = inject(ChangeDetectorRef);
 
+  interestOptions = [
+    { label: 'Academic', value: 'Academic' },
+    { label: 'Sports', value: 'Sports' },
+    { label: 'Music', value: 'Music' },
+    { label: 'Technology', value: 'Technology' },
+    { label: 'Social', value: 'Social' },
+    { label: '333', value: '333' },
+    { label: '4444', value: '4444' }
+  ];
+
   eventForm: FormGroup = this.fb.group({
     title: ['', Validators.required],
     description: ['', Validators.required],
     date: ['', Validators.required],
     location: ['', Validators.required],
-    category: ['', Validators.required]
+    category: ['', Validators.required],
+	interests: [[]]
   });
 
   get isEditMode(): boolean {

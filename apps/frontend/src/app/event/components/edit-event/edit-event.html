@@ -1,82 +1,84 @@
 <p-toast></p-toast>
-<div class="event-panel">
 
-    <!-- TOP BAR -->
-    <div class="top-bar">
-        <a routerLink="/events" class="back-btn">⟵</a>
-        <h2>{{ isEditMode ? 'Edit Event' : 'New Event' }}</h2>
-    </div>
+<div class="event-container">
 
-    @if (isLoading) {
-        <p class="loading-hint">Loading event…</p>
-    } @else {
-        <!-- FORM -->
-        <form [formGroup]="eventForm" (ngSubmit)="saveEvent()" class="form">
+	<form [formGroup]="eventForm">
 
-            <div class="form-row">
-                <label>Name of the event</label>
-                <input pInputText formControlName="title" placeholder="Placeholder" />
-            </div>
+		<header>
+			<a class="button" routerLink="/events">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+				</svg>
+			</a>
+			<h2>{{ isEditMode ? 'Edit Event' : 'New Event' }}</h2>
 
-            <div class="form-row">
-                <label>Short description</label>
-                <textarea pInputTextarea formControlName="description"></textarea>
-            </div>
+			<div class="top-actions">
+				@if (isEditMode) {
+					<button type="button" class="button delete" [disabled]="isSaving || isLoading" (click)="deleteEvent()">
+						Delete
+					</button>
+					<button class="button" type="button" (click)="saveEvent()"
+						[disabled]="isSaving || isLoading || eventForm.invalid">
+						@if (isSaving) {
+							<span>Saving...</span>
+						} @else {
+							<span>Save</span>
+						}
+					</button>
+				} @else {
+					<button class="button" type="button" (click)="saveEvent()"
+						[disabled]="isSaving || isLoading || eventForm.invalid">
+						@if (isSaving) {
+							<span>Saving...</span>
+						} @else {
+							<span>Create</span>
+						}
+					</button>
+				}
+			</div>
+		</header>
 
-            <div class="form-row">
-                <label>Date and Time</label>
-                <input type="datetime-local" formControlName="date" />
-            </div>
+		<div class="form-fields-list">
+			<div class="form-row">
+				<label>Name</label>
+				<input class="rounded-input" pInputText formControlName="title" placeholder="Name of the event" />
+			</div>
 
-            <div class="form-row">
-                <label>Place</label>
-                <input pInputText formControlName="location" />
-            </div>
+			<div class="form-row">
+				<label>Description</label>
+				<textarea class="rounded-input" pInputTextarea formControlName="description" placeholder="Add a short description"></textarea>
+			</div>
 
-            <div class="form-row">
-                <label>Category</label>
-                <input pInputText formControlName="category" placeholder="academic / social / sports" />
-            </div>
+			<div class="form-row">
+				<label>Date and Time</label>
+				<input class="rounded-input" type="datetime-local" formControlName="date" />
+			</div>
 
-            <div class="form-row">
-                <label>Interests</label>
+			<div class="form-row">
+				<label>Place</label>
+				<input class="rounded-input" pInputText formControlName="location" />
+			</div>
 
-                <div class="interest-box">
+			<div class="form-row">
+				<label>Category</label>
+				<input class="rounded-input" pInputText formControlName="category" placeholder="academic / social / sports" />
+			</div>
 
-                    @for (interest of interests; track $index) {
-                    <span class="tag">
-                        {{ interest }}
-                        <span class="remove" (click)="removeInterest($index)">×</span>
-                    </span>
-                    }
+			<div class="form-row interests-row">
+				<label>Interests</label>
+				<p-multiSelect id="interests" [options]="interestOptions" formControlName="interests"
+					optionLabel="label" optionValue="value" display="chip" [maxSelectedLabels]="10"
+					styleClass="custom-prime-multiselect" fluid>
 
-                    <!-- input -->
-                    <input type="text" [(ngModel)]="newInterest" [ngModelOptions]="{standalone: true}"
-                        (keydown.enter)="addInterest(); $event.preventDefault()" placeholder="Add interest"
-                        class="interest-input" />
+					<ng-template pTemplate="dropdownicon">
+						<svg class="add-interest-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.4" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+						</svg>
+					</ng-template>
 
-                    <!-- plus gomb -->
-                    <button type="button" class="add-btn" (click)="addInterest()">+</button>
 
-                </div>
-            </div>
-
-            <div class="top-actions">
-                @if (isEditMode) {
-                <button type="button" class="delete-btn" [disabled]="isSaving || isLoading" (click)="deleteEvent()">
-                    Delete Event
-                </button>
-                }
-
-                <button class="save-btn" type="button" (click)="saveEvent()"
-                    [disabled]="isSaving || isLoading || eventForm.invalid">
-                    @if (isSaving) {
-                    <span>Saving...</span>
-                    } @else {
-                    <span>Save Event</span>
-                    }
-                </button>
-            </div>
-        </form>
-    }
+				</p-multiSelect>
+			</div>
+		</div>
+	</form>
 </div>
