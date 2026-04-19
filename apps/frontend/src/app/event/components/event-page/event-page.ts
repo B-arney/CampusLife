@@ -19,25 +19,47 @@ export class EventPage implements OnInit {
   pastEvents: CampusEvent[] = [];
   visibleEvents: CampusEvent[] = [];
 
+  searchQuery = signal<string>('');
+  onSearch(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const value = target.value.toLowerCase().trim(); // Kisbetűsítjük és levágjuk a szóközöket
+    this.searchQuery.set(value);
+  }
+
 //   activeTab: 'upcoming' | 'past' = 'upcoming';
   activeTab = signal<'upcoming' | 'past'>('upcoming');
 
   filteredEvents = computed(() => {
     const allEvents = this.eventService.eventsList();
     const currentTab = this.activeTab();
+    const search = this.searchQuery(); // Lekérjük az aktuális keresőszót
     const now = new Date().getTime();
 
     return allEvents.filter(event => {
       const eventTime = new Date(event.startsAt).getTime();
       
-      // jövőbeli
+      let matchesTime = false;
       if (currentTab === 'upcoming') {
-        return eventTime >= now;
+        matchesTime = eventTime >= now;
+      } else {
+        matchesTime = eventTime < now;
       }
-      // múltbeliek
-      return eventTime < now;
+
+      if (!matchesTime) {
+        return false;
+      }
+
+      if (search) {
+       
+        const matchesTitle = event.title.toLowerCase().includes(search);
+  
+        
+        return matchesTitle;
+      }
+
+      return true;
     });
-  });
+});
 
   loading = true;
   error: string | null = null;

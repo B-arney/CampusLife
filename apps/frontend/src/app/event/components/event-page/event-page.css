@@ -1,3 +1,49 @@
+header {
+  max-width: 860px; 
+  width: 100%;
+  margin: 2rem auto 1rem auto; 
+  display: flex;
+  justify-content: space-between; 
+  align-items: center; 
+  padding: 0;
+}
+
+header h2 {
+  color: #f0efff;
+  font-size: 4rem;
+  letter-spacing: 0.2rem;
+  margin: 0;
+  padding-left: 0; /* ÚJ: Eltünteti a címsor előtti extra helyet */
+  text-align: left; /* ÚJ: Erőszakosan balra igazítja a szöveget */
+  text-transform: uppercase;
+}
+
+header .actions .button {
+  border: 2px solid #f0efff;
+  border-radius: 999px;
+  background: transparent;
+  color: #f0efff;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  text-decoration: none; 
+}
+
+
+header .actions .button svg {
+  width: 24px;
+  height: 24px;
+}
+
+header .actions .button:hover {
+  background: #f0efff;
+  color: #032c5b; 
+}
+
 .tab-row {
   max-width: 980px;
   width: 100%;
@@ -122,6 +168,34 @@
   font-weight: 600;
   margin-top: 1rem;
 }
+.search-wrapper {
+  max-width: 860px; /* Ez is 860px, hogy egy vonalban legyen mindennel */
+  width: 100%;
+  margin: 0 auto 1.5rem auto; /* Középre igazítva, alatta hellyel */
+}
+
+.search-bar {
+  width: 100%;
+  padding: 0.7rem 1.2rem;
+  border-radius: 28px; 
+  border: 2px solid #f0efff;
+  background: transparent;
+  color: #f0efff;
+  font-size: 1rem;
+  outline: none;
+  font-style: italic;
+  font-weight: 600;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.search-bar:focus {
+  background: rgba(240, 239, 255, 0.05);
+  border-color: #DFD06C; 
+}
+
+.search-bar::placeholder {
+  color: rgba(240, 239, 255, 0.6);
+}
 
 .error-text {
   color: #ffd4d4;
@@ -135,5 +209,45 @@
 
   .event-row {
     padding-left: 0.75rem;
+  }
+}
+@media (max-width: 768px) {
+  /* Kisebb címsorok */
+  header h2, .section-header h2 {
+    font-size: 1.8rem;
+  }
+
+  /* A kereső sáv kisebb belső margói */
+  .search-bar {
+    padding: 0.6rem 1rem;
+  }
+
+  /* A kártyákon belüli szövegek kisebbek lesznek, hogy elférjenek */
+  .event-main h3 {
+    font-size: 1rem;
+  }
+  
+  .event-main p {
+    font-size: 0.7rem;
+  }
+
+  /* A dátum doboz is picit kisebb lehet */
+  .date-box {
+    min-width: 50px;
+    padding: 0.25rem 0.35rem;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .event-row {
+    flex-direction: column; /* Egymás alá rakja a szöveget és a dátumot */
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .event-right {
+    width: 100%;
+    justify-content: space-between; /* A Details felirat balra, a dátum jobbra kerül a kártya alján */
   }
 }
