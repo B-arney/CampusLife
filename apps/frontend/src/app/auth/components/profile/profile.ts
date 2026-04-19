@@ -47,6 +47,7 @@ export class Profile implements OnInit {
   constructor() {
     this.form = this.formBuilder.group({
       username: ['', Validators.required],
+      email: [{ value: '', disabled: true }],
       major: [''],
       interests: [[]]
     });
@@ -68,6 +69,7 @@ export class Profile implements OnInit {
 
         this.form.patchValue({
           username: user.username,
+          email: user.email,
           major: user.major,
           interests: interests
         });

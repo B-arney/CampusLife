@@ -64,7 +64,7 @@
               <p-message severity="error" size="small" variant="simple">Must contain a number.</p-message>
             }
             @if (!passwordStrengthErrors.hasSpecialChar) {
-              <p-message severity="error" size="small" variant="simple">Must contain a special character (e.g., !@#?).</p-message>
+              <p-message severity="error" size="small" variant="simple">Must contain a special character (e.g., !@?).</p-message>
             }
             @if (passwordStrengthErrors.hasForbiddenChars) {
               <p-message severity="error" size="small" variant="simple">Cannot contain '<' or '>'.</p-message>
