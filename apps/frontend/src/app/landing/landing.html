@@ -42,32 +42,34 @@
 	</header>
 	
 	<div class="events-container">
-	<div class="event-card">
-		<div class="event-details">
-		<span class="event-name">EVENT 1</span>
-		<span class="event-loc">
-			<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-			Helyszín
-		</span>
-		</div>
-		<div class="event-date-box">
-		<span class="date-num">12</span>
-		<span class="date-month">MARCH</span>
-		</div>
-	</div>
-
-	<div class="event-card">
-		<div class="event-details">
-		<span class="event-name">EVENT 2</span>
-		<span class="event-loc">
-			<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-			Helyszín
-		</span>
-		</div>
-		<div class="event-date-box">
-		<span class="date-num">15</span>
-		<span class="date-month">MARCH</span>
-		</div>
-	</div>
+		@defer {
+			@for (event of eventService.eventsList(); track $index) {
+				<a class="event-card" routerLink="/events/{{ event.id }}">
+					<div class="event-details">
+						<span class="event-name">{{ event.title }}</span>
+						<span class="event-loc">
+							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+							{{ event.location }}
+						</span>
+					</div>
+					<div class="event-date-box">
+						<span class="date-num">{{ event.startsAt| date:'dd' }}</span>
+						<span class="date-month">{{ event.startsAt | date:'MMM' }}</span>
+					</div>
+				</a>
+			} @empty {
+				<div class="event-card">
+					<p>We couldn't find any events. Please check back later.</p>
+				</div>
+			}
+		} @loading {
+			<div class="event-card">
+				<p>Loading events...</p>
+			</div>
+		} @error {
+			<div class="event-card">
+				<p>Failed to load events. Please try again later.</p>
+			</div>
+		}
 	</div>
 </div>

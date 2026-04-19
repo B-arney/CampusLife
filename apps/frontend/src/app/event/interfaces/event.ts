@@ -9,7 +9,7 @@ export interface CampusEvent {
   hostName: string;
   hostId: number;
   interests?: string[];
-  rsvpCount: number;
+  rsvpCount?: number;
   imageUrl?: string;
   mapUrl?: string;
   hasUserRsvped?: boolean;
@@ -25,9 +25,7 @@ export interface CreateEventRequest {
   imageUrl?: string;
 }
 
-export type UpdateEventRequest = CreateEventRequest;
-
-export interface CreateEventResponse {
+export interface UpdateEventRequest {
   event: {
     id: number;
     title: string;
@@ -40,25 +38,4 @@ export interface CreateEventResponse {
     hostId: number;
     createdAt: string;
   };
-}
-
-export interface EventSummary {
-  id: number;
-  title: string;
-  description: string;
-  startsAt: string;
-  location: string;
-  category: string;
-  imageUrl: string | null;
-  interests: unknown;
-  hostId: number;
-  createdAt: string;
-}
-
-export interface SingleEventResponse {
-  event: EventSummary;
-}
-
-export interface ListEventsResponse {
-  events: EventSummary[];
 }

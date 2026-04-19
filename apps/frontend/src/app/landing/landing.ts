@@ -1,16 +1,22 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Auth } from '../auth/services/auth';
+import { EventService } from '../event/services/event-service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, DatePipe],
   templateUrl: './landing.html',
   styleUrls: ['./landing.css']
 })
-export class Landing {
-  private readonly authService = inject(Auth);
+export class Landing implements OnInit{
+	eventService = inject(EventService);
+
+	ngOnInit(): void {
+		this.eventService.getAllEvents().subscribe();
+	}
+
   currentNewsIndex: number = 0;
   totalNews: number = 3;
 
@@ -27,9 +33,5 @@ export class Landing {
   // Pöttyre kattintás
   setNews(index: number) {
     this.currentNewsIndex = index;
-  }
-
-  logout(): void {
-    this.authService.logout();
   }
 }

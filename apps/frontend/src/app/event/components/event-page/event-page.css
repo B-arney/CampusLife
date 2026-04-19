@@ -46,11 +46,11 @@
   padding: 0.65rem 0.7rem 0.65rem 1rem;
   margin-bottom: 0.68rem;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
 
-.event-row:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+  &:hover {
+	background-color: #003a70;
+	border-color: #DFD06C;
+  }
 }
 
 .event-main h3 {

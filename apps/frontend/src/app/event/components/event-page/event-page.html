@@ -9,45 +9,46 @@
 	</div>
 </header>
 <div class="tab-row">
-	<button type="button" class="tab-btn" [class.active]="activeTab === 'upcoming'" (click)="setTab('upcoming')">
+	<button type="button" class="tab-btn" [class.active]="activeTab() === 'upcoming'" (click)="setTab('upcoming')">
 		Upcoming Events
 	</button>
-	<button type="button" class="tab-btn" [class.active]="activeTab === 'past'" (click)="setTab('past')">
+	<button type="button" class="tab-btn" [class.active]="activeTab() === 'past'" (click)="setTab('past')">
 		Past Events
 	</button>
 </div>
 
-<p class="loading-text" *ngIf="loading">Loading events...</p>
-<p class="error-text" *ngIf="!loading && error">{{ error }}</p>
+@defer {
+	<div class="event-list">
+		@for (event of filteredEvents(); track $index) {
+			<a class="event-row" routerLink="/events/{{ event.id }}">
+				<div class="event-main">
+					<h3>{{ event.title }}</h3>
+					<p>
+						<span class="location-icon">&#128205;</span>
+						{{ event.location || 'Location TBD' }}
+					</p>
+					<p class="meta-line">
+						{{ formatDateTime(event.startsAt) }} • {{ event.category }} • RSVP: {{ event.rsvpCount }}
+					</p>
+				</div>
 
-<div class="event-list" *ngIf="!loading && !error" (scroll)="onListScroll($event)">
-	<a *ngFor="let event of visibleEvents; trackBy: trackByEventId" class="event-row"
-		[routerLink]="['/events', event.id]">
-		<div class="event-main">
-			<h3>{{ event.title }}</h3>
-			<p>
-				<span class="location-icon">&#128205;</span>
-				{{ event.location || 'Location TBD' }}
-			</p>
-			<p class="meta-line">
-				{{ formatDateTime(event.startsAt) }} • {{ event.category }} • RSVP: {{ event.rsvpCount }}
-			</p>
-		</div>
-
-		<div class="event-right">
-			<span class="details">Details</span>
-			<div class="date-box">
-				<span class="day">{{ formatDay(event.startsAt) }}</span>
-				<span class="month">{{ formatMonth(event.startsAt) }}</span>
-			</div>
-		</div>
-	</a>
-
-	<p class="empty-state" *ngIf="visibleEvents.length === 0">
-		{{ emptyStateMessage }}
-	</p>
-
-	<p class="scroll-hint" *ngIf="visibleEvents.length > 0 && canLoadMore">
-		Scroll to load more events...
-	</p>
-</div>
+				<div class="event-right">
+					<span class="details">Details</span>
+					<div class="date-box">
+						<span class="day">{{ event.startsAt | date:'dd' }}</span>
+						<span class="month">{{ event.startsAt | date:'MMM' }}</span>
+					</div>
+				</div>
+			</a>
+		} @empty {
+			<p class="empty-state">No events found.</p>
+		} @defer () {}
+		@if (visibleEvents.length > 0 && canLoadMore) {
+			<p class="scroll-hint">Scroll to load more events...</p>
+		}
+	</div>
+} @loading {
+	<p class="loading-text">Loading events...</p>
+} @error {
+	<p class="error-text">{{ error }}</p>
+}

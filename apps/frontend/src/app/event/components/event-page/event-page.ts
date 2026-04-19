@@ -1,27 +1,44 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CampusEvent } from '../../interfaces/event';
 import { EventService } from '../../services/event-service';
 import { RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { Auth } from '../../../auth/services/auth';
+import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-event-page',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, DatePipe],
   templateUrl: './event-page.html',
   styleUrl: './event-page.css',
 })
 export class EventPage implements OnInit {
-  private readonly eventService = inject(EventService);
-  private readonly authService = inject(Auth);
+  eventService = inject(EventService);
 
   allEvents: CampusEvent[] = [];
   upcomingEvents: CampusEvent[] = [];
   pastEvents: CampusEvent[] = [];
   visibleEvents: CampusEvent[] = [];
 
-  activeTab: 'upcoming' | 'past' = 'upcoming';
+//   activeTab: 'upcoming' | 'past' = 'upcoming';
+  activeTab = signal<'upcoming' | 'past'>('upcoming');
+
+  filteredEvents = computed(() => {
+    const allEvents = this.eventService.eventsList();
+    const currentTab = this.activeTab();
+    const now = new Date().getTime();
+
+    return allEvents.filter(event => {
+      const eventTime = new Date(event.startsAt).getTime();
+      
+      // jövőbeli
+      if (currentTab === 'upcoming') {
+        return eventTime >= now;
+      }
+      // múltbeliek
+      return eventTime < now;
+    });
+  });
+
   loading = true;
   error: string | null = null;
   private readonly pageSize = 7;
@@ -55,7 +72,7 @@ export class EventPage implements OnInit {
   }
 
   get emptyStateMessage(): string {
-    if (this.activeTab === 'upcoming') {
+    if (this.activeTab() === 'upcoming') {
       return 'No upcoming events. Check back later!';
     }
     return 'No past events yet.';
@@ -63,14 +80,6 @@ export class EventPage implements OnInit {
 
   get canLoadMore(): boolean {
     return this.visibleCount < this.getActiveSource().length;
-  }
-
-  setTab(tab: 'upcoming' | 'past'): void {
-    if (this.activeTab === tab) {
-      return;
-    }
-    this.activeTab = tab;
-    this.resetVisibleEvents();
   }
 
   onListScroll(event: Event): void {
@@ -93,20 +102,12 @@ export class EventPage implements OnInit {
     return event.id;
   }
 
-  formatMonth(dateStr: string): string {
-    return new Date(dateStr).toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
-  }
-
-  formatDay(dateStr: string): string {
-    return String(new Date(dateStr).getDate());
-  }
-
   formatDateTime(dateStr: string): string {
     return new Date(dateStr).toLocaleString();
   }
 
-  logout(): void {
-    this.authService.logout();
+  setTab(tab: 'upcoming' | 'past') {
+    this.activeTab.set(tab);
   }
 
   private resetVisibleEvents(): void {
@@ -119,6 +120,6 @@ export class EventPage implements OnInit {
   }
 
   private getActiveSource(): CampusEvent[] {
-    return this.activeTab === 'upcoming' ? this.upcomingEvents : this.pastEvents;
+    return this.activeTab() === 'upcoming' ? this.upcomingEvents : this.pastEvents;
   }
 }
