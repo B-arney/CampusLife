@@ -21,10 +21,9 @@
   letter-spacing: 5px; 
   white-space: nowrap; 
   color: white;
-  -webkit-text-stroke: 1.5px black; 
   margin: 0;
   text-align: center;
-  font-weight: 900;
+  font-weight: bold;
   text-transform: uppercase;
   flex-shrink: 0;
 }
@@ -123,4 +122,10 @@
 
 .sidebar .sidebar-bottom .logout-btn:hover {
   background-color: #92272d;
+}
+
+@media screen and (width <= 900px) {
+	.sidebar {
+		display: none;
+	}	
 }

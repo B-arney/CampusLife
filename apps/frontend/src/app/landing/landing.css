@@ -1,47 +1,10 @@
 .section {
-  margin-bottom: 50px;
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
+  margin: 0 auto;
 
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center; /* Visszaraktuk centerre a jobb kinézetért */
-  margin-bottom: 20px;
-}
-
-.section-header h2 {
-  font-size: 24px;
-  font-weight: 900;
-  letter-spacing: 15px;
-  margin: 0;
-  color: white;
-  line-height: 1;
-  text-shadow: 2px 2px 0px rgba(0,0,0,0.8);
-  white-space: nowrap; /* JAVÍTÁS: Tilos a sortörés! (E V E N T S egyben marad) */
-  flex-shrink: 0;
-  -webkit-text-stroke: 0.8px black;
-}
-
-.section-header .view-all {
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-align: right;
-  color: white;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  height: 51px;
-  white-space: nowrap; /* JAVÍTÁS: Tilos a sortörés! */
-  flex-shrink: 0;
-  -webkit-text-stroke: 0.8px black;
-}
-
-.section-header .view-all:hover {
-  text-decoration: underline;
+  + .section {
+	margin-top: 50px;
+  }
 }
 
 /* --- NEWS CAROUSEL --- */
@@ -161,10 +124,9 @@
 .main-title {
   font-family: 'Poppins', sans-serif;
   font-size: 64px; /* A terveden látható nagy méret */
-  font-weight: 900;
+  font-weight: bold;
   letter-spacing: 20px;
   color: white;
-  -webkit-text-stroke: 2px black; /* Erőteljesebb körvonal a kiemeléshez */
   margin: 0;
   line-height: 1;
 }
@@ -189,35 +151,6 @@
   max-width: 900px;
   margin: 40px auto;
   padding: 0 20px;
-}
-
-/* Fejléc: Cím és Link egy vonalban */
-.events-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 25px;
-}
-
-.events-title {
-  font-family: 'Poppins', sans-serif;
-  font-size: 36px;
-  font-weight: 900;
-  letter-spacing: 15px;
-  color: white;
-  -webkit-text-stroke: 1.5px black;
-  margin: 0;
-  line-height: 1;
-}
-
-.events-link {
-  font-family: 'Poppins', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 3px;
-  color: white;
-  text-decoration: none;
-  text-transform: uppercase;
 }
 
 /* Esemény kártyák listája */

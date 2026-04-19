@@ -1,8 +1,10 @@
 <div class="section">
-	<div class="section-header">
-	<h2>N E W S</h2>
-	<a [routerLink]="['/news']" class="view-all">ALL NEWS</a>
-	</div>
+	<header>
+		<h2>NEWS</h2>
+		<div class="actions">
+			<a routerLink="/news">ALL NEWS</a>
+		</div>
+	</header>
 
 	<div class="news-carousel-wrapper">
 	<button class="nav-arrow left" (click)="prevNews()">
@@ -32,10 +34,12 @@
 </div>
 
 <div class="section">
-	<div class="section-header">
-	<h2>E V E N T S</h2>
-	<a [routerLink]="['/events']" class="view-all">ALL EVENTS</a>
-	</div>
+	<header>
+		<h2>events</h2>
+		<div class="actions">
+			<a routerLink="/events">ALL EVENTS</a>
+		</div>
+	</header>
 	
 	<div class="events-container">
 	<div class="event-card">

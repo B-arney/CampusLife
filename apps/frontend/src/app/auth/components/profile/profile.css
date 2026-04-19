@@ -126,72 +126,38 @@
   align-items: flex-start;
 }
 
-.interests-container {
-  background: #002d52;
-  border: 2.5px solid white;
-  border-radius: 30px;
-  min-height: 220px;
-  padding: 15px 20px;
-}
-
 ::ng-deep .custom-prime-multiselect {
-  background: transparent !important;
-  border: none !important;
-  width: 100% !important;
+  padding: 12px;
+  border-radius: 30px !important;
+  border-width: 2.5px 2.5px 0.5px 2.5px !important;
+  background: #002d52 !important;
   display: flex !important;
   align-items: flex-start !important;
 }
-
 ::ng-deep .custom-prime-multiselect .p-multiselect-label {
   padding: 0 !important;
-  display: flex !important;
   flex-wrap: wrap !important;
-  gap: 10px !important; 
 }
-
 ::ng-deep .p-multiselect-chip {
   background: #002d52 !important;
   border: 2px solid white !important;
   color: white !important;
   border-radius: 20px !important;
-  padding: 8px 20px !important;
-  font-weight: 700 !important;
-  margin: 0 !important; 
+  padding: 8px 8px 8px 14px !important;
+  font-weight: bold !important;
+  margin: 0 !important;
 }
 
-::ng-deep .custom-prime-multiselect .p-placeholder {
-  display: none !important; 
+::ng-deep .p-chip-remove-icon {
+color: white !important;
 }
 
-/* ==========================================
-   HIVATALOS + GOMB FORMÁZÁS
-   ========================================== */
 .add-interest-icon {
-  width: 65px;
-  height: 40px;
-  background: transparent;
-  border: 2.5px solid white;
-  border-radius: 20px;
-  color: white;
-  font-size: 32px;
-  font-weight: 300;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  line-height: 1;
-  transition: all 0.2s ease;
-  padding-bottom: 4px;
-}
+	width: 40px;
+	height: 40px;
+	/* color: white; */
 
-.add-interest-icon:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-::ng-deep .custom-prime-multiselect .p-multiselect-trigger {
-  background: transparent !important;
-  border: none !important;
-  width: auto !important;
-  margin-left: 15px !important;
-  padding: 0 !important;
+	&:hover {
+		fill: rgba(255, 255, 255, 0.1);
+	}
 }

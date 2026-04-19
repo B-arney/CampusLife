@@ -13,11 +13,11 @@ import { MenubarModule } from 'primeng/menubar';
 import { RippleModule } from 'primeng/ripple';
 import { MenuItem } from 'primeng/api';
 import { Auth } from '../../services/auth';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
-  imports: [ReactiveFormsModule, MultiSelectModule, InputTextModule, ButtonModule, MessageModule, ToastModule, AvatarModule, BadgeModule, MenubarModule, RippleModule, RouterLink],
+  imports: [ReactiveFormsModule, MultiSelectModule, InputTextModule, ButtonModule, MessageModule, ToastModule, AvatarModule, BadgeModule, MenubarModule, RippleModule],
   providers: [MessageService],
   templateUrl: './profile.html',
   styleUrl: './profile.css',

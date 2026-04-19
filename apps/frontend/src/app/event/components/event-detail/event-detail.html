@@ -8,27 +8,27 @@
       </div>
 
       <div class="details-grid">
-        <label>Event neve</label>
+        <label>Name</label>
         <div class="field-pill">{{ selectedEvent.title }}</div>
 
-        <label>Rovid leiras</label>
+        <label>Description</label>
         <div class="field-box description">{{ selectedEvent.description }}</div>
 
-        <label>Datum</label>
+        <label>Date</label>
         <div class="date-row">
           <span class="date-pill month">{{ selectedEvent.startsAt | date: 'MMM' }}</span>
           <span class="date-pill day">{{ selectedEvent.startsAt | date: 'd' }}</span>
           <span class="date-time">{{ selectedEvent.startsAt | date: 'HH:mm' }}</span>
         </div>
 
-        <label>Helyszin</label>
+        <label>Location</label>
         <div class="location-row">
           <span class="pin">&#x1F4CD;</span>
           <span>{{ selectedEvent.location || 'Online / TBD' }}</span>
           <a *ngIf="selectedEvent.mapUrl" [href]="selectedEvent.mapUrl" target="_blank" rel="noreferrer">Map</a>
         </div>
 
-        <label>Erdeklodesi kor</label>
+        <label>Tags</label>
         <div class="field-box tags">
           <span class="tag-chip">{{ selectedEvent.category }}</span>
           <span class="tag-chip">{{ selectedEvent.hostName }}</span>

@@ -40,18 +40,18 @@
         }
       </div>
 
-      <div class="auth-link-container">
-        <div class="link-left">
-        <a [routerLink]="['/registration']" class="outlined-link">Don't have<br>an account?</a>
-        </div>
-        <div class = "link-right">
-        <a [routerLink]="['/forgot-password']" class="outlined-link">Forgot<br>Password</a>
-        </div>
-      </div>
-
-      <button pButton type="submit" [disabled]="form.invalid" [loading]="isLoading" class="login-btn" style="background: #063274 !important; border-color: #063274 !important; width: 100%; border-radius: 8px;">
+      <button pButton type="submit" [disabled]="form.invalid" [loading]="isLoading" class="submit-btn">
           <span pButtonLabel>Login</span>
       </button>
+
+      <div class="auth-link-container">
+        <div class="link-left">
+        	<a [routerLink]="['/registration']" class="outlined-link">Don't have an account?</a>
+        </div>
+        <div class = "link-right">
+        	<a [routerLink]="['/forgot-password']" class="outlined-link">Forgot Password</a>
+        </div>
+      </div>
       
     </form>
   </div>
