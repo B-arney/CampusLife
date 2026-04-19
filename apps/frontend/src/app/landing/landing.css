@@ -6,6 +6,38 @@
 	margin-top: 50px;
   }
 }
+header{
+  max-width: 860px; 
+  width: 100%;
+  margin: 3rem auto 1.5rem auto; 
+  padding: 0; 
+  display: flex;
+  justify-content: space-between; 
+  align-items: center; 
+}
+header h2{
+  color: #f0efff;
+  font-size: 4rem;
+  letter-spacing: 0.2rem;
+  margin: 0;
+  padding-left: 0;
+  text-transform: uppercase;
+  text-align: left;
+}
+.actions{
+  color: #f0efff;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.actions:hover {
+  opacity: 0.7;
+}
+
 
 /* --- NEWS CAROUSEL --- */
 .news-carousel-wrapper {

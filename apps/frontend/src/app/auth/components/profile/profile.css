@@ -1,5 +1,7 @@
 .profile-container {
   max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 /* --- HEADER --- */
@@ -11,11 +13,12 @@
 }
 
 .main-title {
-  font-size: 24px;
-  font-weight: 900;
-  letter-spacing: 12px;
-  -webkit-text-stroke: 1.5px black;
+  color: #f0efff;              
+  font-size: 4rem;         
+  font-weight: bold;          
+  letter-spacing: 0.2rem;     
   margin: 0;
+  text-transform: uppercase;  
 }
 
 /* --- AVATAR ÉS SAVE GOMB --- */
@@ -160,4 +163,69 @@ color: white !important;
 	&:hover {
 		fill: rgba(255, 255, 255, 0.1);
 	}
+}
+/* --- MOBIL OPTIMALIZÁLÁS: PROFIL OLDAL (max-width: 768px) --- */
+@media (max-width: 768px) {
+  
+  /* Cím kisebbre vétele és középre igazítása (ha eddig nem volt) */
+  .profile-header .main-title {
+    font-size: 2rem;
+    letter-spacing: 0.2rem;
+    text-align: center;
+  }
+
+  /* Az avatar szekció elemeinek egymás alá rendezése */
+  .avatar-section {
+    flex-direction: column; /* Egymás alá rakja az elemeket */
+    align-items: center;    /* Középre igazítja az egész oszlopot */
+    gap: 20px;            /* Távolság az elemek között */
+    margin-bottom: 2rem;
+  }
+
+  /* Biztosítjuk, hogy az avatar kör alakú maradjon és ne torzuljon */
+  .avatar-circle {
+    width: 100px;         /* Kisebb átmérő mobilon */
+    height: 100px;
+    flex-shrink: 0;       /* Megakadályozza, hogy összenyomódjon */
+  }
+
+  /* A gombok igazítása és méretezése */
+  .file-upload-wrapper, 
+  .save-btn {
+    width: 100%;          /* Teljes szélességű gombok */
+    max-width: 250px;     /* De ne legyenek túl szélesek */
+    text-align: center;
+    margin: 0;            /* Reseteljük az esetleges korábbi margókat */
+    display: flex;        /* A tartalom középre igazításához */
+    justify-content: center;
+  }
+  
+  .add-file-btn {
+      width: 100%;        /* A label is töltse ki a konténert */
+      box-sizing: border-box; /* A padding ne növelje a szélességet */
+  }
+
+  /* --- ŰRLAP MEZŐK MOBILON --- */
+  
+  /* A rács (grid) megszüntetése, egymás alá (oszlopba) rendezés */
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Balra igazítás */
+    gap: 8px;              /* Kisebb távolság a címke és a mező között */
+    width: 100%;
+  }
+
+  /* Címkék (Label) formázása mobilon */
+  .form-row label {
+    font-size: 18px;       /* Kisebb betűméret */
+    margin-left: 10px;     /* Picit beljebb húzzuk, hogy igazodjon a mező kerekítéséhez */
+  }
+
+  /* Input mezők igazítása */
+  .rounded-input,
+  ::ng-deep .custom-prime-multiselect {
+      width: 100%;         /* Töltse ki a rendelkezésre álló helyet */
+      box-sizing: border-box; /* A padding miatt ne csússzon ki a képernyőről */
+  }
 }

@@ -26,3 +26,23 @@
       <button class="logout-btn" (click)="authService.logout()">LOG OUT</button>
     </div>
   </div>
+  <div class="sidebar">
+  </div>
+
+<nav class="mobile-navbar">
+  <div class="logo">CAMPUS LIFE</div>
+  
+  <button class="hamburger-btn" (click)="toggleMenu()">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18" />
+    </svg>
+  </button>
+
+  <div class="nav-links" [class.open]="isMenuOpen">
+    <a [routerLink]="['/landing']" routerLinkActive="active-link" (click)="closeMenu()">HOME</a>
+    <a [routerLink]="['/profile']" routerLinkActive="active-link" (click)="closeMenu()">PROFILE</a>
+    <a [routerLink]="['/events']" routerLinkActive="active-link" (click)="closeMenu()">EVENTS</a>
+    <a [routerLink]="['/news']" routerLinkActive="active-link" (click)="closeMenu()">NEWS</a>
+    <a class="logout-mobile" (click)="authService.logout(); closeMenu()">LOG OUT</a>
+  </div>
+</nav>

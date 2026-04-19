@@ -124,8 +124,102 @@
   background-color: #92272d;
 }
 
-@media screen and (width <= 900px) {
-	.sidebar {
-		display: none;
-	}	
+.mobile-navbar {
+  display: none; /* Asztali gépen nem látszik! */
+}
+
+/* =========================================
+   MOBIL NÉZET (900px alatt)
+   ========================================= */
+@media screen and (max-width: 900px) {
+  
+  /* A te meglévő szabályod (biztonság kedvéért itt hagyjuk) */
+  .sidebar {
+    display: none;
+  }
+
+  /* Megjelenítjük a mobilos sávot a képernyő tetején */
+  .mobile-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background-color: #063274; /* A te sötétkék színed */
+    position: fixed; /* Fixen a képernyő tetején marad */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    box-sizing: border-box;
+  }
+
+  .mobile-navbar .logo {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+  }
+
+  .hamburger-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .hamburger-btn svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Lenyíló menü beállításai */
+  .mobile-navbar .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #052659; /* Picit sötétebb kék a lenyíló résznek */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 0;
+    
+    /* Animáció beállítások */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+  }
+
+  /* Amikor az isMenuOpen = true */
+  .mobile-navbar .nav-links.open {
+    max-height: 400px; /* Ebbe biztosan belefér minden link */
+    padding: 20px 0;
+  }
+
+  .mobile-navbar .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 2px;
+    transition: color 0.2s;
+  }
+
+  .mobile-navbar .nav-links a:active,
+  .mobile-navbar .nav-links a.active-link {
+    color: #D4C9A0; /* A te arany színed hover/aktív állapotban */
+  }
+
+  /* Külön stílus a Logout gombnak mobilon */
+  .mobile-navbar .nav-links .logout-mobile {
+    color: #ff6b6b;
+    margin-top: 10px;
+  }
 }
