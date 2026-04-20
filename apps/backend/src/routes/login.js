@@ -14,12 +14,52 @@ function getCookieOptions() {
 export default async function loginRoutes(fastify) {
   fastify.post('/login', {
     schema: {
+      tags: ['Authentication'],
+      summary: 'Authenticate user and return token',
+      params: {
+        type: 'object',
+        properties: {
+          email: { type: 'string', format: 'email' },
+          password: { type: 'string', minLength: 8 }
+        },
+        required: ['email', 'password']
+      },
       body: {
         type: 'object',
         required: ['email', 'password'],
         properties: {
           email: { type: 'string', format: 'email' },
           password: { type: 'string', minLength: 8 }
+        }
+      },
+      response: {
+        200: {
+          type: 'object',
+          properties: {
+            message: { type: 'string' },
+            token: { type: 'string' },
+            user: {
+              type: 'object',
+              properties: {
+                id: { type: 'integer' },
+                username: { type: 'string' },
+                email: { type: 'string', format: 'email' },
+                displayName: { type: 'string', nullable: true }
+              }
+            }
+          }
+        },
+        401: {
+          type: 'object',
+          properties: {
+            error: { type: 'string' }
+          }
+        },
+        403: {
+          type: 'object',
+          properties: {
+            error: { type: 'string' }
+          }
         }
       }
     }
@@ -65,7 +105,20 @@ export default async function loginRoutes(fastify) {
     })
   })
 
-  fastify.post('/logout', async (_request, reply) => {
+  fastify.post('/logout', {
+    schema: {
+      tags: ['Authentication'],
+      summary: 'Log out the user',
+      response: {
+        200: {
+          type: 'object',
+          properties: {
+            message: { type: 'string' }
+          }
+        }
+      }
+    }
+  }, async (_request, reply) => {
     reply.clearCookie('authToken', {
       path: '/'
     })
@@ -73,7 +126,35 @@ export default async function loginRoutes(fastify) {
     return reply.send({ message: 'Successful logout.' })
   })
 
-  fastify.get('/me', async (request, reply) => {
+  fastify.get('/me', {
+    schema: {
+      tags: ['Profile'],
+      summary: 'Get current user details',
+      response: {
+        200: {
+          type: 'object',
+          properties: {
+            user: {
+              type: 'object',
+              properties: {
+                id: { type: 'integer' },
+                username: { type: 'string' },
+                email: { type: 'string', format: 'email' },
+                displayName: { type: 'string', nullable: true },
+                isVerified: { type: 'boolean' }
+              }
+            }
+          }
+        },
+        401: {
+          type: 'object',
+          properties: {
+            error: { type: 'string' }
+          }
+        }
+      }
+    }
+  }, async (request, reply) => {
     try {
       await request.jwtVerify()
     } catch {

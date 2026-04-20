@@ -164,10 +164,13 @@ export class EditEvent implements OnInit {
     if (this.eventForm.invalid || this.isSaving || this.isLoading) return;
 
     this.isSaving = true;
+    
+    const rawDate = this.eventForm.value.date;
     const payload = {
-      ...this.eventForm.value,
-      interests: this.interests
-    };
+    ...this.eventForm.value,
+    date: rawDate ? new Date(rawDate).toISOString() : null,
+    interests: this.interests
+  };
 
     const req = this.isEditMode && this.eventId != null
       ? this.eventService.updateEvent(this.eventId, payload)

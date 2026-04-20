@@ -54,8 +54,8 @@ fastify.setErrorHandler((error, request, reply) => {
 await fastify.register(swagger, {
   openapi: {
     info: {
-      title: 'teszt',
-      description: 'teszt leírás',
+      title: 'API Documentation',
+      description: 'API documentation for the application',
       version: '0.0.1'
     }
   }
