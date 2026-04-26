@@ -60,17 +60,11 @@ services:
       - ./docker/pgadmin/setup.sh:/pgadmin4/setup.sh:ro
       - pgadmin_data:/var/lib/pgadmin
     entrypoint: ["/bin/sh", "/pgadmin4/setup.sh"]
-    labels:
-      caddy: testdb.campuslife.social
-      caddy.reverse_proxy: "{{upstreams 80}}"
     ports:
       - 5051:80
     depends_on:
       - postgres
-      - postgres_test
 volumes:
-  backend_node_modules: {}
-  frontend_node_modules: {}
   backend_node_modules:
   frontend_node_modules:
   pgadmin_data:
