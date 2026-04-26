@@ -24,13 +24,13 @@ PG_USER="POSTGRES_USER"
 if grep -q "^$PG_USER=[^[:space:]]" .env 2>/dev/null; then
     echo "$PG_USER már rendelkezik értékkel, nem módosítottuk."
 else
-    USER=$(tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 16)
+    PG_USER_VALUE=$(tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 16)
     if grep -q "^$PG_USER=" .env 2>/dev/null; then
-        sed -i "s/^$PG_USER=.*/$PG_USER=$USER/" .env
+        sed -i "s/^$PG_USER=.*/$PG_USER=$PG_USER_VALUE/" .env
     else
-        echo "$PG_USER=$USER" >> .env
+        echo "$PG_USER=$PG_USER_VALUE" >> .env
     fi
-    echo "$PG_USER felhasználó létrehozva: $USER"
+    echo "$PG_USER felhasználó létrehozva: $PG_USER_VALUE"
 fi
 
 DB_URL="DATABASE_URL"
@@ -50,9 +50,12 @@ else
     echo "$DB_URL hozzáadva az .env fájlhoz."
 fi
 
-docker build -t campuslife-backend -f docker/backend.Dockerfile .
-docker build -t campuslife-frontend -f docker/frontend.Dockerfile .
+docker build -t campuslife-backend:test -f docker/backend.Dockerfile .
+docker build -t campuslife-frontend:test -f docker/frontend.Dockerfile .
 
 echo "Images built successfully."
+
+export UID=$(id -u)
+export GID=$(id -g)
 
 docker compose up
