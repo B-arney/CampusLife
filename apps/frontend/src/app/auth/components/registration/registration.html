@@ -1,0 +1,104 @@
+<p-toast></p-toast>
+
+<div class="wrapper">
+  <div class="login-hero">
+    <h2 class="title">CAMPUS LIFE</h2>
+    <p class="sub-title"><i>Where all your events<br>organized in one place</i></p>
+    <img ngSrc="assets/Logo.png" alt="logo" width="280" height="280" priority class="hero-logo" />
+  </div>
+
+  <div class="login-container">
+    <h2 class="form-title">REGISTER</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      
+      <div class="form-group">
+        <input pInputText type="email" id="email" placeholder="Enter email" formControlName="email"
+          [invalid]="isInvalid('email')" class="custom-input" />
+        @if (isInvalid('email')) {
+          @if (form.get('email')?.errors?.['required']) {
+            <p-message severity="error" size="small" variant="simple">Email is required.</p-message>
+          }
+          @if (form.get('email')?.errors?.['email']) {
+            <p-message severity="error" size="small" variant="simple">Please enter a valid email.</p-message>
+          }
+        }
+      </div>
+
+      <div class="form-group">
+        <input pInputText type="text" id="username" placeholder="Enter Username" formControlName="username"
+          [invalid]="isInvalid('username')" class="custom-input" />
+        @if (isInvalid('username')) {
+          <p-message severity="error" size="small" variant="simple">Username is required.</p-message>
+        }
+      </div>
+
+      <div class="form-group">
+        <p-password formControlName="password" 
+          placeholder="Password"
+          [toggleMask]="true"
+          [invalid]="isInvalid('password')" 
+          promptLabel="Choose a password" 
+          weakLabel="Too simple" 
+          mediumLabel="Average complexity" 
+          strongLabel="Complex password" 
+          autocomplete="off" 
+          fluid
+          styleClass="custom-password">
+        </p-password>
+        @if (isInvalid('password')) {
+          @if (form.get('password')?.errors?.['required']) {
+            <p-message severity="error" size="small" variant="simple">Password is required.</p-message>
+          }
+          @if (passwordStrengthErrors) {
+            @if (!passwordStrengthErrors.hasMinLength) {
+              <p-message severity="error" size="small" variant="simple">Must be at least 8 characters.</p-message>
+            }
+            @if (!passwordStrengthErrors.hasUpperCase) {
+              <p-message severity="error" size="small" variant="simple">Must contain an uppercase letter.</p-message>
+            }
+            @if (!passwordStrengthErrors.hasLowerCase) {
+              <p-message severity="error" size="small" variant="simple">Must contain a lowercase letter.</p-message>
+            }
+            @if (!passwordStrengthErrors.hasNumeric) {
+              <p-message severity="error" size="small" variant="simple">Must contain a number.</p-message>
+            }
+            @if (!passwordStrengthErrors.hasSpecialChar) {
+              <p-message severity="error" size="small" variant="simple">Must contain a special character (e.g., !@?).</p-message>
+            }
+            @if (passwordStrengthErrors.hasForbiddenChars) {
+              <p-message severity="error" size="small" variant="simple">Cannot contain '<' or '>'.</p-message>
+            }
+          }
+        }
+      </div>
+
+      <div class="form-group">
+        <p-password formControlName="passwordConfirm" 
+          placeholder="Password again"
+          [feedback]="false"
+          [invalid]="isInvalid('passwordConfirm')" 
+          fluid
+          styleClass="custom-password">
+        </p-password>
+        @if (isInvalid('passwordConfirm')) {
+          @if (form.get('passwordConfirm')?.errors?.['required']) {
+            <p-message severity="error" size="small" variant="simple">Password confirmation is required.</p-message>
+          }
+          @if (hasPasswordMismatch()) {
+            <p-message severity="error" size="small" variant="simple">Passwords don't match.</p-message>
+          }
+        }
+      </div>
+
+      <button pButton type="submit" [disabled]="form.invalid" [loading]="isLoading" class="submit-btn">
+        <span pButtonLabel>Sign Up</span>
+      </button>
+
+      <div class="auth-link-container">
+        <a [routerLink]="['/login']" class="outlined-link">Or Login</a>
+      </div>
+
+    </form>
+  </div>
+</div>

@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;0,700;0,800;0,900;1,700&display=swap');
+
+/* You can add global styles to this file, and also import other style files */
+/*
+  Josh's Custom CSS Reset
+  https://www.joshwcomeau.com/css/custom-css-reset/
+*/
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+*:not(dialog) {
+	margin: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		interpolate-size: allow-keywords;
+	}
+}
+
+body {
+	line-height: 1.5;
+	-webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+	display: block;
+	max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+	font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	overflow-wrap: break-word;
+}
+
+p {
+	text-wrap: pretty;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	text-wrap: balance;
+}
+
+#root,
+#__next {
+	isolation: isolate;
+}
+
+
+
+/* Scrollbar */
+*::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+	background: #eaeaea;
+}
+
+*::-webkit-scrollbar-thumb {
+	background: hsl(0, 0%, 77%);
+	border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+	background: #000000;
+}
+
+body {
+	margin: 0;
+	background-color: #f0f2f5;
+	font-family: 'Poppins', sans-serif;
+}
+
+/* TOP BAR */
+header {
+	width: min(860px, 100%);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 4rem;
+
+	h2 {
+		flex: 1;
+		text-align: center;
+		margin: 0;
+		color: #f0efff;
+		font-size: clamp(2rem, 3.3vw, 3.4rem);
+		font-weight: bold;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	.actions {
+		display: flex;
+		gap: .4rem;
+		flex-wrap: wrap;
+
+		a:not(.button) {
+			font-size: 14px;
+			font-weight: bold;
+			letter-spacing: 2px;
+			text-decoration: none;
+			color: white;
+			display: flex;
+			align-items: center;
+			height: 51px;
+			white-space: nowrap;
+			flex-shrink: 0;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+}
+
+.button {
+	min-width: 76px;
+	height: 46px;
+	border: 3px solid #f0efff !important;
+	border-radius: 20px !important;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	color: #f0efff !important;
+	font-size: 16px !important;
+	line-height: 1;
+	font-weight: bold;
+	background-color: hsl(216, 90%, 24%) !important;
+	cursor: pointer;
+	transition: all 0.1s ease-in-out;
+
+	&:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+	&:active:not(:disabled) {
+		transform: translate3d(0, 1px, 0) scale3d(0.98, 0.98, 0.98);
+	}
+
+	&:not(:disabled):hover {
+		background-color: hsl(208, 88%, 30%);
+	}
+
+	&:active:not(:disabled) {
+		background-color: hsl(208, 88%, 45%);
+	}
+
+	&.delete {
+		background-color: transparent;
+		color: #dc3545;
+		border-color: hsl(354, 70%, 54%);
+
+		&:hover:not(:disabled) {
+			background-color: hsla(0, 100%, 50%, 0.3);
+		}
+	}
+
+	span {
+		padding-inline: 0.4rem;
+	}
+
+	svg {
+		width: 24px;
+		height: 24px;
+	}
+
+	&.cta:hover {
+		color: hsl(216, 90%, 24%) !important;
+		background-color: white !important;
+	}
+}

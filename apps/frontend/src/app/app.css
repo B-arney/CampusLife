@@ -1,0 +1,15 @@
+.layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: #000000; 
+  overflow: hidden; 
+}
+
+.content {
+  flex: 1;
+  background: linear-gradient(180deg, #063274 0%, #032c5b 47%, #095190 100%); 
+  padding: 2rem 4rem; 
+  color: white;
+  overflow-y: auto; 
+}
