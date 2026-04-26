@@ -55,7 +55,9 @@ docker build -t campuslife-frontend:test -f docker/frontend.Dockerfile .
 
 echo "Images built successfully."
 
-export UID=$(id -u)
-export GID=$(id -g)
+export PUID=$(id -u)
+export PGID=$(id -g)
 
-docker compose up
+docker network create caddy 2>/dev/null || true
+
+docker compose up --force-recreate
