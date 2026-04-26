@@ -16,14 +16,6 @@ export default async function loginRoutes(fastify) {
     schema: {
       tags: ['Authentication'],
       summary: 'Authenticate user and return token',
-      params: {
-        type: 'object',
-        properties: {
-          email: { type: 'string', format: 'email' },
-          password: { type: 'string', minLength: 8 }
-        },
-        required: ['email', 'password']
-      },
       body: {
         type: 'object',
         required: ['email', 'password'],

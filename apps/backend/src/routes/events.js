@@ -14,10 +14,14 @@ export default async function eventRoutes(fastify) {
             properties: {
               id: { type: 'integer' },
               title: { type: 'string' },
+              shortDescription: { type: 'string', nullable: true },
               description: { type: 'string' },
               startsAt: { type: 'string', format: 'date-time' },
               location: { type: 'string' },
               category: { type: 'string' },
+              hostId: { type: 'integer' },
+              hostName: { type: 'string' },
+              imageUrl: { type: 'string', nullable: true },
               rsvpCount: { type: 'integer' },
               hasUserRsvped: { type: 'boolean' }
             }
@@ -67,10 +71,14 @@ export default async function eventRoutes(fastify) {
             properties: {
               id: { type: 'integer' },
               title: { type: 'string' },
+              shortDescription: { type: 'string', nullable: true },
               description: { type: 'string' },
               startsAt: { type: 'string', format: 'date-time' },
               location: { type: 'string' },
               category: { type: 'string' },
+              hostId: { type: 'integer' },
+              hostName: { type: 'string' },
+              imageUrl: { type: 'string', nullable: true },
               rsvpCount: { type: 'integer' },
               hasUserRsvped: { type: 'boolean' }
             }
@@ -118,11 +126,19 @@ export default async function eventRoutes(fastify) {
         201: {
           type: 'object',
           properties: {
+            id: { type: 'integer' },
+            message: { type: 'string' },
             title: { type: 'string' },
+            shortDescription: { type: 'string', nullable: true },
             description: { type: 'string' },
-            date: { type: 'string', format: 'date-time' },
+            startsAt: { type: 'string', format: 'date-time' },
             location: { type: 'string' },
             category: { type: 'string' },
+            hostId: { type: 'integer' },
+            hostName: { type: 'string' },
+            imageUrl: { type: 'string', nullable: true },
+            rsvpCount: { type: 'integer' },
+            hasUserRsvped: { type: 'boolean' }
           }
         },
         401: {
@@ -136,6 +152,12 @@ export default async function eventRoutes(fastify) {
           properties: {
             errors: { type: 'object' }
           }
+        },
+        404: {
+          type: 'object',
+          properties: {
+            error: { type: 'string' }
+          }
         }
       },
       body: {
@@ -146,19 +168,9 @@ export default async function eventRoutes(fastify) {
           description: { type: 'string', minLength: 1 },
           date: { type: 'string', format: 'date-time' },
           location: { type: 'string', minLength: 1 },
-          category: { type: 'string', minLength: 1 }
+          category: { type: 'string', minLength: 1 },
+          imageUrl: { type: 'string', format: 'uri', nullable: true }
         }
-      },
-      params: {
-        type: 'object',
-        properties: {
-          title: { type: 'string' },
-          description: { type: 'string' },
-          date: { type: 'string', format: 'date-time' },
-          location: { type: 'string' },
-          category: { type: 'string' }
-        },
-        required: ['title', 'description', 'date', 'location', 'category']
       }
     }
   }, async (request, reply) => {
@@ -216,10 +228,14 @@ export default async function eventRoutes(fastify) {
           properties: {
             id: { type: 'integer' },
             title: { type: 'string' },
+            shortDescription: { type: 'string', nullable: true },
             description: { type: 'string' },
             startsAt: { type: 'string', format: 'date-time' },
             location: { type: 'string' },
             category: { type: 'string' },
+            hostId: { type: 'integer' },
+            hostName: { type: 'string' },
+            imageUrl: { type: 'string', nullable: true },
             rsvpCount: { type: 'integer' },
             hasUserRsvped: { type: 'boolean' }
           }
@@ -304,10 +320,14 @@ export default async function eventRoutes(fastify) {
           properties: {
             id: { type: 'integer' },
             title: { type: 'string' },
+            shortDescription: { type: 'string', nullable: true },
             description: { type: 'string' },
             startsAt: { type: 'string', format: 'date-time' },
             location: { type: 'string' },
             category: { type: 'string' },
+            hostId: { type: 'integer' },
+            hostName: { type: 'string' },
+            imageUrl: { type: 'string', nullable: true },
             rsvpCount: { type: 'integer' },
             hasUserRsvped: { type: 'boolean' }
           }

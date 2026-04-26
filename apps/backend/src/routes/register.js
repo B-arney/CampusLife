@@ -8,21 +8,17 @@ export default async function registerRoutes(fastify) {
     schema: {
       tags: ['Authentication'],
       summary: 'User registration',
-      params: {
-        type: 'object',
-        properties: {
-          username: { type: 'string', minLength: 3 },
-          email: { type: 'string', format: 'email' },
-          password: { type: 'string', minLength: 8 },
-          passwordConfirm: { type: 'string', minLength: 8 }
-        },
-        required: ['username', 'password']
-      },
       response: {
         201: {
-        type: 'object',
+          type: 'object',
           properties: {
             message: { type: 'string' }
+          }
+        },
+        400: {
+          type: 'object',
+          properties: {
+            error: { type: 'string' }
           }
         }
       },
