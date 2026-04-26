@@ -45,8 +45,6 @@ services:
       - ./docker/postgres:/var/lib/postgresql/data
     ports:
       - ${POSTGRES_PORT}:5432
-    volumes:
-      - ./docker/postgres:/var/lib/postgresql/data
   pgadmin:
     image: dpage/pgadmin4
     environment:
