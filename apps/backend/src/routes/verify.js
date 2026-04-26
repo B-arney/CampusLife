@@ -3,31 +3,11 @@ import { prisma } from "../db.js"
 export default async function verifyRoutes(fastify) {
   fastify.get('/verify', {
     schema: {
-      tags: ['Authentication'],
-      summary: 'Verify user account with token',
       querystring: {
         type: 'object',
         required: ['token'],
         properties: {
           token: { type: 'string' }
-        }
-      },
-      response: {
-        302: {
-          type: 'string',
-          description: 'Redirect to login page with verification status'
-        },
-        404: {
-          type: 'object',
-          properties: {
-            error: { type: 'string' }
-          }
-        },
-        500: {
-          type: 'object',
-          properties: {
-            error: { type: 'string' }
-          }
         }
       }
     }

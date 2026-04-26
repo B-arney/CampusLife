@@ -1,28 +1,7 @@
 import { prisma } from '../db.js'
 
 export default async function profileRoutes(fastify) {
-  fastify.get('/profile', {
-    schema: {
-      tags: ['Profile'],
-      summary: 'Get user profile',
-      response: {
-        200: {
-          type: 'object',
-          properties: {
-            id: { type: 'integer' },
-            username: { type: 'string' },
-            email: { type: 'string', format: 'email' },
-            displayName: { type: 'string', nullable: true },
-            major: { type: 'string', nullable: true },
-            interests: { type: 'string', nullable: true },
-            profilePicture: { type: 'string', nullable: true }
-          }
-        },
-        401: { type: 'object', properties: { error: { type: 'string' } } },
-        404: { type: 'object', properties: { error: { type: 'string' } } }
-      }
-    }
-  }, async (request, reply) => {
+  fastify.get('/profile', async (request, reply) => {
     try {
       await request.jwtVerify()
     } catch (err) {
@@ -48,38 +27,7 @@ export default async function profileRoutes(fastify) {
     return reply.send(user)
   })
 
-  fastify.put('/profile', {
-    schema: {
-      tags: ['Profile'],
-      summary: 'Update user profile',
-      body: {
-        type: 'object',
-        properties: {
-          username: { type: 'string', nullable: true },
-          displayName: { type: 'string', nullable: true },
-          major: { type: 'string', nullable: true },
-          interests: { type: 'string', nullable: true },
-          profilePicture: { type: 'string', format: 'binary', nullable: true }
-        }
-      },
-      response: {
-        200: {
-          type: 'object',
-          properties: {
-            id: { type: 'integer' },
-            username: { type: 'string' },
-            email: { type: 'string', format: 'email' },
-            displayName: { type: 'string', nullable: true },
-            major: { type: 'string', nullable: true },
-            interests: { type: 'string', nullable: true },
-            profilePicture: { type: 'string', nullable: true }
-          }
-        },
-        401: { type: 'object', properties: { error: { type: 'string' } } },
-        500: { type: 'object', properties: { error: { type: 'string' } } }
-      }
-    }
-  }, async (request, reply) => {
+  fastify.put('/profile', async (request, reply) => {
     try {
       await request.jwtVerify()
     } catch (err) {
