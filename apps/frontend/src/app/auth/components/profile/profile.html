@@ -1,0 +1,79 @@
+<p-toast></p-toast>
+    
+<div class="profile-container">
+	
+	<div class="profile-header">
+		<h2 class="main-title">PROFILE VIEW</h2>
+	</div>
+
+	<form [formGroup]="form" class="profile-form">
+	
+		<div class="avatar-section">
+			<div class="avatar-circle">
+			@if (currentProfilePicture) {
+				<img [src]="currentProfilePicture" alt="Avatar">
+			} @else {
+				<i class="pi pi-image" style="font-size: 2rem; color: #999;"></i>
+			}
+			</div>
+			<div class="file-upload-wrapper">
+				<input type="file" id="profilePicture" accept="image/jpeg, image/png, image/webp" (change)="onFileSelect($event)" />
+				<label for="profilePicture" class="add-file-btn">Add file</label>
+			</div>
+			
+			<button pButton type="submit" (click)="onSubmit()" [disabled]="form.invalid" [loading]="isLoading" class="save-btn">Save</button>
+		</div>
+
+		<div class="form-fields-list">
+			<div class="form-row">
+				<label>Name</label>
+				<input type="text" formControlName="username" placeholder="Placeholder" class="rounded-input" />
+			</div>
+
+			<div class="form-row">
+				<label>Email address</label>
+				<input type="email" formControlName="email" class="rounded-input readonly-input" />
+			</div>
+
+			<div class="form-row">
+				<label>Major</label>
+				<input type="text" formControlName="major" placeholder="Placeholder" class="rounded-input" />
+			</div>
+
+			<div class="form-row interests-row">
+				<label>Interests</label>
+				<p-multiSelect id="interests" [options]="interestOptions" formControlName="interests"
+					optionLabel="label" optionValue="value" display="chip" [maxSelectedLabels]="10"
+					styleClass="custom-prime-multiselect" fluid>
+
+					<ng-template pTemplate="dropdownicon">
+						<svg class="add-interest-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.4" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+						</svg>
+					</ng-template>
+				</p-multiSelect>
+			</div>
+
+			<!-- <div class="form-row interests-row">
+			<label>Interest area</label>
+			<div class="interests-container">
+				<p-multiSelect 
+				id="interests" 
+				[options]="interestOptions" 
+				formControlName="interests" 
+				optionLabel="label" 
+				optionValue="value" 
+				display="chip"
+				[maxSelectedLabels]="10"
+				styleClass="custom-prime-multiselect">
+				
+				<ng-template pTemplate="dropdownicon">
+					<div class="add-interest-icon">+</div>
+				</ng-template>
+
+				</p-multiSelect>
+			</div>
+			</div> -->
+		</div> 
+	</form>
+</div> 

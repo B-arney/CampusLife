@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model user {
+  id Int @id @default(autoincrement())
+  email String @unique
+  username String @unique
+  displayName String?
+  password String
+  isVerified Boolean @default(false)
+  verificationToken String? @unique
+
+  hostedEvents event[] @relation("EventHost")
+  major String?
+  interests String?
+  profilePicture String?
+  rsvps rsvp[]
+}
+
+model event {
+  id Int @id @default(autoincrement())
+  title String
+  shortDescription String
+  description String
+  startsAt DateTime
+  location String?
+  category String
+  hostId Int?
+  host user? @relation("EventHost", fields: [hostId], references: [id], onDelete: SetNull)
+  hostName String
+  imageUrl String?
+  mapUrl String?
+  rsvps rsvp[]
+}
+
+model rsvp {
+  id Int @id @default(autoincrement())
+  eventId Int
+  userId Int
+  event event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user user @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([eventId, userId])
+}
