@@ -7,17 +7,12 @@ import { UserService } from '../../services/user-service';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { AvatarModule } from 'primeng/avatar';
-import { BadgeModule } from 'primeng/badge';
-import { MenubarModule } from 'primeng/menubar';
-import { RippleModule } from 'primeng/ripple';
-import { MenuItem } from 'primeng/api';
 import { Auth } from '../../services/auth';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
-  imports: [ReactiveFormsModule, MultiSelectModule, InputTextModule, ButtonModule, MessageModule, ToastModule, AvatarModule, BadgeModule, MenubarModule, RippleModule],
+  standalone: true,
+  imports: [ReactiveFormsModule, MultiSelectModule, InputTextModule, ButtonModule, MessageModule, ToastModule],
   providers: [MessageService],
   templateUrl: './profile.html',
   styleUrl: './profile.css',
@@ -27,14 +22,11 @@ export class Profile implements OnInit {
   private formBuilder = inject(FormBuilder);
   private userService = inject(UserService);
   private authService = inject(Auth);
-  private router = inject(Router);
 
   form: FormGroup;
   isLoading: boolean = false;
   selectedFile: File | null = null;
   currentProfilePicture: string | null = null;
-
-  items: MenuItem[] | undefined;
 
   interestOptions = [
     { label: 'Academic', value: 'Academic' },
@@ -76,34 +68,9 @@ export class Profile implements OnInit {
       },
       error: (err) => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Could not load profile data' });
+		console.error('Error loading profile:', err);
       }
     });
-
-    this.items = [
-      {
-        label: 'Home',
-        routerLink: '/'
-      },
-      {
-        label: 'Profile',
-        items: [
-          {
-            label: 'Edit',
-            routerLink: '/profile'
-          },
-          {
-            separator: true
-          },
-          {
-            label: 'Logout',
-            command: () => {
-              this.authService.logout();
-              this.router.navigate(['/login']);
-            }
-          },
-        ]
-      }
-    ];
   }
 
   onFileSelect(event: any) {
