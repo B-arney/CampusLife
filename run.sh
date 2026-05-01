@@ -50,8 +50,8 @@ else
     echo "$DB_URL hozzáadva az .env fájlhoz."
 fi
 
-docker build -t campuslife-backend:test -f docker/backend.Dockerfile .
-docker build -t campuslife-frontend:test -f docker/frontend.Dockerfile .
+docker build --no-cache -t campuslife-backend -f docker/backend.Dockerfile apps/backend
+docker build --no-cache -t campuslife-frontend -f docker/frontend.Dockerfile apps/frontend
 
 echo "Images built successfully."
 
