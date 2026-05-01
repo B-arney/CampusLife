@@ -14,11 +14,11 @@ export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'registration', component: Registration },
   { path: 'forgot-password', component: ForgotPassword },
-  { path: 'landing', component: Landing },
+  { path: 'landing', component: Landing, canActivate: [authGuard] },
   { path: 'profile', component: Profile, canActivate: [authGuard] },
-  { path: 'events', component: EventPage },
-  { path: 'events/new', component: EditEvent },
-  { path: 'events/:id', component: EventDetail },
-  { path: 'events/:id/edit', component: EditEvent },
+  { path: 'events', component: EventPage, canActivate: [authGuard] },
+  { path: 'events/new', component: EditEvent, canActivate: [authGuard] },
+  { path: 'events/:id', component: EventDetail, canActivate: [authGuard] },
+  { path: 'events/:id/edit', component: EditEvent, canActivate: [authGuard] },
 ];
 ////
