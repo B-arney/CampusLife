@@ -12,6 +12,7 @@ import { PasswordModule } from 'primeng/password';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [MessageModule, ToastModule, ButtonModule, InputTextModule, ReactiveFormsModule, RouterLink, NgOptimizedImage, PasswordModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
