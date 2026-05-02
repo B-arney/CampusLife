@@ -11,7 +11,12 @@ Első indításnál mindenkép szükséges használna a scriptet, ezzel hozzuk l
 ## Az app futtatása
 
 ```bash
+# buildelt konténerek futtatása logok nélkül
 docker compose up -d
+# konténerek leállítása
+docker compose down
+# logok adott konténerhez (csak futó konténerre működik)
+docker compose logs -f <KONTÉNER_NEVE>
 ```
 
 Ha szeretnéd a logokat látni, akkor lehagyható a -d kapcsoló
