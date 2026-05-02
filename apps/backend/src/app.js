@@ -42,7 +42,7 @@ fastify.addHook('preValidation', async (request, reply) => {
 fastify.setErrorHandler((error, request, reply) => {
   if (error.validation) {
     const simplifiedErrors = error.validation.map(err => ({
-      field: err.instancePath.replace('/', ''),
+      field: err.instancePath.replace('/', '') || err.params?.missingProperty || '',
       message: err.message
     }));
 
