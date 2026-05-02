@@ -1,0 +1,45 @@
+<header>
+  <h2>MY EVENTS</h2>
+  <a class="button" routerLink="/events/new">Create Event</a>
+</header>
+
+@if (loading) {
+  <p class="loading-text">Loading your events...</p>
+} @else if (error) {
+  <p class="error-text">{{ error }}</p>
+} @else if (myEvents.length === 0) {
+  <div class="empty-state">
+    <p>You have not created any events yet.</p>
+    <a class="button" routerLink="/events/new">Create your first event</a>
+  </div>
+} @else {
+  <div class="event-list">
+    @for (event of myEvents; track event.id) {
+      <article class="event-row">
+        <div class="event-main">
+          <h3>{{ event.title }}</h3>
+          <p>{{ event.description }}</p>
+          <p class="meta-line">
+            {{ event.startsAt | date: 'medium' }} | {{ event.location || 'Location TBD' }} | {{ event.category }}
+          </p>
+        </div>
+
+        <div class="event-actions">
+          <a class="button secondary" [routerLink]="['/events', event.id, 'edit']">Edit</a>
+          <button
+            class="button danger"
+            type="button"
+            [disabled]="deletingEventId === event.id"
+            (click)="deleteEvent(event.id)"
+          >
+            @if (deletingEventId === event.id) {
+              Canceling...
+            } @else {
+              Cancel Event
+            }
+          </button>
+        </div>
+      </article>
+    }
+  </div>
+}

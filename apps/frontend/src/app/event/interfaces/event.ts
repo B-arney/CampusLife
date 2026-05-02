@@ -26,18 +26,13 @@ export interface CreateEventRequest {
 }
 
 export interface UpdateEventRequest {
-  event: {
-    id: number;
-    title: string;
-    description: string;
-    startsAt: string;
-    location: string;
-    category: string;
-    imageUrl: string | null;
-    interests: unknown;
-    hostId: number;
-    createdAt: string;
-  };
+  title: string;
+  description: string;
+  date: string;
+  location: string;
+  category: string;
+  interests?: string[];
+  imageUrl?: string;
 }
 
 export interface CategoryOption {

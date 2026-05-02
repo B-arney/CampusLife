@@ -18,7 +18,7 @@
 						Delete
 					</button>
 					<button class="button" type="button" (click)="saveEvent()"
-						[disabled]="isSaving || isLoading || eventForm.invalid">
+						[disabled]="isSaving || isLoading">
 						@if (isSaving) {
 							<span>Saving...</span>
 						} @else {
@@ -27,7 +27,7 @@
 					</button>
 				} @else {
 					<button class="button" type="button" (click)="saveEvent()"
-						[disabled]="isSaving || isLoading || eventForm.invalid">
+						[disabled]="isSaving || isLoading">
 						@if (isSaving) {
 							<span>Saving...</span>
 						} @else {
@@ -42,26 +42,57 @@
 			<div class="form-row">
 				<label>Name</label>
 				<input class="rounded-input" pInputText formControlName="title" placeholder="Name of the event" />
+				@if (fieldError('title'); as error) {
+					<small class="field-error">{{ error }}</small>
+				}
 			</div>
 
 			<div class="form-row">
 				<label>Description</label>
-				<textarea class="rounded-input" pInputTextarea formControlName="description" placeholder="Add a short description"></textarea>
+				<textarea class="rounded-input" pInputTextarea formControlName="description" maxlength="250" placeholder="Add a short description"></textarea>
+				<div class="char-counter">{{ descriptionLength }}/250</div>
+				@if (fieldError('description'); as error) {
+					<small class="field-error">{{ error }}</small>
+				}
 			</div>
 
 			<div class="form-row">
 				<label>Date and Time</label>
 				<input class="rounded-input" type="datetime-local" formControlName="date" />
+				@if (fieldError('date'); as error) {
+					<small class="field-error">{{ error }}</small>
+				}
 			</div>
 
 			<div class="form-row">
 				<label>Place</label>
 				<input class="rounded-input" pInputText formControlName="location" />
+				@if (fieldError('location'); as error) {
+					<small class="field-error">{{ error }}</small>
+				}
 			</div>
 
 			<div class="form-row">
 				<label>Category</label>
 				<input class="rounded-input" pInputText formControlName="category" placeholder="academic / social / sports" />
+				@if (fieldError('category'); as error) {
+					<small class="field-error">{{ error }}</small>
+				}
+			</div>
+
+			<div class="form-row">
+				<label>Event Image (optional)</label>
+				<input type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" (change)="onImageSelect($event)" />
+				@if (selectedImageName) {
+					<div class="selected-file">Selected: {{ selectedImageName }}</div>
+				}
+				@if (imagePreviewUrl) {
+					<img class="image-preview" [src]="imagePreviewUrl" alt="Event image preview" />
+					<button type="button" class="button delete" (click)="removeImage()">Remove Image</button>
+				}
+				@if (imageError) {
+					<small class="field-error">{{ imageError }}</small>
+				}
 			</div>
 
 			<div class="form-row interests-row custom-multiselect">
