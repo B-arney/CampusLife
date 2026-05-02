@@ -11,6 +11,7 @@ import { join } from 'path'
 const fastify = Fastify({
   logger: true,
   trustProxy: true,
+  bodyLimit: 10 * 1024 * 1024,
   ajv: {
     customOptions: { allErrors: true }
   }

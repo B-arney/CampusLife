@@ -20,6 +20,10 @@ export class EventService {
     );
   }
 
+  getMyEvents(): Observable<CampusEvent[]> {
+    return this.http.get<CampusEvent[]>(`${this.apiUrl}/me`);
+  }
+
   getEvents(): Observable<CampusEvent[]> {
     return this.getAllEvents();
   }

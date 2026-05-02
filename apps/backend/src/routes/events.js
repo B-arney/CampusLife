@@ -2,6 +2,7 @@ import { prisma } from '../db.js'
 
 function validateEventPayload(body) {
   const errors = []
+  const description = String(body?.description || '').trim()
 
   if (!body?.title || !String(body.title).trim()) {
     errors.push({ field: 'title', message: 'Title is required' })
@@ -15,8 +16,23 @@ function validateEventPayload(body) {
   if (!body?.category || !String(body.category).trim()) {
     errors.push({ field: 'category', message: 'Category is required' })
   }
-  if (!body?.description || !String(body.description).trim()) {
+  if (!description) {
     errors.push({ field: 'description', message: 'Description is required' })
+  } else if (description.length > 250) {
+    errors.push({ field: 'description', message: 'Description must be at most 250 characters' })
+  }
+
+  if (body?.imageUrl) {
+    const imageUrl = String(body.imageUrl)
+    const allowedPrefixes = [
+      'data:image/jpeg;base64,',
+      'data:image/png;base64,',
+      'data:image/webp;base64,'
+    ]
+    const hasAllowedPrefix = allowedPrefixes.some(prefix => imageUrl.startsWith(prefix))
+    if (!hasAllowedPrefix) {
+      errors.push({ field: 'imageUrl', message: 'Only .jpg, .png or .webp images are allowed' })
+    }
   }
 
   const date = new Date(body?.date)
@@ -141,6 +157,60 @@ export default async function eventRoutes(fastify) {
       rsvpCount: r.event._count.rsvps,
       _count: undefined,
       hasUserRsvped: true
+    }))
+  })
+
+  // Get my hosted events (MUST be above /events/:id)
+  fastify.get('/events/me', async (request, reply) => {
+    try {
+      await request.jwtVerify()
+    } catch (err) {
+      return reply.code(401).send({ error: 'Not logged in.' })
+    }
+
+    const userId = Number(request.user.sub)
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        username: true,
+        displayName: true
+      }
+    })
+
+    if (!user) {
+      return reply.code(404).send({ error: 'User not found' })
+    }
+
+    const hostNameCandidates = [user.username, user.displayName].filter(Boolean)
+
+    const events = await prisma.event.findMany({
+      where: {
+        OR: [
+          { hostId: userId },
+          {
+            AND: [
+              { hostId: null },
+              { hostName: { in: hostNameCandidates } }
+            ]
+          }
+        ]
+      },
+      include: {
+        _count: {
+          select: { rsvps: true }
+        }
+      },
+      orderBy: {
+        startsAt: 'asc'
+      }
+    })
+
+    return events.map(event => ({
+      ...event,
+      rsvpCount: event._count.rsvps,
+      hasUserRsvped: false,
+      _count: undefined
     }))
   })
 

@@ -18,6 +18,36 @@
   align-items: center;
 }
 
+.field-error {
+  grid-column: 2;
+  color: #ffd4d4;
+  font-weight: 700;
+  margin-top: 0.4rem;
+}
+
+.char-counter {
+  grid-column: 2;
+  justify-self: end;
+  color: #f0efff;
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+}
+
+.selected-file {
+  grid-column: 2;
+  color: #f0efff;
+  margin-top: 0.4rem;
+}
+
+.image-preview {
+  grid-column: 2;
+  margin-top: 0.6rem;
+  max-width: 260px;
+  width: 100%;
+  border-radius: 12px;
+  border: 2px solid #f0efff;
+}
+
 .form-row label {
   font-size: 22px;
   font-weight: 900;
@@ -172,6 +202,14 @@
   ::ng-deep .custom-prime-multiselect {
       width: 100%;            
       box-sizing: border-box; 
+  }
+
+  .field-error,
+  .char-counter,
+  .selected-file,
+  .image-preview {
+    grid-column: auto;
+    width: 100%;
   }
 }
 header {

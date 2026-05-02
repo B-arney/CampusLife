@@ -11,6 +11,7 @@
       <li [routerLink]="['/landing']" routerLinkActive="active-link">HOME</li>
       <li [routerLink]="['/profile']" routerLinkActive="active-link">PROFILE</li>
       <li [routerLink]="['/events']" routerLinkActive="active-link">EVENTS</li>
+      <li [routerLink]="['/events/my']" routerLinkActive="active-link">MY EVENTS</li>
       <li [routerLink]="['/news']" routerLinkActive="active-link">NEWS</li>
 	  <!-- uncomment when features added -->
       <!-- 
@@ -47,6 +48,7 @@
     <a [routerLink]="['/landing']" routerLinkActive="active-link" (click)="closeMenu()">HOME</a>
     <a [routerLink]="['/profile']" routerLinkActive="active-link" (click)="closeMenu()">PROFILE</a>
     <a [routerLink]="['/events']" routerLinkActive="active-link" (click)="closeMenu()">EVENTS</a>
+    <a [routerLink]="['/events/my']" routerLinkActive="active-link" (click)="closeMenu()">MY EVENTS</a>
     <a [routerLink]="['/news']" routerLinkActive="active-link" (click)="closeMenu()">NEWS</a>
     <a class="logout-mobile" (click)="authService.logout(); closeMenu()">LOG OUT</a>
   </div>
