@@ -29,10 +29,11 @@ await fastify.register(multipart, {
 })
 
 fastify.addHook('preValidation', async (request, reply) => {
+  fastify.log.info({ method: request.method, url: request.url, body: request.body }, '[preValidation] incoming request')
+
   if (request.isMultipart()) {
     return
   }
-  // Allow empty bodies for specific routes or if body is not strictly required
   if ((request.method === 'POST' || request.method === 'PUT') && !request.body && !request.url.includes('/rsvp') && !request.url.includes('/logout')) {
     return reply.code(400).send({ error: 'A request body nem lehet üres.' })
   }
