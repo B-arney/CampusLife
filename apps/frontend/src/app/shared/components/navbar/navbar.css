@@ -1,3 +1,14 @@
+.sidebar .build-info {
+  font-size: 10px;
+  font-family: monospace;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(0, 0, 0, 0.2);
+  padding: 2px 8px;
+  border-radius: 4px;
+  align-self: flex-end;
+  margin-bottom: 0.5rem;
+}
+
 .sidebar {
   width: 320px;
   height: 100%;

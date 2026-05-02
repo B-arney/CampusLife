@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Auth } from '../../../auth/services/auth';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { buildInfo } from '../../../../build-info';
 
 @Component({
   selector: 'app-navbar',
@@ -12,6 +13,9 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class Navbar {
   authService = inject(Auth);
   isMenuOpen = false;
+
+  readonly branch = buildInfo.branch;
+  readonly hash = buildInfo.hash;
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;

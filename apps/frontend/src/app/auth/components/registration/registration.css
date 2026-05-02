@@ -1,3 +1,17 @@
+.build-badge {
+  position: fixed;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  font-size: 11px;
+  font-family: monospace;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(0, 0, 0, 0.35);
+  padding: 2px 8px;
+  border-radius: 4px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
 .wrapper {
   height: 100dvh;
   padding: 1rem;
