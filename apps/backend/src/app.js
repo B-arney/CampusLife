@@ -77,6 +77,20 @@ await fastify.register(jwt, {
   }
 })
 
+const PUBLIC_ROUTES = ['/api/login', '/api/logout', '/api/register', '/api/verify', '/api/health', '/api/docs']
+
+fastify.addHook('onRequest', async (request, reply) => {
+  const path = request.url.split('?')[0]
+  const isPublic = PUBLIC_ROUTES.some(route => path === route || path.startsWith(route + '/'))
+  if (!isPublic) {
+    try {
+      await request.jwtVerify()
+    } catch {
+      return reply.code(401).send({ error: 'Not logged in.' })
+    }
+  }
+})
+
 fastify.register(AutoLoad, {
   dir: join(process.cwd(), 'src/routes'),
   options: {

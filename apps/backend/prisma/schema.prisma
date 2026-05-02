@@ -24,6 +24,7 @@ model user {
   verificationToken String? @unique
 
   hostedEvents event[] @relation("EventHost")
+  news news[] @relation("NewsCreator")
   major String?
   interests String?
   profilePicture String?
@@ -53,4 +54,15 @@ model rsvp {
   event event @relation(fields: [eventId], references: [id], onDelete: Cascade)
   user user @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@unique([eventId, userId])
+}
+
+model news {
+  id Int @id @default(autoincrement())
+  title String
+  content String
+  imageUrl String?
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  createdBy Int?
+  creator user? @relation("NewsCreator", fields: [createdBy], references: [id], onDelete: SetNull)
 }

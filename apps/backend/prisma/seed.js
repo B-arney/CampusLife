@@ -86,6 +86,56 @@ async function main() {
       console.log(`Test event already exists: ${eventData.title} (Skipping)`);
     }
   }
+
+  const adminUser = await prisma.user.findUnique({
+    where: { email: 'admin@campuslife.local' }
+  });
+
+  const testNews = [
+    {
+      title: 'Campus Library Extended Hours This Exam Season',
+      content: 'The main library will be open 24/7 from May 15 to June 10 to support students during the exam period. Extra study rooms can be booked through the student portal.',
+      expiresAt: new Date('2026-06-10T23:59:00.000Z'),
+    },
+    {
+      title: 'New Bike Parking Installed Near Building C',
+      content: 'A new covered bike parking facility has been installed near Building C with 40 spots available. Students can register their bike with the campus security office.',
+      expiresAt: new Date('2026-12-31T23:59:00.000Z'),
+    },
+    {
+      title: 'Cafeteria Renovation Starting Next Week',
+      content: 'The main cafeteria will undergo renovation from May 10. Temporary food service will be available in the Student Center lobby. We apologize for the inconvenience.',
+      expiresAt: new Date('2026-07-01T23:59:00.000Z'),
+    },
+    {
+      title: 'Student Union Elections Open for Nominations',
+      content: 'Nominations for the 2026/27 Student Union board are now open. Any enrolled student can apply by submitting a nomination form at the Student Affairs office by May 20.',
+      expiresAt: new Date('2026-05-20T23:59:00.000Z'),
+    },
+    {
+      title: 'Free Mental Health Workshops in May',
+      content: 'The campus counseling center is hosting weekly mental health workshops every Wednesday in May. Topics include stress management, sleep hygiene, and exam anxiety. No registration needed.',
+      expiresAt: new Date('2026-05-31T23:59:00.000Z'),
+    },
+  ];
+
+  for (const newsData of testNews) {
+    const existing = await prisma.news.findFirst({
+      where: { title: newsData.title }
+    });
+
+    if (!existing) {
+      await prisma.news.create({
+        data: {
+          ...newsData,
+          createdBy: adminUser.id
+        }
+      });
+      console.log(`Created test news: ${newsData.title}`);
+    } else {
+      console.log(`Test news already exists: ${newsData.title} (Skipping)`);
+    }
+  }
 }
 
 main()
