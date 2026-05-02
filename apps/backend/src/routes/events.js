@@ -263,10 +263,10 @@ export default async function eventRoutes(fastify) {
         properties: {
           title: { type: 'string', minLength: 1 },
           description: { type: 'string', minLength: 1 },
-          date: { type: 'string', format: 'date-time' },
+          date: { type: 'string' },
           location: { type: 'string', minLength: 1 },
           category: { type: 'string', minLength: 1 },
-          imageUrl: { type: 'string', format: 'uri', nullable: true }
+          imageUrl: { type: ['string', 'null'] }
         }
       }
     }
@@ -409,10 +409,10 @@ export default async function eventRoutes(fastify) {
         properties: {
           title: { type: 'string', minLength: 1 },
           description: { type: 'string', minLength: 1 },
-          date: { type: 'string', format: 'date-time' },
+          date: { type: 'string' },
           location: { type: 'string', minLength: 1 },
           category: { type: 'string', minLength: 1 },
-          imageUrl: { type: 'string', format: 'uri', nullable: true }
+          imageUrl: { type: ['string', 'null'] }
         }
       },
       response: {
