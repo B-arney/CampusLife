@@ -31,6 +31,29 @@ export class Auth {
     );
   }
 
+  logout(): void {
+    this.http.post(`${this.apiUrl}/logout`, {}).subscribe({
+      next: () => this.clearSession(),
+      error: () => this.clearSession()
+    });
+  }
+
+  updateProfile(formData: FormData): Observable<any> {
+    return this.http.put(`${this.apiUrl}/profile`, formData).pipe(
+	  tap((response: any) => {
+		  this.currentUser.set(response);
+	  })
+	);
+  }
+
+  getLoggedInUser(): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/profile`).pipe(
+	  tap((res) => {
+		  this.currentUser.set(res);
+	  })
+	);
+  }
+
   private setToken(token: string): void {
     localStorage.setItem('jwt_token', token);
   }
@@ -41,13 +64,6 @@ export class Auth {
    */
   getToken(): string | null {
     return localStorage.getItem('jwt_token');
-  }
-
-  logout(): void {
-    this.http.post(`${this.apiUrl}/logout`, {}).subscribe({
-      next: () => this.clearSession(),
-      error: () => this.clearSession()
-    });
   }
 
   private clearSession(): void {

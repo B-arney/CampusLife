@@ -1,23 +1,17 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
-import { UserService } from '../../services/user-service';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { AvatarModule } from 'primeng/avatar';
-import { BadgeModule } from 'primeng/badge';
-import { MenubarModule } from 'primeng/menubar';
-import { RippleModule } from 'primeng/ripple';
-import { MenuItem } from 'primeng/api';
 import { Auth } from '../../services/auth';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
-  imports: [ReactiveFormsModule, MultiSelectModule, InputTextModule, ButtonModule, MessageModule, ToastModule, AvatarModule, BadgeModule, MenubarModule, RippleModule],
+  standalone: true,
+  imports: [ReactiveFormsModule, MultiSelectModule, InputTextModule, ButtonModule, MessageModule, ToastModule],
   providers: [MessageService],
   templateUrl: './profile.html',
   styleUrl: './profile.css',
@@ -25,16 +19,13 @@ import { Router } from '@angular/router';
 export class Profile implements OnInit {
   private messageService = inject(MessageService);
   private formBuilder = inject(FormBuilder);
-  private userService = inject(UserService);
   private authService = inject(Auth);
-  private router = inject(Router);
 
   form: FormGroup;
   isLoading: boolean = false;
   selectedFile: File | null = null;
-  currentProfilePicture: string | null = null;
-
-  items: MenuItem[] | undefined;
+  currentProfilePicture = signal<string | null>(null);
+  removePicture: boolean = false; // backendnek jelzés, h törölni kell a profilképet
 
   interestOptions = [
     { label: 'Academic', value: 'Academic' },
@@ -54,18 +45,19 @@ export class Profile implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.getProfile().subscribe({
+    this.authService.getLoggedInUser().subscribe({
       next: (user) => {
-        let interests = [];
+        let interests: string | string[] = [];
         if (user.interests) {
           try {
-            interests = JSON.parse(user.interests);
+            interests = typeof user.interests === 'string' ? JSON.parse(user.interests) : user.interests;
           } catch (e) {
             interests = [];
           }
         }
         
-        this.currentProfilePicture = user.profilePicture;
+        // this.currentProfilePicture.set(user.profilePicture);
+        this.currentProfilePicture.set(this.authService.currentUser()?.profilePicture || null); //! does not work
 
         this.form.patchValue({
           username: user.username,
@@ -78,32 +70,6 @@ export class Profile implements OnInit {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Could not load profile data' });
       }
     });
-
-    this.items = [
-      {
-        label: 'Home',
-        routerLink: '/'
-      },
-      {
-        label: 'Profile',
-        items: [
-          {
-            label: 'Edit',
-            routerLink: '/profile'
-          },
-          {
-            separator: true
-          },
-          {
-            label: 'Logout',
-            command: () => {
-              this.authService.logout();
-              this.router.navigate(['/login']);
-            }
-          },
-        ]
-      }
-    ];
   }
 
   onFileSelect(event: any) {
@@ -119,7 +85,20 @@ export class Profile implements OnInit {
         return;
       }
       this.selectedFile = file;
+
+	  // kiválasztott kép előnézete
+	  const reader = new FileReader();
+      reader.onload = (event: any) => {
+		this.currentProfilePicture.set(event.target.result);
+      };
+      reader.readAsDataURL(file);
     }
+  }
+
+  removeProfilePicture() {
+	this.currentProfilePicture.set(null);
+	this.selectedFile = null;	// ha új képet válaztottál, de meggondoltad magad
+	this.removePicture = true;
   }
 
   onSubmit() {
@@ -133,14 +112,18 @@ export class Profile implements OnInit {
 
       if (this.selectedFile) {
         formData.append('profilePicture', this.selectedFile);
-      }
+		this.removePicture = false;
+      } else if (this.removePicture) {
+		formData.append('removeProfilePicture', 'true');
+	  }
 
-      this.userService.updateProfile(formData).subscribe({
+      this.authService.updateProfile(formData).subscribe({
         next: (user) => {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Profile updated!' });
-          this.currentProfilePicture = user.profilePicture;
+          this.currentProfilePicture.set(user.profilePicture);
           this.selectedFile = null;
           this.isLoading = false;
+		  this.removePicture = false;
         },
         error: (err) => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error?.error || 'Could not save' });
