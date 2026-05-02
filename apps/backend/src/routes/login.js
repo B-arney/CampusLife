@@ -14,6 +14,8 @@ function getCookieOptions() {
 export default async function loginRoutes(fastify) {
   fastify.post('/login', {
     schema: {
+      tags: ['Authentication'],
+      summary: 'Authenticate user and return token',
       body: {
         type: 'object',
         required: ['email', 'password'],

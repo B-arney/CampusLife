@@ -4,22 +4,40 @@ import bcrypt from 'bcrypt'
 import crypto from 'crypto'
 
 export default async function registerRoutes(fastify) {
-  const registerSchema = {
-    body: {
-      type: 'object',
-      required: ['username', 'email', 'password', 'passwordConfirm'],
-      properties: {
-        username: { type: 'string', minLength: 3 },
-        email: { type: 'string', format: 'email' },
-        password: { 
-          type: 'string', 
-          minLength: 8,
-          pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&\\.\\^])[A-Za-z\\d@$!%*?&\\.\\^]{8,}$'
+  fastify.post('/register', {
+    schema: {
+      tags: ['Authentication'],
+      summary: 'User registration',
+      response: {
+        201: {
+          type: 'object',
+          properties: {
+            message: { type: 'string' }
+          }
         },
-        passwordConfirm: { 
-          type: 'string', 
-          minLength: 8,
-          pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&\\.\\^])[A-Za-z\\d@$!%*?&\\.\\^]{8,}$'
+        400: {
+          type: 'object',
+          properties: {
+            error: { type: 'string' }
+          }
+        }
+      },
+      body: {
+        type: 'object',
+        required: ['username', 'email', 'password', 'passwordConfirm'],
+        properties: {
+          username: { type: 'string', minLength: 3 },
+          email: { type: 'string', format: 'email' },
+          password: { 
+            type: 'string', 
+            minLength: 8,
+            pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&\\.\\^])[A-Za-z\\d@$!%*?&\\.\\^]{8,}$'
+          },
+          passwordConfirm: { 
+            type: 'string', 
+            minLength: 8,
+            pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&\\.\\^])[A-Za-z\\d@$!%*?&\\.\\^]{8,}$'
+          }
         }
       }
     }
