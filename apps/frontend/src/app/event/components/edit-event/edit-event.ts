@@ -27,6 +27,7 @@ function interestsFromApi(raw: unknown): string[] {
 
 @Component({
   selector: 'app-edit-event',
+  standalone: true,
   imports: [
     ReactiveFormsModule,
     InputTextModule,

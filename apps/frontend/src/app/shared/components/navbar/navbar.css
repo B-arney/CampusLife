@@ -88,24 +88,6 @@
   flex-shrink: 0;
 }
 
-.sidebar .sidebar-bottom .icon-btn {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: none;
-  background: #e6e6e6;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  transition: background 0.2s;
-}
-
-.sidebar .sidebar-bottom .icon-btn:hover {
-  background: #d4d4d4;
-}
-
 .sidebar .sidebar-bottom .logout-btn {
   flex-grow: 1;
   background-color: #b73239; 

@@ -10,6 +10,7 @@ import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-forgot-password',
+  standalone: true,
   imports: [MessageModule, ToastModule, ButtonModule, InputTextModule, ReactiveFormsModule, RouterLink, NgOptimizedImage],
   templateUrl: './forgot-password.html',
   styleUrls: ['./forgot-password.css'],

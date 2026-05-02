@@ -7,6 +7,7 @@ import { BehaviorSubject, finalize, map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-event-detail',
+  standalone: true,
   imports: [CommonModule, RouterLink, DatePipe, AsyncPipe],
   templateUrl: './event-detail.html',
   styleUrl: './event-detail.css',

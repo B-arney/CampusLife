@@ -41,41 +41,116 @@
   align-items: flex-start;
 }
 
-::ng-deep .custom-prime-multiselect {
-  padding: 12px;
-  border-radius: 30px !important;
-  border-width: 2.5px 2.5px 0.5px 2.5px !important;
-  background: #002d52 !important;
-  display: flex !important;
-  align-items: flex-start !important;
-}
-::ng-deep .custom-prime-multiselect .p-multiselect-label {
-  padding: 0 !important;
-  flex-wrap: wrap !important;
-}
-::ng-deep .p-multiselect-chip {
-  background: #002d52 !important;
-  border: 2px solid white !important;
-  color: white !important;
-  border-radius: 20px !important;
-  padding: 8px 8px 8px 14px !important;
-  font-weight: bold !important;
-  margin: 0 !important;
-}
+/* PrimeNG MultiSelect */
+.custom-multiselect {
+	::ng-deep .p-multiselect {
+		--p-multiselect-background: #002d52; /* input háttér */
+		--p-multiselect-focus-border-color: white; /* multiselect szegély + active */
+		--p-multiselect-chip-border-radius: 100vw; /* chip border-radius */
+		--p-chip-color: white; /* chip szöveg színe */
+		--p-chip-background: #002d52; /* chip háttér */
+		--p-chip-remove-icon-size: 2.2rem; /* chip x ikon mérete */
+		--p-chip-remove-icon-color: white; /* chip x ikon színe */
+		--p-multiselect-overlay-background: #002d52; /* dropdown háttér */
+		--p-multiselect-overlay-border-radius: 30px; /* dropdown border-radius */
+		--p-multiselect-option-focus-background: #063274; /* nincs bepipálva + hover */
+		--p-multiselect-option-selected-focus-background: #063274; /* be van pipálva + hover */
+		--p-multiselect-option-selected-background: #095190; /* be van pipálva/aktív */
+		--p-multiselect-option-color: white; /* szöveg, noncs bepipálva */
+		--p-multiselect-option-selected-color: white; /* szöveg, be van pipálva */
+		--p-multiselect-option-focus-color: white; /* szöveg, noncs bepipálva + hover */
+		--p-multiselect-option-selected-focus-color: white; /* szöveg, be van pipálva + hover */
+		--p-checkbox-checked-background: #002d52; /* checkbox bepipálva */
+		--p-checkbox-checked-border-color: #002d52; /* checkbox bepipálva keret */
+		--p-checkbox-checked-hover-background: #095190; /* checkbox bepipálva + hover */
+		--p-button-text-danger-hover-background: hsla(0, 84%, 60%, 0.3); /* clear flters gomb + not disabled + hover */
 
-::ng-deep .p-chip-remove-icon {
-color: white !important;
-}
+		min-height: 70px !important;
+		padding: 12px;
+		border-radius: 30px !important;
+		border-width: 2.5px 2.5px 0.5px 2.5px !important;
+		display: flex !important;
+		align-items: flex-start !important;
+	}
+	/* chip konténer */
+	::ng-deep .p-multiselect-label {
+		padding: 0 !important;
+		flex-wrap: wrap !important;
+	}
 
-.add-interest-icon {
-	width: 40px;
-	height: 40px;
-	/* color: white; */
+	::ng-deep .p-multiselect-list-container {
+		scrollbar-width: none !important;
 
-	&:hover {
-		fill: rgba(255, 255, 255, 0.1);
+		&::-webkit-scrollbar {
+			display: none !important; 
+		}
+	}
+
+	::ng-deep .p-multiselect-chip {
+		padding: 0 !important;
+		gap: 0 !important;
+		border: 2px solid white !important;
+		font-weight: bold !important;
+	}
+
+	::ng-deep .p-chip-label {
+		padding: 8px 0 8px 8px !important;
+	}
+	::ng-deep .p-chip-remove-icon {
+		padding: 8px !important;
+		border-radius: 0 50% 50% 0 !important;
+	}
+
+	::ng-deep .p-multiselect-dropdown {
+		padding-top: 0.6rem;
+	}
+	.dropdownicon {
+		width: 24px;
+		height: 24px;
+
+		&:hover {
+			fill: rgba(255, 255, 255, 0.1);
+		}
+	}
+	/* dropdown body */
+	::ng-deep .p-multiselect-overlay {
+		padding: 12px;
+		border-width: 2.5px !important;
+
+		&:has(.footer) {
+			padding-top: 24px;
+		}
+	}
+
+	/* header */
+	::ng-deep .p-multiselect-header {
+		display: none !important;
+	}
+
+	::ng-deep .p-multiselect-list {
+		border-radius: 18px;
+		overflow: hidden;
+		padding: 0;
+	}
+	.dropdown-item {
+		display: flex;
+		align-items: center;
+		gap: .4rem;
+		font-weight: bold;
+	}
+
+	.footer {
+		padding-top: 12px;
+		display: flex;
+		justify-content: end;
+		font-style: italic;
+
+		svg {
+			width: 1.2rem;
+		}
 	}
 }
+
 @media (max-width: 768px) {
   
 

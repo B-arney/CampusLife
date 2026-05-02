@@ -155,7 +155,7 @@ header {
 	font-size: 16px !important;
 	line-height: 1;
 	font-weight: bold;
-	background-color: hsl(216, 90%, 24%) !important;
+	background-color: hsl(207, 100%, 16%) !important;
 	cursor: pointer;
 	transition: all 0.1s ease-in-out;
 
@@ -164,25 +164,21 @@ header {
 		cursor: not-allowed;
 	}
 
-	&:active:not(:disabled) {
-		transform: translate3d(0, 1px, 0) scale3d(0.98, 0.98, 0.98);
-	}
-
 	&:not(:disabled):hover {
-		background-color: hsl(208, 88%, 30%);
+		background-color: #063274 !important;
 	}
 
 	&:active:not(:disabled) {
-		background-color: hsl(208, 88%, 45%);
+		background-color: #095190 !important;
 	}
 
 	&.delete {
-		background-color: transparent;
-		color: #dc3545;
-		border-color: hsl(354, 70%, 54%);
+		color: #dc3545 !important;
+		background-color: #36090d !important;
+		border-color: hsl(354, 70%, 54%) !important;
 
 		&:hover:not(:disabled) {
-			background-color: hsla(0, 100%, 50%, 0.3);
+			background-color: hsl(354, 35%, 39%) !important;
 		}
 	}
 
@@ -199,4 +195,37 @@ header {
 		color: hsl(216, 90%, 24%) !important;
 		background-color: white !important;
 	}
+}
+
+.avatar-sm,
+.avatar-md {
+	width: var(--_size);
+	height: var(--_size);
+	display: grid;
+	place-content: center;
+	border: none;
+	border-radius: 100vw;
+	background: #e6e6e6;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+	overflow: hidden;
+
+	svg {
+		width: var(--_icon-size);
+		height: var(--_icon-size);
+	}
+
+	img {
+		width: var(--_size);
+		height: var(--_size);
+		object-fit: cover;
+	}
+}
+
+.avatar-sm {
+	--_size: 50px;
+	--_icon-size: 20px;
+}
+.avatar-md {
+	--_size: 120px;
+	--_icon-size: 40px;
 }

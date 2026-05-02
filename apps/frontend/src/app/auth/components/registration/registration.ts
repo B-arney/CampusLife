@@ -13,6 +13,7 @@ import { PasswordModule } from 'primeng/password';
 
 @Component({
   selector: 'app-registration',
+  standalone: true,
   imports: [MessageModule, ToastModule, ButtonModule, InputTextModule, ReactiveFormsModule, RouterLink, NgOptimizedImage, PasswordModule],
   templateUrl: './registration.html',
   styleUrls: ['./registration.css'],

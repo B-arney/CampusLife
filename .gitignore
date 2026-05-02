@@ -1,5 +1,8 @@
 .env
+.env.test
+.env.prod
 package-lock.json
 docker/ssl/*
 !docker/ssl/.gitkeep
 docker/postgres
+.idea
