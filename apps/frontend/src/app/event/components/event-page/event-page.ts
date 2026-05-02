@@ -1,147 +1,91 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { CampusEvent } from '../../interfaces/event';
+import { FormsModule } from '@angular/forms';
+import { CampusEvent, CategoryOption } from '../../interfaces/event';
 import { EventService } from '../../services/event-service';
 import { RouterLink } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ButtonModule } from 'primeng/button';
+import { BadgeModule } from 'primeng/badge';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { ScrollerModule } from 'primeng/scroller';
+import { SkeletonModule } from 'primeng/skeleton';
+import { Auth } from '../../../auth/services/auth';
 
 @Component({
   selector: 'app-event-page',
   standalone: true,
-  imports: [RouterLink, CommonModule, DatePipe],
+  imports: [RouterLink, CommonModule, DatePipe, FormsModule, MultiSelectModule, ButtonModule, BadgeModule, FloatLabelModule, ScrollerModule, SkeletonModule],
   templateUrl: './event-page.html',
   styleUrl: './event-page.css',
 })
 export class EventPage implements OnInit {
   eventService = inject(EventService);
+  authService = inject(Auth);
 
-  allEvents: CampusEvent[] = [];
-  upcomingEvents: CampusEvent[] = [];
-  pastEvents: CampusEvent[] = [];
-  visibleEvents: CampusEvent[] = [];
-
-  searchQuery = signal<string>('');
-  onSearch(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    const value = target.value.toLowerCase().trim(); // Kisbetűsítjük és levágjuk a szóközöket
-    this.searchQuery.set(value);
+  // ngModel változóját csak így lehet hozzákötni egy signalhoz
+  private _selectedCategories = signal<CategoryOption[]>([]);
+  get selectedCategories(): CategoryOption[] {
+	return this._selectedCategories();
+  }
+  set selectedCategories(val: CategoryOption[]) {
+	this._selectedCategories.set(val);
   }
 
-//   activeTab: 'upcoming' | 'past' = 'upcoming';
-  activeTab = signal<'upcoming' | 'past'>('upcoming');
+  filteredEvents = computed<CampusEvent[]>(() => {
+    const events = this.eventService.eventsList();
+    const selected = this._selectedCategories();
 
-  filteredEvents = computed(() => {
-    const allEvents = this.eventService.eventsList();
-    const currentTab = this.activeTab();
-    const search = this.searchQuery(); // Lekérjük az aktuális keresőszót
-    const now = new Date().getTime();
-
-    return allEvents.filter(event => {
-      const eventTime = new Date(event.startsAt).getTime();
-      
-      let matchesTime = false;
-      if (currentTab === 'upcoming') {
-        matchesTime = eventTime >= now;
-      } else {
-        matchesTime = eventTime < now;
-      }
-
-      if (!matchesTime) {
-        return false;
-      }
-
-      if (search) {
-       
-        const matchesTitle = event.title.toLowerCase().includes(search);
-  
-        
-        return matchesTitle;
-      }
-
-      return true;
-    });
-});
-
-  loading = true;
-  error: string | null = null;
-  private readonly pageSize = 7;
-  private visibleCount = 7;
+    if (!selected.length) return events; // szűrés nélkül
+    
+	const names = new Set(selected.map(c => c.name));
+	return events.filter(e => names.has(e.category)); // egyébként szűrt lista
+  });
 
   ngOnInit(): void {
-    this.eventService.getEvents().subscribe({
-      next: (events) => {
-        this.loading = false;
-        this.error = null;
-
-        const sorted = [...events].sort((a, b) => {
-          return new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime();
-        });
-
-        this.allEvents = sorted;
-        const now = Date.now();
-        this.upcomingEvents = sorted.filter((event) => new Date(event.startsAt).getTime() >= now);
-        this.pastEvents = sorted
-          .filter((event) => new Date(event.startsAt).getTime() < now)
-          .sort((a, b) => new Date(b.startsAt).getTime() - new Date(a.startsAt).getTime());
-
-        this.resetVisibleEvents();
-      },
-      error: (err) => {
-        this.loading = false;
-        console.error('Error fetching events:', err);
-        this.error = 'Failed to load events. Please try again later.';
-      }
+    this.eventService.getAllEvents().subscribe(() => {
+      this.preselectUserInterests();
     });
   }
 
-  get emptyStateMessage(): string {
-    if (this.activeTab() === 'upcoming') {
-      return 'No upcoming events. Check back later!';
+  // count autómatikusan frissül és rendezve lesz
+  categoryOptions = computed<CategoryOption[]>(() => {
+    const countMap = new Map<string, number>();
+    for (const event of this.eventService.eventsList()) {
+      if (event.category) {
+        countMap.set(event.category, (countMap.get(event.category) ?? 0) + 1);
+      }
     }
-    return 'No past events yet.';
+    return Array.from(countMap.entries())
+      .map(([name, count]) => ({ name, count })) // CategoryOption-re alakítás
+      .sort((a, b) => a.name.localeCompare(b.name)); // abc sorrend
+  });
+
+  private preselectUserInterests(): void {
+    const user = this.authService.currentUser();
+    if (!user?.interests) return;
+
+    let userInterests: string[] = [];
+    try {
+      userInterests = typeof user.interests === 'string'
+        ? JSON.parse(user.interests)
+        : user.interests;
+    } catch { return; }
+
+    const preSelected = this.categoryOptions().filter(o => userInterests.includes(o.name));
+    this._selectedCategories.set(preSelected);
   }
 
-  get canLoadMore(): boolean {
-    return this.visibleCount < this.getActiveSource().length;
+  clearFilters(): void {
+    this._selectedCategories.set([]);
   }
 
-  onListScroll(event: Event): void {
-    const target = event.target as HTMLElement;
-    const nearBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 80;
-    if (nearBottom) {
-      this.loadMore();
-    }
+  get hasActiveFilters(): boolean {
+    return this._selectedCategories().length > 0;
   }
 
-  loadMore(): void {
-    if (!this.canLoadMore) {
-      return;
-    }
-    this.visibleCount += this.pageSize;
-    this.applyVisibleSlice();
-  }
-
-  trackByEventId(_index: number, event: CampusEvent): number {
-    return event.id;
-  }
 
   formatDateTime(dateStr: string): string {
     return new Date(dateStr).toLocaleString();
-  }
-
-  setTab(tab: 'upcoming' | 'past') {
-    this.activeTab.set(tab);
-  }
-
-  private resetVisibleEvents(): void {
-    this.visibleCount = this.pageSize;
-    this.applyVisibleSlice();
-  }
-
-  private applyVisibleSlice(): void {
-    this.visibleEvents = this.getActiveSource().slice(0, this.visibleCount);
-  }
-
-  private getActiveSource(): CampusEvent[] {
-    return this.activeTab() === 'upcoming' ? this.upcomingEvents : this.pastEvents;
   }
 }

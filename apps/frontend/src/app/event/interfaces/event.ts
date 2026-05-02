@@ -39,3 +39,8 @@ export interface UpdateEventRequest {
     createdAt: string;
   };
 }
+
+export interface CategoryOption {
+    name: string;
+	count: number;
+}
