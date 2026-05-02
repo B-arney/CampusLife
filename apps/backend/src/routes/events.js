@@ -189,6 +189,7 @@ export default async function eventRoutes(fastify) {
     const { id } = request.params
     const eventId = parseInt(id)
     const userId = Number(request.user.sub)
+    const isAdmin = request.user.isAdmin === true
 
     if (isNaN(eventId)) {
       return reply.code(400).send({ error: 'Invalid event ID' })
@@ -199,7 +200,7 @@ export default async function eventRoutes(fastify) {
       return reply.code(404).send({ error: 'Event not found' })
     }
 
-    if (existing.hostId !== userId) {
+    if (existing.hostId !== userId && !isAdmin) {
       return reply.code(403).send({ error: 'You can only edit your own events' })
     }
 
@@ -242,6 +243,7 @@ export default async function eventRoutes(fastify) {
     const { id } = request.params
     const eventId = parseInt(id)
     const userId = Number(request.user.sub)
+    const isAdmin = request.user.isAdmin === true
 
     if (isNaN(eventId)) {
       return reply.code(400).send({ error: 'Invalid event ID' })
@@ -252,7 +254,7 @@ export default async function eventRoutes(fastify) {
       return reply.code(404).send({ error: 'Event not found' })
     }
 
-    if (existing.hostId !== userId) {
+    if (existing.hostId !== userId && !isAdmin) {
       return reply.code(403).send({ error: 'You can only delete your own events' })
     }
 

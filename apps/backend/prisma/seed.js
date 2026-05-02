@@ -1,4 +1,5 @@
 import "dotenv/config";
+import bcrypt from "bcrypt";
 import { PrismaPg } from "@prisma/adapter-pg";
 import pkg from '../generated/prisma/default.js';
 const { PrismaClient } = pkg
@@ -9,9 +10,12 @@ const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
+  const userHash = await bcrypt.hash('PassWord.123', 10);
+
   const testUsers = [
-    { email: 'alice@example.com', username: 'alice', password: "$2b$10$0fzWmrUMifEtusCjOsGI2./j2q6dagn5QbAqI20Fuer4VWmS0.xNW" },
-    { email: 'bob@example.com', username: 'bob', password: "$2b$10$0fzWmrUMifEtusCjOsGI2./j2q6dagn5QbAqI20Fuer4VWmS0.xNW" }, 
+    { email: 'alice@example.com', username: 'alice', password: userHash },
+    { email: 'bob@example.com', username: 'bob', password: userHash },
+    { email: 'admin@campuslife.local', username: 'admin', password: userHash, isAdmin: true },
   ];
 
   for (const userData of testUsers) {
