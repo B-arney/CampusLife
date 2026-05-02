@@ -217,6 +217,7 @@ header {
 	img {
 		width: var(--_size);
 		height: var(--_size);
+		object-fit: cover;
 	}
 }
 

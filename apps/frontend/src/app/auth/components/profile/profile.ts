@@ -45,31 +45,24 @@ export class Profile implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.getLoggedInUser().subscribe({
-      next: (user) => {
-        let interests: string | string[] = [];
-        if (user.interests) {
-          try {
-            interests = typeof user.interests === 'string' ? JSON.parse(user.interests) : user.interests;
-          } catch (e) {
-            interests = [];
-          }
-        }
-        
-        // this.currentProfilePicture.set(user.profilePicture);
-        this.currentProfilePicture.set(this.authService.currentUser()?.profilePicture || null); //! does not work
+	const user = this.authService.currentUser()!;
 
-        this.form.patchValue({
-          username: user.username,
-          email: user.email,
-          major: user.major,
-          interests: interests
-        });
-      },
-      error: (err) => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Could not load profile data' });
-      }
-    });
+	let interests: string | string[] = [];
+	if (user.interests) {
+		try {
+			interests = typeof user.interests === 'string' ? JSON.parse(user.interests) : user.interests;
+		} catch (e) {
+			interests = [];
+		}
+	}
+	
+	this.currentProfilePicture.set(user.profilePicture || null);
+	this.form.patchValue({
+		username: user.username,
+		email: user.email,
+		major: user.major,
+		interests: interests
+	});
   }
 
   onFileSelect(event: any) {
@@ -120,7 +113,7 @@ export class Profile implements OnInit {
       this.authService.updateProfile(formData).subscribe({
         next: (user) => {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Profile updated!' });
-          this.currentProfilePicture.set(user.profilePicture);
+          this.currentProfilePicture.set(user.profilePicture ?? null);
           this.selectedFile = null;
           this.isLoading = false;
 		  this.removePicture = false;
