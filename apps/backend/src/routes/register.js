@@ -41,10 +41,6 @@ export default async function registerRoutes(fastify) {
         }
       }
     }
-  }
-  
-  fastify.post('/register', {
-    schema: registerSchema
   }, async (request, reply) => {
     const { username, email, password, passwordConfirm } = request.body
     
