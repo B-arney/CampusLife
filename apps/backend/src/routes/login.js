@@ -46,7 +46,8 @@ export default async function loginRoutes(fastify) {
     const token = await reply.jwtSign(
       {
         sub: user.id,
-        username: user.username
+        username: user.username,
+        isAdmin: user.isAdmin
       },
       { expiresIn: '24h' }
     )
@@ -60,7 +61,8 @@ export default async function loginRoutes(fastify) {
         id: user.id,
         username: user.username,
         email: user.email,
-        displayName: user.displayName
+        displayName: user.displayName,
+        isAdmin: user.isAdmin
       }
     })
   })
@@ -92,7 +94,8 @@ export default async function loginRoutes(fastify) {
         username: true,
         email: true,
         displayName: true,
-        isVerified: true
+        isVerified: true,
+        isAdmin: true
       }
     })
 

@@ -20,6 +20,7 @@ model user {
   displayName String?
   password String
   isVerified Boolean @default(false)
+  isAdmin Boolean @default(false)
   verificationToken String? @unique
 
   hostedEvents event[] @relation("EventHost")
