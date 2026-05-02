@@ -54,4 +54,7 @@ docker build --no-cache -t campuslife-frontend -f docker/frontend.Dockerfile app
 
 echo "Images built successfully."
 
+export GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'unknown')
+export GIT_HASH=$(git rev-parse --short HEAD 2>/dev/null || echo 'unknown')
+
 docker compose -p campuslife-test -f docker-compose.test.yml --env-file .env.test up --force-recreate

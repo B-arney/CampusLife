@@ -1,5 +1,9 @@
 <p-toast></p-toast>
 
+@if (branch !== 'unknown') {
+  <div class="build-badge">{{ branch }}: {{ hash }}</div>
+}
+
 <div class="wrapper">
   <div class="login-hero">
     <h2 class="title">CAMPUS LIFE</h2>

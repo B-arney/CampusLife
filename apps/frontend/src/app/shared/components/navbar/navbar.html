@@ -1,4 +1,7 @@
 <div class="sidebar">
+	@if (branch !== 'unknown') {
+		<div class="build-info">{{ branch }}: {{ hash }}</div>
+	}
 	<div class="sidebar-start">
 		<h2 class="sidebar-title">CAMPUS LIFE</h2>
 
