@@ -14,10 +14,10 @@ export class NewsList implements OnInit {
   viewMode = input<'latest' | 'all'>('all'); 
   newsItems = signal<News[]>([]);
   
-  // Track which news item is currently visible in the widget
+  // widget trackin
   currentIndex = signal(0);
 
-  // Helper to get only the current item for the widget view
+  //only the current item for the widget view
   currentItem = computed(() => this.newsItems()[this.currentIndex()]);
 
   constructor(private newsService: NewsService) {}
@@ -34,7 +34,7 @@ export class NewsList implements OnInit {
     if (this.currentIndex() < this.newsItems().length - 1) {
       this.currentIndex.update(val => val + 1);
     } else {
-      this.currentIndex.set(0); // Loop back to start
+      this.currentIndex.set(0);
     }
   }
 
@@ -42,7 +42,7 @@ export class NewsList implements OnInit {
     if (this.currentIndex() > 0) {
       this.currentIndex.update(val => val - 1);
     } else {
-      this.currentIndex.set(this.newsItems().length - 1); // Loop to end
+      this.currentIndex.set(this.newsItems().length - 1);
     }
   }
 }
