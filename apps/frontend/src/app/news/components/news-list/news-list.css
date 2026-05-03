@@ -1,0 +1,234 @@
+/* ==========================================================================
+   1. SHARED & RESET STYLES
+   ========================================================================== */
+:host {
+  display: block; /* Ensures Angular component respects dimensions */
+}
+
+/* ==========================================================================
+   2. LANDING PAGE WIDGET (Carousel View)
+   ========================================================================== */
+
+.news-widget {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.news-carousel-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.nav-arrow {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 10px;
+  line-height: 1;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.nav-arrow:hover {
+  transform: scale(1.2);
+  color: #dfd06c;
+}
+
+.news-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.news-card {
+  width: 320px;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 180px;
+  background: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.news-card-body {
+  padding: 16px 16px 18px;
+  text-align: left;
+}
+
+.news-card-title {
+  color: #111;
+  margin: 0 0 6px 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.news-card-text {
+  color: #777;
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Pagination Dots */
+.pagination-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  display: inline-block;
+  transition: background-color 0.3s, transform 0.15s ease;
+}
+
+.dot.active {
+  background-color: white;
+}
+
+.dot:hover {
+  transform: scale(1.05);
+}
+
+.dot:focus-visible,
+.nav-arrow:focus-visible {
+  outline: 2px solid rgba(223, 208, 108, 0.9);
+  outline-offset: 3px;
+  border-radius: 999px;
+}
+
+/* ==========================================================================
+   3. FULL NEWS PAGE (List View)
+   ========================================================================== */
+
+.page-header-centered {
+  position: relative;
+  max-width: 860px;
+  width: 100%;
+  margin: 3rem auto 1.5rem auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-title-centered {
+  font-family: 'Poppins', sans-serif;
+  font-size: 4rem;
+  font-weight: 800;
+  letter-spacing: 0.2rem;
+  color: #f0efff;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1;
+}
+
+.header-actions {
+  position: absolute;
+  right: 0;
+}
+
+.add-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  border-color: #dfd06c;
+  color: #dfd06c;
+}
+
+.page-content-wrapper {
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.news-list-vertical-centered {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding-bottom: 30px;
+}
+
+.news-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #002d52;
+  border: 2.5px solid white;
+  padding: 12px 25px;
+  border-radius: 50px;
+  color: white;
+}
+
+.news-list-item:hover {
+  background-color: #003a70;
+  border-color: #dfd06c;
+}
+
+.event-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.event-name {
+  font-size: 20px;
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+.event-description {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.event-date-box {
+  background-color: white;
+  color: black;
+  width: 65px;
+  height: 65px;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.date-num {
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.date-month {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
