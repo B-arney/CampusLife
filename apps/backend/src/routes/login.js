@@ -78,12 +78,6 @@ export default async function loginRoutes(fastify) {
   })
 
   fastify.get('/me', async (request, reply) => {
-    try {
-      await request.jwtVerify()
-    } catch {
-      return reply.code(401).send({ error: 'Not logged in.' })
-    }
-
     const userId = Number(request.user.sub)
     if (!Number.isInteger(userId)) {
       return reply.code(401).send({ error: 'Invalid login token.' })
