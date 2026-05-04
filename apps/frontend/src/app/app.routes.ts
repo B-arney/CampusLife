@@ -9,6 +9,7 @@ import { EditEvent } from './event/components/edit-event/edit-event';
 import { EventDetail } from './event/components/event-detail/event-detail';
 import { EventPage } from './event/components/event-page/event-page';
 import { MyEvents } from './event/components/my-events/my-events';
+import { NewsList } from './news/components/news-list/news-list';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -22,5 +23,6 @@ export const routes: Routes = [
   { path: 'events/my', component: MyEvents, canActivate: [authGuard] },
   { path: 'events/:id', component: EventDetail },
   { path: 'events/:id/edit', component: EditEvent, canActivate: [authGuard] },
+  { path: 'news', component: NewsList }
 ];
 ////
