@@ -14,6 +14,8 @@ function getCookieOptions() {
 export default async function loginRoutes(fastify) {
   fastify.post('/login', {
     schema: {
+      tags: ['Authentication'],
+      summary: 'Authenticate user and return token',
       body: {
         type: 'object',
         required: ['email', 'password'],
@@ -46,7 +48,8 @@ export default async function loginRoutes(fastify) {
     const token = await reply.jwtSign(
       {
         sub: user.id,
-        username: user.username
+        username: user.username,
+        isAdmin: user.isAdmin
       },
       { expiresIn: '24h' }
     )
@@ -60,7 +63,8 @@ export default async function loginRoutes(fastify) {
         id: user.id,
         username: user.username,
         email: user.email,
-        displayName: user.displayName
+        displayName: user.displayName,
+        isAdmin: user.isAdmin
       }
     })
   })
@@ -74,12 +78,6 @@ export default async function loginRoutes(fastify) {
   })
 
   fastify.get('/me', async (request, reply) => {
-    try {
-      await request.jwtVerify()
-    } catch {
-      return reply.code(401).send({ error: 'Not logged in.' })
-    }
-
     const userId = Number(request.user.sub)
     if (!Number.isInteger(userId)) {
       return reply.code(401).send({ error: 'Invalid login token.' })
@@ -92,7 +90,8 @@ export default async function loginRoutes(fastify) {
         username: true,
         email: true,
         displayName: true,
-        isVerified: true
+        isVerified: true,
+        isAdmin: true
       }
     })
 

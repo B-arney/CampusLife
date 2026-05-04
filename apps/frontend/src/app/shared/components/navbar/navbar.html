@@ -1,4 +1,7 @@
 <div class="sidebar">
+	@if (branch !== 'unknown') {
+		<div class="build-info">{{ branch }}: {{ hash }}</div>
+	}
 	<div class="sidebar-start">
 		<h2 class="sidebar-title">CAMPUS LIFE</h2>
 
@@ -11,6 +14,7 @@
       <li [routerLink]="['/landing']" routerLinkActive="active-link">HOME</li>
       <li [routerLink]="['/profile']" routerLinkActive="active-link">PROFILE</li>
       <li [routerLink]="['/events']" routerLinkActive="active-link">EVENTS</li>
+      <li [routerLink]="['/events/my']" routerLinkActive="active-link">MY EVENTS</li>
       <li [routerLink]="['/news']" routerLinkActive="active-link">NEWS</li>
 	  <!-- uncomment when features added -->
       <!-- 
@@ -20,9 +24,14 @@
     </ul>
 
     <div class="sidebar-bottom">
-      <button class="icon-btn">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-      </button>
+	  <div class="avatar-sm">
+		@let user = authService.currentUser();
+		@if (user?.profilePicture) {
+			<img [src]="user!.profilePicture" alt="Avatar">
+		} @else {
+	        <svg viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+		}
+	  </div>
       <button class="logout-btn" (click)="authService.logout()">LOG OUT</button>
     </div>
   </div>
@@ -42,6 +51,7 @@
     <a [routerLink]="['/landing']" routerLinkActive="active-link" (click)="closeMenu()">HOME</a>
     <a [routerLink]="['/profile']" routerLinkActive="active-link" (click)="closeMenu()">PROFILE</a>
     <a [routerLink]="['/events']" routerLinkActive="active-link" (click)="closeMenu()">EVENTS</a>
+    <a [routerLink]="['/events/my']" routerLinkActive="active-link" (click)="closeMenu()">MY EVENTS</a>
     <a [routerLink]="['/news']" routerLinkActive="active-link" (click)="closeMenu()">NEWS</a>
     <a class="logout-mobile" (click)="authService.logout(); closeMenu()">LOG OUT</a>
   </div>

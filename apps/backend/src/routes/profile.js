@@ -51,7 +51,9 @@ export default async function profileRoutes(fastify) {
             updateData.interests = part.value
           } else if (['username', 'major', 'displayName'].includes(part.fieldname)) {
             updateData[part.fieldname] = part.value
-          }
+          } else if (part.fieldname === 'removeProfilePicture' && part.value === 'true') {
+			updateData.profilePicture = null
+		  }
         }
       }
     } else {

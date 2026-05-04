@@ -1,0 +1,103 @@
+header {
+  max-width: 860px;
+  width: 100%;
+  margin: 2rem auto 1rem auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h2 {
+  color: #f0efff;
+  margin: 0;
+  font-size: 3rem;
+  letter-spacing: 0.15rem;
+}
+
+.button {
+  border: 2px solid #f0efff;
+  border-radius: 999px;
+  background: transparent;
+  color: #f0efff;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.button:hover {
+  background: #f0efff;
+  color: #032c5b;
+}
+
+.event-list {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.event-row {
+  border: 2px solid #f0efff;
+  border-radius: 20px;
+  background: #032c5b;
+  color: #f0efff;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.event-main h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.2rem;
+}
+
+.event-main p {
+  margin: 0.2rem 0;
+}
+
+.meta-line {
+  opacity: 0.9;
+  font-size: 0.9rem;
+}
+
+.event-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.button.secondary {
+  border-color: #dfd06c;
+}
+
+.button.danger {
+  border-color: #ffb6b6;
+  color: #ffb6b6;
+}
+
+.button.danger:hover {
+  background: #ffb6b6;
+  color: #032c5b;
+}
+
+.loading-text,
+.error-text,
+.empty-state {
+  max-width: 860px;
+  margin: 1rem auto;
+  text-align: center;
+  color: #f0efff;
+}
+
+@media (max-width: 768px) {
+  .event-row {
+    flex-direction: column;
+  }
+
+  .event-actions {
+    justify-content: flex-start;
+  }
+}

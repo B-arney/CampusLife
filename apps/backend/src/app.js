@@ -11,6 +11,7 @@ import { join } from 'path'
 const fastify = Fastify({
   logger: true,
   trustProxy: true,
+  bodyLimit: 10 * 1024 * 1024,
   ajv: {
     customOptions: { allErrors: true }
   }
@@ -28,10 +29,11 @@ await fastify.register(multipart, {
 })
 
 fastify.addHook('preValidation', async (request, reply) => {
+  fastify.log.info({ method: request.method, url: request.url, body: request.body }, '[preValidation] incoming request')
+
   if (request.isMultipart()) {
     return
   }
-  // Allow empty bodies for specific routes or if body is not strictly required
   if ((request.method === 'POST' || request.method === 'PUT') && !request.body && !request.url.includes('/rsvp') && !request.url.includes('/logout')) {
     return reply.code(400).send({ error: 'A request body nem lehet üres.' })
   }
@@ -40,7 +42,7 @@ fastify.addHook('preValidation', async (request, reply) => {
 fastify.setErrorHandler((error, request, reply) => {
   if (error.validation) {
     const simplifiedErrors = error.validation.map(err => ({
-      field: err.instancePath.replace('/', ''),
+      field: err.instancePath.replace('/', '') || err.params?.missingProperty || '',
       message: err.message
     }));
 
@@ -72,6 +74,20 @@ await fastify.register(jwt, {
   cookie: {
     cookieName: 'authToken',
     signed: false
+  }
+})
+
+const PUBLIC_ROUTES = ['/api/login', '/api/logout', '/api/register', '/api/verify', '/api/health', '/api/docs']
+
+fastify.addHook('onRequest', async (request, reply) => {
+  const path = request.url.split('?')[0]
+  const isPublic = PUBLIC_ROUTES.some(route => path === route || path.startsWith(route + '/'))
+  if (!isPublic) {
+    try {
+      await request.jwtVerify()
+    } catch {
+      return reply.code(401).send({ error: 'Not logged in.' })
+    }
   }
 })
 

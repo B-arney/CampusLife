@@ -3,11 +3,12 @@ import { RouterLink } from '@angular/router';
 import { EventService } from '../event/services/event-service';
 import { DatePipe } from '@angular/common';
 import { QRCodeComponent } from 'angularx-qrcode';
+import { NewsList } from '../news/components/news-list/news-list';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [RouterLink, DatePipe, QRCodeComponent],
+  imports: [RouterLink, DatePipe, QRCodeComponent, NewsList],
   templateUrl: './landing.html',
   styleUrls: ['./landing.css']
 })
@@ -29,6 +30,7 @@ export class Landing implements OnInit{
     this.qrModalOpen = false;
   }
 
+   
   currentNewsIndex: number = 0;
   totalNews: number = 3;
 

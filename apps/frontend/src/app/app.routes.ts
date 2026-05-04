@@ -8,17 +8,21 @@ import { authGuard } from './auth/guards/auth-guard';
 import { EditEvent } from './event/components/edit-event/edit-event';
 import { EventDetail } from './event/components/event-detail/event-detail';
 import { EventPage } from './event/components/event-page/event-page';
+import { MyEvents } from './event/components/my-events/my-events';
+import { NewsList } from './news/components/news-list/news-list';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: Login },
   { path: 'registration', component: Registration },
   { path: 'forgot-password', component: ForgotPassword },
-  { path: 'landing', component: Landing },
+  { path: 'landing', component: Landing, canActivate: [authGuard] },
   { path: 'profile', component: Profile, canActivate: [authGuard] },
   { path: 'events', component: EventPage },
-  { path: 'events/new', component: EditEvent },
+  { path: 'events/new', component: EditEvent, canActivate: [authGuard] },
+  { path: 'events/my', component: MyEvents, canActivate: [authGuard] },
   { path: 'events/:id', component: EventDetail },
-  { path: 'events/:id/edit', component: EditEvent },
+  { path: 'events/:id/edit', component: EditEvent, canActivate: [authGuard] },
+  { path: 'news', component: NewsList }
 ];
 ////

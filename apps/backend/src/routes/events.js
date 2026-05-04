@@ -2,6 +2,7 @@ import { prisma } from '../db.js'
 
 function validateEventPayload(body) {
   const errors = []
+  const description = String(body?.description || '').trim()
 
   if (!body?.title || !String(body.title).trim()) {
     errors.push({ field: 'title', message: 'Title is required' })
@@ -15,8 +16,23 @@ function validateEventPayload(body) {
   if (!body?.category || !String(body.category).trim()) {
     errors.push({ field: 'category', message: 'Category is required' })
   }
-  if (!body?.description || !String(body.description).trim()) {
+  if (!description) {
     errors.push({ field: 'description', message: 'Description is required' })
+  } else if (description.length > 250) {
+    errors.push({ field: 'description', message: 'Description must be at most 250 characters' })
+  }
+
+  if (body?.imageUrl) {
+    const imageUrl = String(body.imageUrl)
+    const allowedPrefixes = [
+      'data:image/jpeg;base64,',
+      'data:image/png;base64,',
+      'data:image/webp;base64,'
+    ]
+    const hasAllowedPrefix = allowedPrefixes.some(prefix => imageUrl.startsWith(prefix))
+    if (!hasAllowedPrefix) {
+      errors.push({ field: 'imageUrl', message: 'Only .jpg, .png or .webp images are allowed' })
+    }
   }
 
   const date = new Date(body?.date)
@@ -29,7 +45,34 @@ function validateEventPayload(body) {
 
 export default async function eventRoutes(fastify) {
   // Get all events
-  fastify.get('/events', async (request, reply) => {
+  fastify.get('/events', {
+    schema: {
+      tags: ['Events'],
+      summary: 'Get all events',
+      response: {
+        200: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'integer' },
+              title: { type: 'string' },
+              shortDescription: { type: 'string', nullable: true },
+              description: { type: 'string' },
+              startsAt: { type: 'string', format: 'date-time' },
+              location: { type: 'string' },
+              category: { type: 'string' },
+              hostId: { type: 'integer' },
+              hostName: { type: 'string' },
+              imageUrl: { type: 'string', nullable: true },
+              rsvpCount: { type: 'integer' },
+              hasUserRsvped: { type: 'boolean' }
+            }
+          }
+        }
+      }
+    }
+  }, async (request, reply) => {
     let userId = null
     try {
       await request.jwtVerify()
@@ -58,8 +101,36 @@ export default async function eventRoutes(fastify) {
     }))
   })
 
-  // Get My RSVPs (MUST be above /events/:id)
-  fastify.get('/events/me/rsvps', async (request, reply) => {
+  // Get My RSVPs
+  fastify.get('/events/me/rsvps', {
+    schema: {
+      tags: ['Events'],
+      summary: 'Get RSVPs for the logged-in user',
+      response: {
+        200: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'integer' },
+              title: { type: 'string' },
+              shortDescription: { type: 'string', nullable: true },
+              description: { type: 'string' },
+              startsAt: { type: 'string', format: 'date-time' },
+              location: { type: 'string' },
+              category: { type: 'string' },
+              hostId: { type: 'integer' },
+              hostName: { type: 'string' },
+              imageUrl: { type: 'string', nullable: true },
+              rsvpCount: { type: 'integer' },
+              hasUserRsvped: { type: 'boolean' }
+            }
+          }
+        },
+        401: { type: 'object', properties: { error: { type: 'string' } } }
+      }
+    }
+  }, async (request, reply) => {
     try {
       await request.jwtVerify()
     } catch (err) {
@@ -89,8 +160,117 @@ export default async function eventRoutes(fastify) {
     }))
   })
 
+  // Get my hosted events (MUST be above /events/:id)
+  fastify.get('/events/me', async (request, reply) => {
+    try {
+      await request.jwtVerify()
+    } catch (err) {
+      return reply.code(401).send({ error: 'Not logged in.' })
+    }
+
+    const userId = Number(request.user.sub)
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        username: true,
+        displayName: true
+      }
+    })
+
+    if (!user) {
+      return reply.code(404).send({ error: 'User not found' })
+    }
+
+    const hostNameCandidates = [user.username, user.displayName].filter(Boolean)
+
+    const events = await prisma.event.findMany({
+      where: {
+        OR: [
+          { hostId: userId },
+          {
+            AND: [
+              { hostId: null },
+              { hostName: { in: hostNameCandidates } }
+            ]
+          }
+        ]
+      },
+      include: {
+        _count: {
+          select: { rsvps: true }
+        }
+      },
+      orderBy: {
+        startsAt: 'asc'
+      }
+    })
+
+    return events.map(event => ({
+      ...event,
+      rsvpCount: event._count.rsvps,
+      hasUserRsvped: false,
+      _count: undefined
+    }))
+  })
+
   // Create event
-  fastify.post('/events', async (request, reply) => {
+  fastify.post('/events', {
+    schema: {
+      tags: ['Events'],
+      summary: 'Create a new event',
+      response: {
+        201: {
+          type: 'object',
+          properties: {
+            id: { type: 'integer' },
+            message: { type: 'string' },
+            title: { type: 'string' },
+            shortDescription: { type: 'string', nullable: true },
+            description: { type: 'string' },
+            startsAt: { type: 'string', format: 'date-time' },
+            location: { type: 'string' },
+            category: { type: 'string' },
+            hostId: { type: 'integer' },
+            hostName: { type: 'string' },
+            imageUrl: { type: 'string', nullable: true },
+            rsvpCount: { type: 'integer' },
+            hasUserRsvped: { type: 'boolean' }
+          }
+        },
+        401: {
+          type: 'object',
+          properties: {
+            error: { type: 'string' }
+          }
+        },
+        400: {
+          type: 'object',
+          properties: {
+            errors: { type: 'object' }
+          }
+        },
+        404: {
+          type: 'object',
+          properties: {
+            error: { type: 'string' }
+          }
+        }
+      },
+      body: {
+        type: 'object',
+        required: ['title', 'description', 'date', 'location', 'category'],
+        properties: {
+          title: { type: 'string', minLength: 1 },
+          description: { type: 'string', minLength: 1 },
+          date: { type: 'string' },
+          location: { type: 'string', minLength: 1 },
+          category: { type: 'string', minLength: 1 },
+          imageUrl: { type: ['string', 'null'] }
+        }
+      }
+    }
+  }, async (request, reply) => {
     try {
       await request.jwtVerify()
     } catch (err) {
@@ -132,7 +312,40 @@ export default async function eventRoutes(fastify) {
   })
 
   // Get single event
-  fastify.get('/events/:id', async (request, reply) => {
+  fastify.get('/events/:id', {
+    schema: {
+      tags: ['Events'],
+      summary: 'Get details of a single event',
+      params: {
+        type: 'object',
+        properties: {
+          id: { type: 'integer' }
+        },
+        required: ['id']
+      },
+      response: {
+        200: {
+          type: 'object',
+          properties: {
+            id: { type: 'integer' },
+            title: { type: 'string' },
+            shortDescription: { type: 'string', nullable: true },
+            description: { type: 'string' },
+            startsAt: { type: 'string', format: 'date-time' },
+            location: { type: 'string' },
+            category: { type: 'string' },
+            hostId: { type: 'integer' },
+            hostName: { type: 'string' },
+            imageUrl: { type: 'string', nullable: true },
+            rsvpCount: { type: 'integer' },
+            hasUserRsvped: { type: 'boolean' }
+          }
+        },
+        400: { type: 'object', properties: { error: { type: 'string' } } },
+        404: { type: 'object', properties: { error: { type: 'string' } } }
+      }
+    }
+  }, async (request, reply) => {
     const { id } = request.params
     const eventId = parseInt(id)
 
@@ -179,7 +392,54 @@ export default async function eventRoutes(fastify) {
   })
 
   // Update event
-  fastify.put('/events/:id', async (request, reply) => {
+  fastify.put('/events/:id', {
+    schema: {
+      tags: ['Events'],
+      summary: 'Update an event',
+      params: {
+        type: 'object',
+        properties: {
+          id: { type: 'integer' }
+        },
+        required: ['id']
+      },
+      body: {
+        type: 'object',
+        required: ['title', 'description', 'date', 'location', 'category'],
+        properties: {
+          title: { type: 'string', minLength: 1 },
+          description: { type: 'string', minLength: 1 },
+          date: { type: 'string' },
+          location: { type: 'string', minLength: 1 },
+          category: { type: 'string', minLength: 1 },
+          imageUrl: { type: ['string', 'null'] }
+        }
+      },
+      response: {
+        200: {
+          type: 'object',
+          properties: {
+            id: { type: 'integer' },
+            title: { type: 'string' },
+            shortDescription: { type: 'string', nullable: true },
+            description: { type: 'string' },
+            startsAt: { type: 'string', format: 'date-time' },
+            location: { type: 'string' },
+            category: { type: 'string' },
+            hostId: { type: 'integer' },
+            hostName: { type: 'string' },
+            imageUrl: { type: 'string', nullable: true },
+            rsvpCount: { type: 'integer' },
+            hasUserRsvped: { type: 'boolean' }
+          }
+        },
+        400: { type: 'object', properties: { error: { type: 'string' } } },
+        401: { type: 'object', properties: { error: { type: 'string' } } },
+        403: { type: 'object', properties: { error: { type: 'string' } } },
+        404: { type: 'object', properties: { error: { type: 'string' } } }
+      }
+    }
+  }, async (request, reply) => {
     try {
       await request.jwtVerify()
     } catch (err) {
@@ -189,6 +449,7 @@ export default async function eventRoutes(fastify) {
     const { id } = request.params
     const eventId = parseInt(id)
     const userId = Number(request.user.sub)
+    const isAdmin = request.user.isAdmin === true
 
     if (isNaN(eventId)) {
       return reply.code(400).send({ error: 'Invalid event ID' })
@@ -199,7 +460,7 @@ export default async function eventRoutes(fastify) {
       return reply.code(404).send({ error: 'Event not found' })
     }
 
-    if (existing.hostId !== userId) {
+    if (existing.hostId !== userId && !isAdmin) {
       return reply.code(403).send({ error: 'You can only edit your own events' })
     }
 
@@ -242,6 +503,7 @@ export default async function eventRoutes(fastify) {
     const { id } = request.params
     const eventId = parseInt(id)
     const userId = Number(request.user.sub)
+    const isAdmin = request.user.isAdmin === true
 
     if (isNaN(eventId)) {
       return reply.code(400).send({ error: 'Invalid event ID' })
@@ -252,7 +514,7 @@ export default async function eventRoutes(fastify) {
       return reply.code(404).send({ error: 'Event not found' })
     }
 
-    if (existing.hostId !== userId) {
+    if (existing.hostId !== userId && !isAdmin) {
       return reply.code(403).send({ error: 'You can only delete your own events' })
     }
 

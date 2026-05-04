@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
@@ -25,8 +25,27 @@ function interestsFromApi(raw: unknown): string[] {
   return raw.filter((x): x is string => typeof x === 'string');
 }
 
+function futureDateValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value;
+  if (!value) {
+    return null;
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return { invalidDate: true };
+  }
+
+  if (date.getTime() < Date.now()) {
+    return { pastDate: true };
+  }
+
+  return null;
+}
+
 @Component({
   selector: 'app-edit-event',
+  standalone: true,
   imports: [
     ReactiveFormsModule,
     InputTextModule,
@@ -46,6 +65,9 @@ export class EditEvent implements OnInit {
   isSaving = false;
   isLoading = false;
   eventId: number | null = null;
+  imageError: string | null = null;
+  imagePreviewUrl: string | null = null;
+  selectedImageName = '';
 
   private messageService = inject(MessageService);
   private eventService = inject(EventService);
@@ -67,11 +89,12 @@ export class EditEvent implements OnInit {
 
   eventForm: FormGroup = this.fb.group({
     title: ['', Validators.required],
-    description: ['', Validators.required],
-    date: ['', Validators.required],
+    description: ['', [Validators.required, Validators.maxLength(250)]],
+    date: ['', [Validators.required, futureDateValidator]],
     location: ['', Validators.required],
     category: ['', Validators.required],
-	interests: [[]]
+	interests: [[]],
+    imageUrl: ['']
   });
 
   get isEditMode(): boolean {
@@ -141,9 +164,12 @@ export class EditEvent implements OnInit {
           description: ev.description,
           date: toDatetimeLocalValue(ev.startsAt),
           location: ev.location,
-          category: ev.category
+          category: ev.category,
+          imageUrl: ev.imageUrl || ''
         });
         this.interests = interestsFromApi(ev.interests);
+        this.imagePreviewUrl = ev.imageUrl || null;
+        this.selectedImageName = '';
 
         this.isLoading = false;
 
@@ -161,7 +187,28 @@ export class EditEvent implements OnInit {
   }
 
   saveEvent(): void {
-    if (this.eventForm.invalid || this.isSaving || this.isLoading) return;
+    if (this.isSaving || this.isLoading) return;
+
+    if (this.eventForm.invalid) {
+      this.eventForm.markAllAsTouched();
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Validation error',
+        detail: 'Please fix the highlighted fields.',
+        life: 4000
+      });
+      return;
+    }
+
+    if (this.imageError) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Invalid image',
+        detail: this.imageError,
+        life: 4000
+      });
+      return;
+    }
 
     this.isSaving = true;
     const payload = {
@@ -186,6 +233,9 @@ export class EditEvent implements OnInit {
           this.eventForm.reset();
           this.interests = [];
           this.newInterest = '';
+          this.imageError = null;
+          this.imagePreviewUrl = null;
+          this.selectedImageName = '';
         }
         void this.router.navigate(['/events']);
       },
@@ -241,6 +291,86 @@ export class EditEvent implements OnInit {
         });
       }
     });
+  }
+
+  onImageSelect(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file) {
+      this.imageError = null;
+      this.selectedImageName = '';
+      return;
+    }
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      this.imageError = 'Only .jpg, .png and .webp files are allowed.';
+      this.selectedImageName = '';
+      this.eventForm.patchValue({ imageUrl: '' });
+      input.value = '';
+      return;
+    }
+
+    const maxFileSizeBytes = 4 * 1024 * 1024;
+    if (file.size > maxFileSizeBytes) {
+      this.imageError = 'Image is too large. Maximum allowed size is 4 MB.';
+      this.selectedImageName = '';
+      this.eventForm.patchValue({ imageUrl: '' });
+      input.value = '';
+      return;
+    }
+
+    this.imageError = null;
+    this.selectedImageName = file.name;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = typeof reader.result === 'string' ? reader.result : '';
+      this.eventForm.patchValue({ imageUrl: result });
+      this.imagePreviewUrl = result || null;
+    };
+    reader.onerror = () => {
+      this.imageError = 'Failed to read selected image.';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  removeImage(): void {
+    this.imageError = null;
+    this.selectedImageName = '';
+    this.imagePreviewUrl = null;
+    this.eventForm.patchValue({ imageUrl: '' });
+  }
+
+  get descriptionLength(): number {
+    const value = this.eventForm.get('description')?.value;
+    return typeof value === 'string' ? value.length : 0;
+  }
+
+  fieldError(fieldName: string): string | null {
+    const control = this.eventForm.get(fieldName);
+    if (!control || !(control.touched || control.dirty) || !control.errors) {
+      return null;
+    }
+
+    if (control.errors['required']) {
+      if (fieldName === 'title') return 'Title is required';
+      if (fieldName === 'description') return 'Description is required';
+      if (fieldName === 'date') return 'Date and time is required';
+      if (fieldName === 'location') return 'Location is required';
+      if (fieldName === 'category') return 'Category is required';
+    }
+
+    if (control.errors['pastDate']) {
+      return 'Event date must be in the future';
+    }
+
+    if (control.errors['maxlength']) {
+      return 'Description must be at most 250 characters';
+    }
+
+    return 'Invalid value';
   }
 
   addInterest(): void {

@@ -5,32 +5,8 @@
 			<a routerLink="/news">ALL NEWS</a>
 		</div>
 	</header>
-
-	<div class="news-carousel-wrapper">
-	<button class="nav-arrow left" (click)="prevNews()">
-		<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-	</button>
-
-	<div class="news-container">
-		<div class="news-card">
-		<div class="image-placeholder">
-			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-		</div>
-		<h4>News #{{ currentNewsIndex + 1 }}</h4>
-		<p>Sed vel turpis adipiscing penatibus orci neque.</p>
-		</div>
-		
-		<div class="pagination-dots">
-		<span class="dot" [class.active]="currentNewsIndex === 0" (click)="setNews(0)"></span>
-		<span class="dot" [class.active]="currentNewsIndex === 1" (click)="setNews(1)"></span>
-		<span class="dot" [class.active]="currentNewsIndex === 2" (click)="setNews(2)"></span>
-		</div>
-	</div>
-
-	<button class="nav-arrow right" (click)="nextNews()">
-		<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-	</button>
-	</div>
+	
+	<app-news-list viewMode= "latest"></app-news-list>
 </div>
 
 <div class="section">

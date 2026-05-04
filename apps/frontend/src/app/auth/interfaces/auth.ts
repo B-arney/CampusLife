@@ -22,6 +22,6 @@ export interface User {
   username: string;
   displayName: string;
   major?: string;
-  interests?: string[];
+  interests?: string | string[];
   profilePicture?: string;
 }

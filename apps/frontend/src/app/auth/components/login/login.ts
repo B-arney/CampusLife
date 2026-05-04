@@ -9,9 +9,11 @@ import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
 import { Auth } from '../../services/auth';
 import { PasswordModule } from 'primeng/password';
+import { buildInfo } from '../../../../build-info';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [MessageModule, ToastModule, ButtonModule, InputTextModule, ReactiveFormsModule, RouterLink, NgOptimizedImage, PasswordModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
@@ -23,7 +25,10 @@ export class Login implements OnInit {
   private authService = inject(Auth);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  
+
+  readonly branch = buildInfo.branch;
+  readonly hash = buildInfo.hash;
+
   form: FormGroup;
   isLoading: boolean = false;
 
