@@ -15,6 +15,7 @@ export default async function profileRoutes(fastify) {
         username: true,
         email: true,
         displayName: true,
+        isAdmin: true,
         major: true,
         interests: true,
         profilePicture: true

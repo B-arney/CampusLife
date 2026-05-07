@@ -1,4 +1,4 @@
 export const buildInfo = {
-  branch: 'develop',
-  hash: '70d6ede',
+  branch: 'feature/news-frontend-ui',
+  hash: '7961353',
 };

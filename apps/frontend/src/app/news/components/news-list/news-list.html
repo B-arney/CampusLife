@@ -4,8 +4,50 @@
     <!-- --- full news page --- -->
     <header class="page-header-centered">
       <h1 class="main-title-centered">NEWS</h1>
-      <div class="header-actions"><button class="add-btn">+</button></div>
+      @if (isAdmin()) {
+        <div class="header-actions">
+          <button type="button" class="add-btn" (click)="openCreate()" aria-label="Add news">+</button>
+        </div>
+      }
     </header>
+
+    @if (showCreateModal()) {
+      <div class="modal-backdrop" (click)="closeCreate()" aria-hidden="true"></div>
+      <div class="modal" role="dialog" aria-modal="true" aria-label="Create news">
+        <div class="modal-header">
+          <div class="modal-title">Create news</div>
+          <button type="button" class="modal-close" (click)="closeCreate()" aria-label="Close">×</button>
+        </div>
+
+        <div class="modal-body">
+          <label class="field">
+            <span class="field-label">Title</span>
+            <input class="field-input" [value]="createTitle()" (input)="createTitle.set(($any($event.target)).value)" />
+          </label>
+
+          <label class="field">
+            <span class="field-label">Content</span>
+            <textarea class="field-input field-textarea" rows="5" [value]="createContent()" (input)="createContent.set(($any($event.target)).value)"></textarea>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Expires at</span>
+            <input class="field-input" type="datetime-local" [value]="createExpiresAt()" (input)="createExpiresAt.set(($any($event.target)).value)" />
+          </label>
+
+          @if (createError()) {
+            <div class="form-error" role="alert">{{ createError() }}</div>
+          }
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="closeCreate()">Cancel</button>
+          <button type="button" class="btn-primary" [disabled]="isSaving()" (click)="saveCreate()">
+            {{ isSaving() ? 'Saving…' : 'Create' }}
+          </button>
+        </div>
+      </div>
+    }
     
     <div class="page-content-wrapper">
       <div class="news-list-vertical-centered">
