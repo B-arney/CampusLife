@@ -29,6 +29,8 @@ model user {
   interests String?
   profilePicture String?
   rsvps rsvp[]
+  push_subscriptions push_subscription[]
+  event_reminders event_reminder[]
 }
 
 model event {
@@ -45,6 +47,7 @@ model event {
   imageUrl String?
   mapUrl String?
   rsvps rsvp[]
+  event_reminders event_reminder[]
 }
 
 model rsvp {
@@ -65,4 +68,26 @@ model news {
   expiresAt DateTime
   createdBy Int?
   creator user? @relation("NewsCreator", fields: [createdBy], references: [id], onDelete: SetNull)
+}
+model push_subscription {
+  id Int @id @default(autoincrement())
+  userId Int
+  user user @relation(fields: [userId], references: [id], onDelete: Cascade)
+  endpoint String
+  p256dh String
+  auth String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, endpoint])
+}
+
+model event_reminder {
+  id Int @id @default(autoincrement())
+  eventId Int
+  userId Int
+  event event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user user @relation(fields: [userId], references: [id], onDelete: Cascade)
+  offsetMinutes Int
+  isSent Boolean @default(false)
+  createdAt DateTime @default(now())
 }

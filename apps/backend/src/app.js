@@ -7,6 +7,7 @@ import jwt from '@fastify/jwt'
 import cors from '@fastify/cors'
 import multipart from '@fastify/multipart'
 import { join } from 'path'
+import { startReminderWorker } from './services/reminder-worker.js'
 
 const fastify = Fastify({
   logger: true,
@@ -35,7 +36,7 @@ fastify.addHook('preValidation', async (request, reply) => {
     return
   }
   if ((request.method === 'POST' || request.method === 'PUT') && !request.body && !request.url.includes('/rsvp') && !request.url.includes('/logout')) {
-    return reply.code(400).send({ error: 'A request body nem lehet üres.' })
+    return reply.code(400).send({ error: 'Request body cannot be empty.' })
   }
 })
 
@@ -97,6 +98,8 @@ fastify.register(AutoLoad, {
     prefix: '/api',
   }
 })
+
+startReminderWorker()
 
 await fastify.listen({
   port: 3000,

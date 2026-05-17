@@ -39,6 +39,57 @@
 
         <label>RSVP count</label>
         <div class="field-pill">{{ selectedEvent.rsvpCount }}</div>
+
+        <label>Reminders</label>
+        <div class="field-box reminders-panel">
+          <p class="reminder-intro">Create one or more browser reminders for this event.</p>
+
+          <div class="reminder-actions" *ngIf="auth.getToken(); else reminderSignInState">
+            <select class="reminder-select" [(ngModel)]="selectedReminderOffsetMinutes" name="reminderOffsetMinutes">
+              <option *ngFor="let option of reminderOptions" [ngValue]="option.value">{{ option.label }}</option>
+            </select>
+
+            <button
+              type="button"
+              class="rsvp-button reminder-add"
+              [disabled]="isAddingReminder || (isPastEvent$ | async)"
+              (click)="onAddReminder()"
+            >
+              {{ isAddingReminder ? 'Saving...' : 'Enable reminder' }}
+            </button>
+          </div>
+
+          <ng-template #reminderSignInState>
+            <p class="reminder-empty">Sign in to add reminder offsets.</p>
+          </ng-template>
+
+          <p class="reminder-empty" *ngIf="isPastEvent$ | async">
+            This event has already ended, so new reminders can no longer be created.
+          </p>
+
+          <p class="reminder-message" *ngIf="reminderMessage">{{ reminderMessage }}</p>
+
+          <div class="reminder-list" *ngIf="(reminders$ | async) as reminders">
+            <p class="reminder-empty" *ngIf="!reminders.length && !isLoadingReminders">No reminders set yet.</p>
+
+            <article class="reminder-item" *ngFor="let reminder of reminders">
+              <div class="reminder-copy">
+                <strong>{{ formatReminderOffset(reminder.offsetMinutes) }}</strong>
+                <span>Fires {{ formatReminderTime(selectedEvent.startsAt, reminder.offsetMinutes) }}</span>
+                <span class="reminder-state" *ngIf="reminder.isSent">Sent</span>
+              </div>
+
+              <button
+                type="button"
+                class="reminder-delete"
+                [disabled]="deletingReminderId === reminder.id"
+                (click)="onDeleteReminder(reminder.id)"
+              >
+                {{ deletingReminderId === reminder.id ? 'Removing...' : 'Remove' }}
+              </button>
+            </article>
+          </div>
+        </div>
       </div>
 
       <div class="action-row">
