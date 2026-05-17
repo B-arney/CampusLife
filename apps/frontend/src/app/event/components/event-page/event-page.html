@@ -58,11 +58,11 @@
 	<!-- "végtelen görgetés" loading állapottal -->
 	<p-virtualscroller 
 		[items]="filteredEvents()" 
-		[itemSize]="50" 
+		[itemSize]="92"
 		[showLoader]="true" 
 		[delay]="250"
-		[style]="{ width: '100%', height: 'calc(100vh - 16rem)' }">
-
+		[style]="{ width: '100%', height: 'calc(100vh - 14.8rem)' }">
+		
 		<ng-template #item let-item let-options="options">
 			<a class="event-row" routerLink="/events/{{ item.id }}">
 				<div class="event-main">

@@ -1,7 +1,6 @@
 .event-container {
   width: min(860px, 100%);
   margin: 0 auto;
-  padding: 0 1rem;
   box-sizing: border-box;
 }
 
@@ -213,17 +212,14 @@
   }
 }
 header {
-    display: flex;
     flex-wrap: wrap;         
-    justify-content: center; 
-    align-items: center;
     position: relative;      
     padding-top: 10px;
     margin-bottom: 2rem;
   }
 
   
-  header > a.button {
+  /* header > a.button {
     position: absolute;
     left: 0;
     top: 10px;
@@ -236,21 +232,5 @@ header {
     font-size: 2rem;         
     margin-top: 60px;        
     margin-bottom: 20px;     
-  }
-
-
-  .top-actions {
-    width: 100%;
-    display: flex;
-    justify-content: center; 
-    gap: 15px;               
-  }
-
-
-  .top-actions .button {
-    width: 100%;
-    max-width: 200px;        
-    display: flex;
-    justify-content: center;
-  }
+  } */
 

@@ -94,13 +94,12 @@
 .sidebar .sidebar-bottom {
   width: 100%;
   display: flex;
-  gap: 15px;
   margin-top: 20px;
-  flex-shrink: 0;
 }
 
 .sidebar .sidebar-bottom .logout-btn {
   flex-grow: 1;
+  padding-block: 0.6rem;
   background-color: #b73239; 
   color: white;
   border: none;
@@ -179,7 +178,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
     padding: 0;
     
     /* Animáció beállítások */
@@ -196,6 +194,7 @@
   }
 
   .mobile-navbar .nav-links a {
+	padding: 15px 30px;
     color: white;
     text-decoration: none;
     font-size: 1.2rem;

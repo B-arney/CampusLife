@@ -2,10 +2,10 @@
   <ng-container *ngIf="selectedEvent$ | async as selectedEvent; else notFoundState">
 	
     <main class="details-canvas">
-      <div class="details-head">
+      <header class="details-head">
         <a class="back-button" routerLink="/events" aria-label="Back to events">&#x21A9;</a>
         <h2>DETAILS</h2>
-      </div>
+      </header>
 
       <div class="details-grid">
         <label>Name</label>

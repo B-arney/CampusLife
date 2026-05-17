@@ -318,7 +318,7 @@ a.rsvp-button {
 
 @media (max-width: 1000px) {
   .details-canvas {
-    padding: 1.2rem;
+    padding: 1.2rem 0;
   }
 
   .details-head {
