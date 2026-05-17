@@ -15,6 +15,15 @@ export interface CampusEvent {
   hasUserRsvped?: boolean;
 }
 
+export interface EventReminder {
+  id: number;
+  eventId: number;
+  userId: number;
+  offsetMinutes: number;
+  isSent: boolean;
+  createdAt: string;
+}
+
 export interface CreateEventRequest {
   title: string;
   description: string;

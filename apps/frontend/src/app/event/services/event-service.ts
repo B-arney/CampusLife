@@ -2,7 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable, tap } from 'rxjs';
-import { CampusEvent, CreateEventRequest, UpdateEventRequest } from '../interfaces/event';
+import { CampusEvent, CreateEventRequest, EventReminder, UpdateEventRequest } from '../interfaces/event';
 
 @Injectable({
   providedIn: 'root',
@@ -74,5 +74,17 @@ export class EventService {
 
   cancelRsvp(eventId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${eventId}/rsvp`);
+  }
+
+  getEventReminders(eventId: number): Observable<EventReminder[]> {
+    return this.http.get<EventReminder[]>(`${this.apiUrl}/${eventId}/reminders`);
+  }
+
+  addEventReminder(eventId: number, offsetMinutes: number): Observable<EventReminder> {
+    return this.http.post<EventReminder>(`${this.apiUrl}/${eventId}/reminders`, { offsetMinutes });
+  }
+
+  deleteEventReminder(eventId: number, reminderId: number): Observable<{ success: boolean }> {
+    return this.http.delete<{ success: boolean }>(`${this.apiUrl}/${eventId}/reminders/${reminderId}`);
   }
 }
