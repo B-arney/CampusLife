@@ -33,7 +33,7 @@ export class EventPage implements OnInit {
   }
 
   filteredEvents = computed<CampusEvent[]>(() => {
-    const events = this.eventService.eventsList();
+    const events = this.eventService.eventsList().filter(e => new Date(e.startsAt) > new Date()); // csak a jövőbeli események;
     const selected = this._selectedCategories();
 
     if (!selected.length) return events; // szűrés nélkül

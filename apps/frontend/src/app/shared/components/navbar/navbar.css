@@ -94,7 +94,19 @@
 .sidebar .sidebar-bottom {
   width: 100%;
   display: flex;
+  gap: 1rem;
   margin-top: 20px;
+}
+
+.sidebar .sidebar-bottom .avatar-sm {
+	cursor: pointer;
+	outline: 2px solid transparent;
+	outline-offset: -2px;
+	transition: all 0.15s ease-in-out;
+}
+.sidebar .sidebar-bottom .avatar-sm:hover {
+	outline-offset: 0px;
+	outline-color: #063274;
 }
 
 .sidebar .sidebar-bottom .logout-btn {
