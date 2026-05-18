@@ -27,6 +27,10 @@ export class NewsList implements OnInit {
   createTitle = signal('');
   createContent = signal('');
   createExpiresAt = signal('');
+  createImageUrl = signal<string | null>(null);
+  createImagePreview = signal<string | null>(null);
+  createImageName = signal('');
+  createImageError = signal<string | null>(null);
   createError = signal<string | null>(null);
   isSaving = signal(false);
 
@@ -45,14 +49,70 @@ export class NewsList implements OnInit {
 
    openCreate() {
     this.createError.set(null);
+    this.createImageError.set(null);
     this.createTitle.set('');
     this.createContent.set('');
     this.createExpiresAt.set('');
+    this.createImageUrl.set(null);
+    this.createImagePreview.set(null);
+    this.createImageName.set('');
     this.showCreateModal.set(true);
   }
 
   closeCreate() {
     this.showCreateModal.set(false);
+  }
+
+  onImageSelect(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file) {
+      this.createImageError.set(null);
+      this.createImageName.set('');
+      return;
+    }
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      this.createImageError.set('Only .jpg, .png and .webp files are allowed.');
+      this.createImageName.set('');
+      this.createImageUrl.set(null);
+      this.createImagePreview.set(null);
+      input.value = '';
+      return;
+    }
+
+    const maxFileSizeBytes = 4 * 1024 * 1024;
+    if (file.size > maxFileSizeBytes) {
+      this.createImageError.set('Image is too large. Maximum allowed size is 4 MB.');
+      this.createImageName.set('');
+      this.createImageUrl.set(null);
+      this.createImagePreview.set(null);
+      input.value = '';
+      return;
+    }
+
+    this.createImageError.set(null);
+    this.createImageName.set(file.name);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = typeof reader.result === 'string' ? reader.result : '';
+      this.createImageUrl.set(result || null);
+      this.createImagePreview.set(result || null);
+    };
+    reader.onerror = () => {
+      this.createImageError.set('Failed to read selected image.');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  removeImage(): void {
+    this.createImageError.set(null);
+    this.createImageName.set('');
+    this.createImageUrl.set(null);
+    this.createImagePreview.set(null);
   }
 
   saveCreate() {
@@ -70,8 +130,16 @@ export class NewsList implements OnInit {
     // datetime-local is local time without timezone; convert to ISO
     const expiresIso = new Date(expiresAtLocal).toISOString();
 
+    const imageUrl = this.createImageUrl();
+    if (this.createImageError()) return;
+
     this.isSaving.set(true);
-    this.newsService.createNews({ title, content, expiresAt: expiresIso }).subscribe({
+    this.newsService.createNews({
+      title,
+      content,
+      expiresAt: expiresIso,
+      imageUrl: imageUrl || null,
+    }).subscribe({
       next: (created) => {
         this.newsItems.update((items) => [created, ...items]);
         this.showCreateModal.set(false);

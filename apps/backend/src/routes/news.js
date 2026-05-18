@@ -1,6 +1,34 @@
 import { prisma } from '../db.js'
 import { adminOnly } from '../hooks/auth.js'
 
+
+function validateImageUrl(imageUrl) {
+    if (!imageUrl) return null
+
+    const value = String(imageUrl)
+    const allowedDataPrefixes = [
+        'data:image/jpeg;base64,',
+        'data:image/png;base64,',
+        'data:image/webp;base64,'
+    ]
+
+    if (allowedDataPrefixes.some(prefix => value.startsWith(prefix))) {
+        return value
+    }
+
+    try {
+        const url = new URL(value)
+        if (url.protocol === 'https:' || url.protocol === 'http:') {
+            return value
+        }
+    } catch {
+        return { error: 'imageUrl must be a valid image URL' }
+    }
+
+    return { error: 'imageUrl must be a valid image URL' }
+}
+
+
 const schema = {
           type: 'array',
           items: {
@@ -87,12 +115,18 @@ export default async function newsRoutes(fastify) {
         const { title, content, expiresAt } = request.body
         const userId = Number(request.user.sub)
 
+        const validateImageUrl = validateImageUrl(imageUrl)
+        if(validateImageUrl?.error){
+            return reply.code(400).send({error: validateImageUrl.error})
+        }
+
         const newsItem = await prisma.news.create({
             data: {
                 title,
                 content,
                 expiresAt: new Date(expiresAt),
-                createdBy: userId
+                createdBy: userId,
+                imageUrl: validateImageUrl
             },
             include: { creator: true }
         })
