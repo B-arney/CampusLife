@@ -4,13 +4,70 @@
     <!-- --- full news page --- -->
     <header class="page-header-centered">
       <h1 class="main-title-centered">NEWS</h1>
-		
-	 	<a class="button" routerLink="">
-			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-				<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-			</svg>
-		</a>
+      @if (isAdmin()) {
+        <div class="header-actions">
+          <button type="button" class="add-btn" (click)="openCreate()" aria-label="Add news">+</button>
+        </div>
+      }
     </header>
+
+    @if (showCreateModal()) {
+      <div class="modal-backdrop" (click)="closeCreate()" aria-hidden="true"></div>
+      <div class="modal" role="dialog" aria-modal="true" aria-label="Create news">
+        <div class="modal-header">
+          <div class="modal-title">Create news</div>
+          <button type="button" class="modal-close" (click)="closeCreate()" aria-label="Close">×</button>
+        </div>
+
+        <div class="modal-body">
+          <label class="field">
+            <span class="field-label">Title</span>
+            <input class="field-input" [value]="createTitle()" (input)="createTitle.set(($any($event.target)).value)" />
+          </label>
+
+          <label class="field">
+            <span class="field-label">Content</span>
+            <textarea class="field-input field-textarea" rows="5" [value]="createContent()" (input)="createContent.set(($any($event.target)).value)"></textarea>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Expires at</span>
+            <input class="field-input" type="datetime-local" [value]="createExpiresAt()" (input)="createExpiresAt.set(($any($event.target)).value)" />
+          </label>
+
+          <label class="field">
+            <span class="field-label">Image (optional)</span>
+            <input
+              class="field-input"
+              type="file"
+              accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+              (change)="onImageSelect($event)"
+            />
+            @if (createImageName()) {
+              <span class="selected-file">Selected: {{ createImageName() }}</span>
+            }
+            @if (createImagePreview()) {
+              <img class="image-preview" [src]="createImagePreview()" alt="News image preview" />
+              <button type="button" class="btn-remove-image" (click)="removeImage()">Remove image</button>
+            }
+            @if (createImageError()) {
+              <div class="form-error" role="alert">{{ createImageError() }}</div>
+            }
+          </label>
+
+          @if (createError()) {
+            <div class="form-error" role="alert">{{ createError() }}</div>
+          }
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="closeCreate()">Cancel</button>
+          <button type="button" class="btn-primary" [disabled]="isSaving()" (click)="saveCreate()">
+            {{ isSaving() ? 'Saving…' : 'Create' }}
+          </button>
+        </div>
+      </div>
+    }
     
     <div class="page-content-wrapper">
       <div class="news-list-vertical-centered">
@@ -45,12 +102,20 @@
         <div class="news-container">
           @if (currentItem()) {
             <div class="news-card" role="group" aria-roledescription="slide">
-              <div class="image-placeholder" aria-hidden="true">
-                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#cfcfcf" stroke-width="1.6">
-                  <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-                  <path d="M21 15l-5-5L5 21"></path>
-                </svg>
-              </div>
+              @if (currentItem().imageUrl) {
+                <img
+                  class="news-card-image"
+                  [src]="currentItem().imageUrl"
+                  [alt]="currentItem().title"
+                />
+              } @else {
+                <div class="image-placeholder" aria-hidden="true">
+                  <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#cfcfcf" stroke-width="1.6">
+                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                    <path d="M21 15l-5-5L5 21"></path>
+                  </svg>
+                </div>
+              }
               <div class="news-card-body">
                 <h4 class="news-card-title">{{ currentItem().title }}</h4>
                 <p class="news-card-text">{{ currentItem().content }}</p>

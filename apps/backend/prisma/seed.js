@@ -96,26 +96,31 @@ async function main() {
       title: 'Campus Library Extended Hours This Exam Season',
       content: 'The main library will be open 24/7 from May 15 to June 10 to support students during the exam period. Extra study rooms can be booked through the student portal.',
       expiresAt: new Date('2026-06-10T23:59:00.000Z'),
+      imageUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1400&q=80',
     },
     {
       title: 'New Bike Parking Installed Near Building C',
       content: 'A new covered bike parking facility has been installed near Building C with 40 spots available. Students can register their bike with the campus security office.',
       expiresAt: new Date('2026-12-31T23:59:00.000Z'),
+      imageUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?auto=format&fit=crop&w=1400&q=80',
     },
     {
       title: 'Cafeteria Renovation Starting Next Week',
       content: 'The main cafeteria will undergo renovation from May 10. Temporary food service will be available in the Student Center lobby. We apologize for the inconvenience.',
       expiresAt: new Date('2026-07-01T23:59:00.000Z'),
+      imageUrl: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1400&q=80',
     },
     {
       title: 'Student Union Elections Open for Nominations',
       content: 'Nominations for the 2026/27 Student Union board are now open. Any enrolled student can apply by submitting a nomination form at the Student Affairs office by May 20.',
       expiresAt: new Date('2026-05-20T23:59:00.000Z'),
+      imageUrl: 'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1400&q=80',
     },
     {
       title: 'Free Mental Health Workshops in May',
       content: 'The campus counseling center is hosting weekly mental health workshops every Wednesday in May. Topics include stress management, sleep hygiene, and exam anxiety. No registration needed.',
       expiresAt: new Date('2026-05-31T23:59:00.000Z'),
+      imageUrl: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=1400&q=80',
     },
   ];
 
