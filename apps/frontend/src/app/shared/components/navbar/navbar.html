@@ -1,7 +1,4 @@
 <div class="sidebar">
-	@if (branch !== 'unknown') {
-		<div class="build-info">{{ branch }}: {{ hash }}</div>
-	}
 	<div class="sidebar-start">
 		<h2 class="sidebar-title">CAMPUS LIFE</h2>
 
@@ -12,10 +9,9 @@
 
     <ul class="nav-menu">
       <li [routerLink]="['/landing']" routerLinkActive="active-link">HOME</li>
-      <li [routerLink]="['/profile']" routerLinkActive="active-link">PROFILE</li>
+      <li [routerLink]="['/news']" routerLinkActive="active-link">NEWS</li>
       <li [routerLink]="['/events']" routerLinkActive="active-link">EVENTS</li>
       <li [routerLink]="['/events/my']" routerLinkActive="active-link">MY EVENTS</li>
-      <li [routerLink]="['/news']" routerLinkActive="active-link">NEWS</li>
 	  <!-- uncomment when features added -->
       <!-- 
 	  <li [routerLink]="['/calendar']" routerLinkActive="active-link">CALENDAR</li>
@@ -24,7 +20,7 @@
     </ul>
 
     <div class="sidebar-bottom">
-	  <div class="avatar-sm">
+	  <div [routerLink]="['/profile']" class="avatar-sm">
 		@let user = authService.currentUser();
 		@if (user?.profilePicture) {
 			<img [src]="user!.profilePicture" alt="Avatar">

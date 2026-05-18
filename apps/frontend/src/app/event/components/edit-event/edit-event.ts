@@ -221,7 +221,7 @@ export class EditEvent implements OnInit {
       : this.eventService.createEvent(payload);
 
     req.subscribe({
-      next: () => {
+      next: (savedEvent) => {
         this.isSaving = false;
         this.messageService.add({
           severity: 'success',
@@ -237,7 +237,7 @@ export class EditEvent implements OnInit {
           this.imagePreviewUrl = null;
           this.selectedImageName = '';
         }
-        void this.router.navigate(['/events']);
+        void this.router.navigate(['/events', savedEvent.id]);
       },
       error: (err) => {
         this.isSaving = false;

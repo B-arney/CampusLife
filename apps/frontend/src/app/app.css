@@ -13,3 +13,9 @@
   color: white;
   overflow-y: auto; 
 }
+
+@media (max-width: 600px) {
+  .content {
+	padding: 2rem 1rem; 
+  }
+}

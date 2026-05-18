@@ -1,11 +1,9 @@
+::ng-deep .content {
+	padding-bottom: 0!important;
+}
+
 header {
-  max-width: 860px; 
-  width: 100%;
-  margin: 2rem auto 1rem auto; 
-  display: flex;
-  justify-content: space-between; 
-  align-items: center; 
-  padding: 0;
+  margin-inline: auto; 
 }
 
 header h2 {
@@ -49,7 +47,7 @@ header .actions .button:hover {
 }
 
 .tab-row {
-  max-width: 980px;
+  max-width: 860px;
   width: 100%;
   margin: 1.1rem auto 1.2rem;
   display: flex;
@@ -211,7 +209,7 @@ header .actions .button:hover {
   justify-content: space-between;
   align-items: center;
   padding: 0.65rem 0.7rem 0.65rem 1rem;
-  margin-bottom: 0.68rem;
+  margin-bottom: 10px;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 
   &:hover {
@@ -251,6 +249,8 @@ header .actions .button:hover {
 }
 ::ng-deep .p-virtualscroller {
 	scrollbar-width: none;
+	margin: 0 auto;
+	max-width: 860px;
 }
 ::ng-deep .p-virtualscroller-loader {
 	background-color: transparent !important;

@@ -104,10 +104,14 @@ header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	flex-wrap: wrap;
 	gap: 1rem;
-	margin-bottom: 4rem;
+	margin-top: 2rem;
+	margin-bottom: 3rem;
 
+	h1,
 	h2 {
+		min-width: max-content;
 		flex: 1;
 		text-align: center;
 		margin: 0;
@@ -116,6 +120,19 @@ header {
 		font-weight: bold;
 		letter-spacing: 0.2em;
 		text-transform: uppercase;
+	}
+
+	.start {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		flex: 1;
+
+		h1,
+		h2 {
+			text-align: center;
+			margin: 0;
+		}
 	}
 
 	.actions {
@@ -228,4 +245,10 @@ header {
 .avatar-md {
 	--_size: 120px;
 	--_icon-size: 40px;
+}
+
+@media (max-width: 860px) {
+	header {
+		margin-top: 3rem;
+	}
 }

@@ -10,7 +10,6 @@ import { NgOptimizedImage } from '@angular/common';
 import { Auth } from '../../services/auth';
 import { passwordMatchValidator, passwordStrengthValidator } from '../../../shared/validators/password.validator';
 import { PasswordModule } from 'primeng/password';
-import { buildInfo } from '../../../../build-info';
 
 @Component({
   selector: 'app-registration',
@@ -24,9 +23,6 @@ export class Registration {
   messageService = inject(MessageService);
   private formBuilder = inject(FormBuilder);
   private authService = inject(Auth);
-
-  readonly branch = buildInfo.branch;
-  readonly hash = buildInfo.hash;
 
   form: FormGroup;
   isLoading: boolean = false;
