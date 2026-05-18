@@ -21,6 +21,7 @@ export interface User {
   email: string;
   username: string;
   displayName: string;
+  isAdmin?: boolean;
   major?: string;
   interests?: string | string[];
   profilePicture?: string;

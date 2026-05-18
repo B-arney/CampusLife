@@ -19,6 +19,15 @@ export interface News {
   };
 }
 
+
+export interface CreateNewsRequest {
+  title: string;
+  content: string;
+  expiresAt: string;
+  imageUrl?: string | null;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -33,6 +42,11 @@ export class NewsService {
   // all news for news page
   getAllNews(): Observable<News[]> {
     return this.http.get<News[]>(this.apiUrl);
+  }
+
+  
+   createNews(payload: CreateNewsRequest): Observable<News> {
+    return this.http.post<News>(this.apiUrl, payload);
   }
 
 }

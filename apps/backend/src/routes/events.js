@@ -613,4 +613,86 @@ export default async function eventRoutes(fastify) {
       throw err
     }
   })
+
+  // Get My Reminders for an event
+  fastify.get('/events/:id/reminders', async (request, reply) => {
+    try {
+      await request.jwtVerify()
+    } catch (err) {
+      return reply.code(401).send({ error: 'Not logged in.' })
+    }
+
+    const userId = Number(request.user.sub)
+    const eventId = Number(request.params.id)
+
+    const reminders = await prisma.event_reminder.findMany({
+      where: { eventId, userId }
+    })
+    return reminders
+  })
+
+  // Add a reminder for an event
+  fastify.post('/events/:id/reminders', async (request, reply) => {
+    try {
+      await request.jwtVerify()
+    } catch (err) {
+      return reply.code(401).send({ error: 'Not logged in.' })
+    }
+
+    const userId = Number(request.user.sub)
+    const eventId = Number(request.params.id)
+    let { offsetMinutes } = request.body || {}
+
+    if (offsetMinutes === undefined || typeof offsetMinutes !== 'number' || offsetMinutes < 0) {
+      return reply.code(400).send({ error: 'Valid offsetMinutes (integer >= 0) is required' })
+    }
+
+    // Check if event exists and if the user has an RSVP or not. (We can decide if RSVP is required, likely yes, but maybe not.)
+    const event = await prisma.event.findUnique({
+      where: { id: eventId }
+    })
+    if (!event) return reply.code(404).send({ error: 'Event not found' })
+    
+    const reminderTime = new Date(event.startsAt).getTime() - (offsetMinutes * 60 * 1000)
+    // remindTime must be in the future
+    if (reminderTime < Date.now()) {
+      return reply.code(400).send({ error: 'Reminder time must be in the future' })
+    }
+
+    const reminder = await prisma.event_reminder.create({
+      data: {
+        eventId,
+        userId,
+        offsetMinutes
+      }
+    })
+
+    return reply.code(201).send(reminder)
+  })
+
+  // Delete a reminder
+  fastify.delete('/events/:id/reminders/:reminderId', async (request, reply) => {
+    try {
+      await request.jwtVerify()
+    } catch (err) {
+      return reply.code(401).send({ error: 'Not logged in.' })
+    }
+
+    const userId = Number(request.user.sub)
+    const reminderId = Number(request.params.reminderId)
+
+    const reminder = await prisma.event_reminder.findUnique({
+      where: { id: reminderId }
+    })
+
+    if (!reminder || reminder.userId !== userId) {
+      return reply.code(404).send({ error: 'Reminder not found' })
+    }
+
+    await prisma.event_reminder.delete({
+      where: { id: reminderId }
+    })
+
+    return reply.send({ success: true })
+  })
 }

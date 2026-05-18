@@ -37,7 +37,10 @@
 		position: absolute;
 		top: -0.6rem;
 		right: -0.6rem;
+		width: 2.4rem;
+		height: 2.4rem;
 		fill: #002d52;
+		cursor: pointer;
 	}
 }
 
